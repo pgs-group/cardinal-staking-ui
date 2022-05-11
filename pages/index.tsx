@@ -91,9 +91,10 @@ function Home() {
                 <Placeholder />
               </>
             ) : stakePools[0].length > 0 ? (
-              stakePools[0].map((stakePool) => (
+              stakePools[0].map((stakePool, index) => (
                 <div
                   className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
+                  key={index}
                   onClick={() =>
                     router.push(
                       `/${
@@ -144,9 +145,10 @@ function Home() {
                 Unrecognized Pools
               </div>
               <div className="grid grid-cols-4 gap-5">
-                {stakePools[1].map((stakePool) => (
+                {stakePools[1].map((stakePool, index) => (
                   <div
                     className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
+                    key={index}
                     onClick={() =>
                       router.push(
                         `/${
