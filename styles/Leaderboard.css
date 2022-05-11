@@ -1,0 +1,30 @@
+.leaderboard-modal{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.2);
+  top: 0px;
+  left: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+}
+
+.leaderboard-modal-body{
+  width: 500px;
+  height: 500px;
+  background-color: #000000;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.leaderboard-list{
+  background: #00000014;
+  color: white;
+}
+.leaderboard-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

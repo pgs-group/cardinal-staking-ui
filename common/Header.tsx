@@ -12,6 +12,7 @@ import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import {Leaderboard} from "../components/Leaderboard/Leaderboard";
 
 export const Header = () => {
   const router = useRouter()
@@ -68,19 +69,7 @@ export const Header = () => {
         >
           <p className="my-auto mr-10 hover:cursor-pointer">Stake</p>
         </div>
-        <div
-          onClick={() =>
-            router.push(
-              `/admin${
-                ctx.environment.label !== 'mainnet'
-                  ? `?cluster=${ctx.environment.label}`
-                  : ''
-              }`
-            )
-          }
-        >
-          <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
-        </div>
+        <Leaderboard />
         {wallet.connected ? (
           <div
             className="flex cursor-pointer gap-2"

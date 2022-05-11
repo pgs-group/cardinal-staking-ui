@@ -5,13 +5,15 @@ module.exports = {
     browser: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['simple-import-sort', 'import', 'unused-imports'],
+  plugins: [
+      // 'simple-import-sort', 'import', 'unused-imports'
+  ],
   extends: [
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:jsx-a11y/recommended',
-    // 'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    // 'plugin:react-hooks/recommended',
+    // 'plugin:jsx-a11y/recommended',
+    'eslint:recommended',
+    // 'plugin:@typescript-eslint/recommended',
     // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
     // 'plugin:prettier/recommended',
   ],
