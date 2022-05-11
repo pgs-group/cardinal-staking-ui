@@ -2,21 +2,31 @@
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.2);
   top: 0px;
   left: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .2s;
+}
+.leaderboard-modal.show{
+  opacity: 1!important;
+  visibility: visible;
 }
 
 .leaderboard-modal-body{
   width: 500px;
   height: 500px;
-  background-color: #000000;
+  background-color: #1e1c1c;
   border-radius: 10px;
   padding: 20px;
+  transform: scale(0);
+  transition: all .2s;
+}
+.leaderboard-modal-body.show{
+  transform: scale(1);
 }
 
 .leaderboard-list{
@@ -27,4 +37,108 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.leaderboard-close{
+  cursor: pointer;
+  color: #ddd;
+}
+.leaderboard-close:hover{
+  transform: scale(1.08); 
+}
+.leaderboard-overlay{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0 0 0 / 50%);
+  top: 0px;
+  left: 0px;
+  transition: all 0.5s;
+  z-index: -1;
+}
+.Leaderboard{
+  padding: 15px 20px;
+  margin: auto;
+  max-width: 800px;
+}
+.leader-wrap {
+  display: flex;
+}
+
+.leader{
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  animation-name: revealLeaders;
+  animation-duration: .4s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+}
+
+.leader-ava {
+  padding: 8px;
+  margin-right: 16px;
+  position: relative;
+}
+
+.leader-score {
+  display: flex;
+  align-items: center;
+  opacity: 0.6;
+}
+
+.leader-score svg{
+  display: block;
+  margin-right: 4px;
+}
+
+.leader-score_title{
+  line-height: 1;
+}
+
+.leader-ava::after{
+  content: "";
+  left: 0;
+  bottom: 0;
+  display: block;
+  height: 6px;
+  position: absolute;
+  border: 0px transparent solid;
+  border-left-width: 20px;
+  border-right-width: 20px;
+  border-bottom-width: 6px;
+  border-bottom-color: #fff;
+  transition: border-bottom-color .2s ease-in-out;
+}
+
+.leader-bar {
+  margin-top: 8px;
+  animation-name: barLoad;
+  animation-duration: .4s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.6, 0.2, 0.1, 1);
+  transform-origin: left;
+}
+
+.bar {
+  height: 4px;
+  border-radius: 2px;
+}
+
+@keyframes revealLeaders{
+  from{
+      transform: translateX(-200px);
+      opacity: 0;
+  }
+  to{
+      transform: none;
+      opacity: 1;
+  }
+}
+
+@keyframes barLoad{
+  from{
+      transform: scaleX(0);
+  }
+  to{
+      transform: scaleX(1)
+  }
 }

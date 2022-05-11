@@ -12,7 +12,7 @@ import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import {Leaderboard} from "../components/Leaderboard/Leaderboard";
+import Leaderboard from '../components/Leaderboard/Leaderboard'
 
 export const Header = () => {
   const router = useRouter()
