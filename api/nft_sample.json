@@ -1,0 +1,25 @@
+{
+  "name": "HoneyLand Egg NFT",
+  "symbol": "EGG",
+  "description": "with egg you can participate in hatching mechanism and produce bee for playing game",
+  "seller_fee_basis_points": 500,
+  "image": "https://www.arweave.net/kKeBDiRWL6lqa1OytUfZHWBOjfxO_zHx_r4HzFmEbmE?ext=jpg",
+  "properties": {
+    "creators": [
+      {
+        "address": "HjKitY61PXmHXcWkHnE3Vh7u2E6kHKNWx8xAfHnUuCNw",
+        "share": 100
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/kKeBDiRWL6lqa1OytUfZHWBOjfxO_zHx_r4HzFmEbmE?ext=jpg",
+        "type": "image/jpg"
+      }
+    ]
+  },
+  "collection": {
+    "name": "eggs",
+    "family": "honeyland"
+  }
+}
