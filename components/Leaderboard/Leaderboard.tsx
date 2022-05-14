@@ -26,11 +26,11 @@ export default function Leaderboard() {
         return res.json()
       })
       .then((res) => {
-        const list = res.sort((a: any, b: any) => {
-          return a.rank < b.rank
+        res.sort((a: any, b: any) => {
+          return b.rank < a.rank
         })
-        const max = list.length ? list[0].score : 100
-        setLeaders(list)
+        const max = res.length ? res[0].score : 100
+        setLeaders(res)
         setMaxScore(max)
       })
   }, [])
