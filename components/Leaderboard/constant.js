@@ -48,12 +48,3 @@ export const colors = [
   '#107C10',
   '#7E735F',
 ]
-export const maxScore = 500
-
-export const leaders = [
-  { id: 1, name: 'Uenify', score: 350 },
-  { id: 3, name: 'Kekland', score: 275 },
-  { id: 2, name: 'Madopew', score: 220 },
-  { id: 4, name: 'Yussend', score: 200 },
-  { id: 5, name: 'Admin', score: 175 },
-]
