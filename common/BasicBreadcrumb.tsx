@@ -1,7 +1,7 @@
 export default function BasicBreadcrumb({ title }) {
   return (
     <div className="mb-8 pb-8 text-center">
-      <h2 className="font-semi-bold mb-3 text-4xl text-white">{title}</h2>
+      <h3 className="font-semi-bold mb-3 text-3xl text-white">{title}</h3>
       <a
         href="https://honey.land/"
         className="text-base text-cyan-500 hover:text-white"

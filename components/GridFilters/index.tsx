@@ -2,12 +2,12 @@ import cn from 'classnames'
 import { FiSearch } from 'react-icons/fi'
 export default function GridFilters({ filters, updateFilter }) {
   return (
-    <div className="mb-10 flex">
+    <div className="mb-6 flex">
       <div className="divide-slate- inline-flex divide-x divide-slate-800 pr-3">
         <button
           onClick={() => updateFilter({})}
           className={cn(
-            'font-semi-bold rounded-l-lg bg-slate-700 py-2 px-4 text-gray-200 hover:bg-slate-800',
+            'font-bold rounded-l-lg bg-slate-700 py-2 px-4 text-gray-200 hover:bg-slate-800',
             {
               'bg-slate-800': !filters.type,
             }
@@ -18,7 +18,7 @@ export default function GridFilters({ filters, updateFilter }) {
         <button
           onClick={() => updateFilter({ type: 'refundable' })}
           className={cn(
-            'font-semi-bold rounded-r-lg bg-slate-700 py-2 px-4 text-gray-200 hover:bg-slate-800',
+            'font-bold rounded-r-lg bg-slate-700 py-2 px-4 text-gray-200 hover:bg-slate-800',
             {
               'bg-slate-800': filters.type === 'refundable',
             }

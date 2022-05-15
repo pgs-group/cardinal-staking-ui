@@ -17,7 +17,7 @@ export default function WalletButton() {
     <div>
       {wallet.connected ? (
         <div
-          className="rounded-xlg flex cursor-pointer gap-2 bg-gray-800 rounded-2xl py-2 px-4"
+          className="rounded-xlg flex cursor-pointer gap-2 rounded-2xl bg-gray-800 py-2 px-4"
           onClick={() => setVisible(true)}
         >
           <div>
@@ -31,7 +31,7 @@ export default function WalletButton() {
                 dark={true}
               />
             </div>
-            <div class="text-gray-200">
+            <div className="text-gray-200">
               {wallet?.publicKey ? shortPubKey(wallet?.publicKey) : ''}
             </div>
           </div>
