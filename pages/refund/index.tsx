@@ -7,6 +7,7 @@ import HeaderRefund from 'common/HeaderRefund'
 import FooterRefund from 'common/FooterRefund'
 import BasicCard from 'components/BasicCard'
 import GridFilters from 'components/GridFilters'
+import BasicBreadcrumb from 'common/BasicBreadCrumb'
 
 export function Placeholder() {
   return (
@@ -42,6 +43,7 @@ export default function refund() {
       <div className="flex h-screen flex-col">
         <HeaderRefund />
         <div className="container mx-auto flex-auto py-10">
+          <BasicBreadcrumb title="Explore" />
           {publicKey && <GridFilters />}
           {!wallet && !connecting && !connected && (
             <h3 className="py-10 text-center text-2xl text-white">
