@@ -13,11 +13,11 @@ export default function BasicCard({ data, refund = true }) {
   }, [data])
   if (!card) return <Placeholder />
   return (
-    <div className="card h-[23.7rem] w-80 space-y-2 rounded-xl bg-slate-700 p-4">
+    <div className="card h-[23.7rem] w-80 space-y-2 rounded-2xl bg-slate-700 p-4">
       <a href="#">
         {card.image && card.image.toLowerCase().match(/(jpg|png|gif)/g) && (
           <Image
-            className="h-64 w-full rounded-md object-cover transition hover:bg-cyan-300"
+            className="h-64 w-full rounded-xl object-cover transition hover:bg-cyan-300"
             width="300"
             height="256"
             src={card.image}
@@ -25,10 +25,10 @@ export default function BasicCard({ data, refund = true }) {
           />
         )}
         {card.image && !card.image.toLowerCase().match(/(jpg|png|gif)/g) && (
-          <div className="w-70 h-64 rounded-md bg-slate-700 object-cover transition hover:bg-slate-500" />
+          <div className="w-70 h-64 rounded-xl bg-slate-700 object-cover transition hover:bg-slate-500" />
         )}
         {card && !card.image && (
-          <div className="w-70 h-64 rounded-md bg-slate-700 object-cover transition hover:bg-slate-500" />
+          <div className="w-70 h-64 rounded-xl bg-slate-700 object-cover transition hover:bg-slate-500" />
         )}
       </a>
       <div className='mt-2'>
