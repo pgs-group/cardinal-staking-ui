@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
+
+import Placeholder from 'components/BasicCard/Placeholder'
+import NoImage from 'assets/img/no-image-placeholder.svg'
 
 import { getNft } from 'api/api_custom'
 
@@ -8,15 +12,28 @@ export default function BasicCard({ data }) {
     if (!data) return
     getNft(data.uri).then((res) => setCard(res.data))
   }, [data])
-  if (!card) return <div></div>
+  if (!card) return <Placeholder />
   return (
     <div className="card h-[25rem] w-80 space-y-4 rounded-xl bg-[#15263F] p-4">
       <a href="#">
-        <img
-          className="h-64 w-full rounded-md transition hover:bg-cyan-300"
-          src={card.image}
-          alt={card.name}
-        />
+        {card.image && (
+          <Image
+            className="h-64 w-full rounded-md object-cover transition hover:bg-cyan-300"
+            width="300"
+            height="256"
+            src={card.image}
+            alt={card.name}
+          />
+        )}
+        {!card.image && (
+          <Image
+            className="h-64 w-full rounded-md object-cover transition hover:bg-cyan-300"
+            width="300"
+            height="256"
+            src={NoImage}
+            alt="no image"
+          />
+        )}
       </a>
       <div className="space-y-4">
         <a href="#">

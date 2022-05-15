@@ -1,69 +1,6 @@
 [
     {
       "key": 4,
-      "updateAuthority": "5azMeMz6pTG9uiBs1tih9vQEHWJJFgN1HBcQrB1n1U87",
-      "mint": "4WQpo9g5xtRNdwpoXTNfnS6nvFocMYqezxSiE5CXsq6L",
-      "data": {
-        "name": "special parcel",
-        "symbol": "parcel",
-        "uri": "https://arweave.net/MqqLsf0Eg4QNdxz0KWHRrM3p3OFzZDwA385oBtLg0ds",
-        "sellerFeeBasisPoints": 0,
-        "creators": [
-          {
-            "address": "5azMeMz6pTG9uiBs1tih9vQEHWJJFgN1HBcQrB1n1U87",
-            "verified": 1,
-            "share": 100
-          }
-        ]
-      },
-      "primarySaleHappened": 0,
-      "isMutable": 0,
-      "editionNonce": null
-    },
-    {
-      "key": 4,
-      "updateAuthority": "5azMeMz6pTG9uiBs1tih9vQEHWJJFgN1HBcQrB1n1U87",
-      "mint": "HyuMCddTuaauniJpx9WZhoyHquuwe4v8AaRx1aL8zQoR",
-      "data": {
-        "name": "special parcel",
-        "symbol": "parcel",
-        "uri": "https://arweave.net/DLQ3Iz5GI5wsLSaJWxd6Sm5nuI-Kl68GiWEj5brPuHM",
-        "sellerFeeBasisPoints": 1000,
-        "creators": [
-          {
-            "address": "5azMeMz6pTG9uiBs1tih9vQEHWJJFgN1HBcQrB1n1U87",
-            "verified": 1,
-            "share": 100
-          }
-        ]
-      },
-      "primarySaleHappened": 0,
-      "isMutable": 1,
-      "editionNonce": null
-    },
-    {
-      "key": 4,
-      "updateAuthority": "5azMeMz6pTG9uiBs1tih9vQEHWJJFgN1HBcQrB1n1U87",
-      "mint": "CYSXMAZrjAQSX8CVQZcaSMhRTMRwVvbrkzGU2N9pTyKw",
-      "data": {
-        "name": "special parcel",
-        "symbol": "parcel",
-        "uri": "https://arweave.net/MqqLsf0Eg4QNdxz0KWHRrM3p3OFzZDwA385oBtLg0ds",
-        "sellerFeeBasisPoints": 0,
-        "creators": [
-          {
-            "address": "5azMeMz6pTG9uiBs1tih9vQEHWJJFgN1HBcQrB1n1U87",
-            "verified": 1,
-            "share": 100
-          }
-        ]
-      },
-      "primarySaleHappened": 0,
-      "isMutable": 1,
-      "editionNonce": null
-    },
-    {
-      "key": 4,
       "updateAuthority": "8sxhe4e37e97JnTp8e41K1s3AWAZxKScBNePpP65pYbC",
       "mint": "B1C2cPzGRwVoWGrwQdnuGJfLA45uEkbwREooXHyCGznM",
       "data": {
