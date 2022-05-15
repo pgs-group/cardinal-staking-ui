@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import {
   useWalletModal,
@@ -8,13 +9,26 @@ import { useEffect } from 'react'
 import { getNfts, getAllNfts, getNft } from '../../api/api_custom'
 import HeaderRefund from 'common/HeaderRefund'
 import FooterRefund from 'common/FooterRefund'
+import BasicCard from 'components/BasicCard'
+
+export function Placeholder() {
+  return (
+    <div className="h-[25rem] w-80 animate-pulse rounded-xl  bg-white bg-opacity-5 p-10"></div>
+  )
+}
 
 export default function refund() {
   const { publicKey } = useWallet()
+  const [cards, setCards] = useState([])
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (!publicKey) return
-    getNfts(publicKey).then((res) => console.log(res))
-    // getAllNfts().then((res) => console.log('all', res))
+    // getNfts(publicKey).then((res) => console.log(res))
+    setLoading(true)
+    getAllNfts().then((res) => {
+      setCards(res)
+      setLoading(false)
+    })
     // getNft(
     //   'https://arweave.net/UsyQlC1tfhWOsfpBm0odHA0GRq_4iR_4faTG3pzYMd4'
     // ).then((res) => console.log(res))
@@ -28,10 +42,26 @@ export default function refund() {
       </Head>
       <div className="flex h-screen flex-col">
         <HeaderRefund />
-        <div className="flex-auto"></div>
+        <div className="container mx-auto flex-auto py-10">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {cards.map((card) => (
+              <BasicCard data={card.data} />
+            ))}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+            {loading && <Placeholder />}
+          </div>
+        </div>
         <FooterRefund />
       </div>
-      {/* <WalletMultiButton /> */}
     </div>
   )
 }
