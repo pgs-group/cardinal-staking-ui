@@ -30,3 +30,11 @@ export async function getNft(uri) {
   const response = await axios.get(uri)
   return response
 }
+
+export async function fetchNfts(publicKey, filters) {
+  if (filters.type === 'refundable') {
+    return await getNfts(publicKey)
+  } else {
+    return await getAllNfts()
+  }
+}
