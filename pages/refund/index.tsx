@@ -72,7 +72,7 @@ export default function refund() {
             {loading && <Placeholder />}
           </div>
         </div>
-        <FooterRefund />
+        {/* <FooterRefund /> */}
       </div>
     </div>
   )
