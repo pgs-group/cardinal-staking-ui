@@ -16,3 +16,11 @@ body {
   color: white !important;
   font-weight: bold;
 }
+.bg-refund-button {
+  background: linear-gradient(223.3deg, #fdf28f 12.44%, #f46904 99.02%);
+}
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1350px;
+  }
+}

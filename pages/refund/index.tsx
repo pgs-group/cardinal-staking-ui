@@ -25,6 +25,7 @@ export default function refund() {
     setCards([])
     setLoading(true)
     fetchNfts(publicKey, filters).then((res) => {
+      console.log(res)
       setCards(res)
       setLoading(false)
     })
@@ -55,7 +56,7 @@ export default function refund() {
               Please connect to your wallet
             </h3>
           )}
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cards.map((card, index) => (
               <BasicCard data={card.data} key={index} />
             ))}

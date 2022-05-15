@@ -5,26 +5,26 @@ import nft_list_sample from './nft_list_sample.json'
 import nft_sample from './nft_sample.json'
 
 export async function getNfts(publicKey) {
-  //   return wallet_analyzer_for_nft(
-  //     CLUSTER_URL,
-  //     publicKey,
-  //     NFT_UPDATE_AUTH,
-  //     THRESHOLD
-  //   )
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(nft_list_sample)
-    }, 2000)
-  })
+  return wallet_analyzer_for_nft(
+    CLUSTER_URL,
+    publicKey,
+    NFT_UPDATE_AUTH,
+    THRESHOLD
+  )
+  // return new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     resolve(nft_list_sample)
+  //   }, 2000)
+  // })
 }
 
 export async function getAllNfts() {
-  //   return getAllNftData()
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(nft_list_sample)
-    }, 2000)
-  })
+  return getAllNftData()
+  // return new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     resolve(nft_list_sample)
+  //   }, 2000)
+  // })
 }
 export async function getNft(uri) {
   const response = await axios.get(uri)
