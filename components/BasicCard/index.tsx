@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import Placeholder from 'components/BasicCard/Placeholder'
-import NoImage from 'assets/img/no-image-placeholder.svg'
 
 import { getNft } from 'api/api_custom'
 
@@ -25,14 +24,8 @@ export default function BasicCard({ data }) {
             alt={card.name}
           />
         )}
-        {!card.image && (
-          <Image
-            className="h-64 w-full rounded-md object-cover transition hover:bg-cyan-300"
-            width="300"
-            height="256"
-            src={NoImage}
-            alt="no image"
-          />
+        {card && !card.image && (
+          <div className="h-64 w-70 rounded-md object-cover transition bg-slate-700 hover:bg-slate-500" />
         )}
       </a>
       <div className="space-y-4">
