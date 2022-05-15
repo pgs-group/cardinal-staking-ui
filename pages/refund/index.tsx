@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useEffect } from 'react'
-import { getNfts, getAllNfts, getNft } from '../../api/api_custom'
+import { fetchNfts } from '../../api/api_custom'
 import HeaderRefund from 'common/HeaderRefund'
 import FooterRefund from 'common/FooterRefund'
 import BasicCard from 'components/BasicCard'
@@ -17,22 +17,18 @@ export function Placeholder() {
 
 export default function refund() {
   const { publicKey, connecting, connected, wallet } = useWallet()
-  const walletObj = useWallet()
-  console.log(walletObj)
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(false)
+  const [filters, setFilters] = useState({})
   useEffect(() => {
     if (!publicKey) return
-    // getNfts(publicKey).then((res) => console.log(res))
+    setCards([])
     setLoading(true)
-    getAllNfts().then((res) => {
+    fetchNfts(publicKey, filters).then((res) => {
       setCards(res)
       setLoading(false)
     })
-    // getNft(
-    //   'https://arweave.net/UsyQlC1tfhWOsfpBm0odHA0GRq_4iR_4faTG3pzYMd4'
-    // ).then((res) => console.log(res))
-  }, [publicKey])
+  }, [publicKey, filters])
   return (
     <div>
       <Head>
@@ -44,7 +40,12 @@ export default function refund() {
         <HeaderRefund />
         <div className="container mx-auto flex-auto py-10">
           <BasicBreadcrumb title="Explore" />
-          {publicKey && <GridFilters />}
+          {publicKey && (
+            <GridFilters
+              filters={filters}
+              updateFilter={(val) => setFilters(val)}
+            />
+          )}
           {!wallet && !connecting && !connected && (
             <h3 className="py-10 text-center text-2xl text-white">
               Please connect to your wallet
