@@ -27,7 +27,7 @@ export default function GridFilters({ filters, updateFilter }) {
           Refundable
         </button>
       </div>
-      <div className="relative w-96 text-gray-600">
+      {/* <div className="relative w-96 text-gray-600">
         <input
           type="search"
           name="search"
@@ -37,7 +37,7 @@ export default function GridFilters({ filters, updateFilter }) {
         <button type="submit" className="absolute left-3 top-4 text-white">
           <FiSearch size="18" />
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }
