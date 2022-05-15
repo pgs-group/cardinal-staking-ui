@@ -10,6 +10,7 @@ import { getNfts, getAllNfts, getNft } from '../../api/api_custom'
 import HeaderRefund from 'common/HeaderRefund'
 import FooterRefund from 'common/FooterRefund'
 import BasicCard from 'components/BasicCard'
+import GridFilters from 'components/GridFilters'
 
 export function Placeholder() {
   return (
@@ -43,6 +44,7 @@ export default function refund() {
       <div className="flex h-screen flex-col">
         <HeaderRefund />
         <div className="container mx-auto flex-auto py-10">
+          <GridFilters />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cards.map((card) => (
               <BasicCard data={card.data} />
