@@ -8,3 +8,6 @@ export const CLUSTER_URL = 'devnet'
 export const THRESHOLD = 41
 export const NFT_URI_TEST =
   'https://arweave.net/UsyQlC1tfhWOsfpBm0odHA0GRq_4iR_4faTG3pzYMd4'
+
+export const STAKE_POOL_ID_HONEYLAND =
+  '9G4cZWCwdRm3UTK6Vyu3xJeVbByeEg9fjMthMHxBNz8m'
