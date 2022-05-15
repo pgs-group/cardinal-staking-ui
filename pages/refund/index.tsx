@@ -44,7 +44,12 @@ export default function refund() {
       <div className="flex h-screen flex-col">
         <HeaderRefund />
         <div className="container mx-auto flex-auto py-10">
-          <GridFilters />
+          {publicKey && <GridFilters />}
+          {!publicKey && !loading && (
+            <h3 className="py-10 text-center text-2xl text-white">
+              Please connect to your wallet
+            </h3>
+          )}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cards.map((card) => (
               <BasicCard data={card.data} />
