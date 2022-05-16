@@ -24,3 +24,8 @@ body {
 .nft-card {
   background-color: rgba(255, 255, 255, 15%);
 }
+@media (min-width: 1536px) {
+  .container-custom {
+    max-width: 1170px;
+  }
+}

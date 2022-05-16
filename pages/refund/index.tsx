@@ -34,33 +34,35 @@ export default function RefundPage() {
 
   return (
     <>
-      <BasicBreadcrumb title="Explore" />
-      {publicKey && (
-        <GridFilters
-          filters={filters}
-          updateFilters={(val) => setFilters(val)}
-        />
-      )}
-      {!wallet && !connecting && !connected && (
-        <h3 className="py-10 text-center text-2xl text-white">
-          Please connect to your wallet
-        </h3>
-      )}
-      <div className="grid justify-center gap-8 lg:grid-cols-2 xl:grid-cols-3">
-        {filteredCards().map((card, index) => (
-          <BasicCard data={card} key={index} />
-        ))}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
-        {loading && <CardPlaceholder />}
+      <div className="container container-custom mx-auto flex-auto py-10">
+        <BasicBreadcrumb title="Explore" />
+        {publicKey && (
+          <GridFilters
+            filters={filters}
+            updateFilters={(val) => setFilters(val)}
+          />
+        )}
+        {!wallet && !connecting && !connected && (
+          <h3 className="py-10 text-center text-2xl text-white">
+            Please connect to your wallet
+          </h3>
+        )}
+        <div className="grid justify-center gap-8 lg:grid-cols-2 xl:grid-cols-3">
+          {filteredCards().map((card, index) => (
+            <BasicCard data={card} key={index} />
+          ))}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+          {loading && <CardPlaceholder />}
+        </div>
       </div>
     </>
   )
