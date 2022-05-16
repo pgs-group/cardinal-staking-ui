@@ -29,7 +29,7 @@ export default function BasicCard({ data, refund = true }) {
           <div className="mx-auto h-[370px] w-[322px] space-y-2 rounded-3xl bg-slate-800 object-cover p-6 transition hover:bg-slate-500" />
         )}
       </a>
-      <div className="pt-4">
+      <div className="mt-4">
         <a className="block text-center">
           <h4 className="mt-4 text-center text-2xl font-bold text-white transition hover:text-cyan-300">
             {card.name}
