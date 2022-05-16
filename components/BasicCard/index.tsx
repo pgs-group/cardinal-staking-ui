@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-import Placeholder from 'components/BasicCard/Placeholder'
-
+import Placeholder from 'components/BasicCard/CardPlaceholder'
 import { getNft } from 'api/api_custom'
 
 export default function BasicCard({ data, refund = true }) {
   const [card, setCard] = useState({})
+  const isValidImage = (image) => {
+    return image && image.toLowerCase().match(/(jpg|png|gif)/g)
+  }
   useEffect(() => {
     if (!data) return
     getNft(data.uri).then((res) => setCard(res.data))
@@ -14,8 +16,8 @@ export default function BasicCard({ data, refund = true }) {
   if (!card) return <Placeholder />
   return (
     <div className="card nft-card mx-auto h-[545px] w-[375px] space-y-2 rounded-3xl p-6 text-center">
-      <a href="#" className="flex justify-center">
-        {card.image && card.image.toLowerCase().match(/(jpg|png|gif)/g) && (
+      <a className="flex justify-center">
+        {isValidImage(card.image) ? (
           <Image
             className="rounded-3xl object-cover transition hover:bg-cyan-300"
             width="322"
@@ -23,16 +25,12 @@ export default function BasicCard({ data, refund = true }) {
             src={card.image}
             alt={card.name}
           />
-        )}
-        {card.image && !card.image.toLowerCase().match(/(jpg|png|gif)/g) && (
-          <div className="mx-auto h-[370px] w-[322px] space-y-2 rounded-3xl bg-slate-800 object-cover p-6 transition hover:bg-slate-500" />
-        )}
-        {card && !card.image && (
+        ) : (
           <div className="mx-auto h-[370px] w-[322px] space-y-2 rounded-3xl bg-slate-800 object-cover p-6 transition hover:bg-slate-500" />
         )}
       </a>
-      <div className="mt-4">
-        <a href="#" className="block text-center">
+      <div className="pt-4">
+        <a className="block text-center">
           <h4 className="mt-4 text-center text-2xl font-bold text-white transition hover:text-cyan-300">
             {card.name}
           </h4>
