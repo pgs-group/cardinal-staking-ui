@@ -20,25 +20,28 @@ const App = ({
   Component,
   pageProps,
   cluster,
-}: AppProps & { cluster: string }) => (
-  <UTCNowProvider>
-    <EnvironmentProvider defaultCluster={cluster}>
-      <WalletProvider wallets={getWalletAdapters()} autoConnect>
-        <WalletIdentityProvider>
-          <WalletModalProvider>
-            <TokenListProvider>
-              <TokenAccountsProvider>
-                <StakedTokenDataProvider>
-                  <Component {...pageProps} />
-                </StakedTokenDataProvider>
-              </TokenAccountsProvider>
-            </TokenListProvider>
-          </WalletModalProvider>
-        </WalletIdentityProvider>
-      </WalletProvider>
-    </EnvironmentProvider>
-  </UTCNowProvider>
-)
+}: AppProps & { cluster: string }) => {
+  const getLayout = Component.getLayout || ((page) => page)
+  return (
+    <UTCNowProvider>
+      <EnvironmentProvider defaultCluster={cluster}>
+        <WalletProvider wallets={getWalletAdapters()} autoConnect>
+          <WalletIdentityProvider>
+            <WalletModalProvider>
+              <TokenListProvider>
+                <TokenAccountsProvider>
+                  <StakedTokenDataProvider>
+                    {getLayout(<Component {...pageProps} />)}
+                  </StakedTokenDataProvider>
+                </TokenAccountsProvider>
+              </TokenListProvider>
+            </WalletModalProvider>
+          </WalletIdentityProvider>
+        </WalletProvider>
+      </EnvironmentProvider>
+    </UTCNowProvider>
+  )
+}
 
 App.getInitialProps = getInitialProps
 
