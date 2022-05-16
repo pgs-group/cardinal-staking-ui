@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 import Placeholder from 'components/BasicCard/CardPlaceholder'
 import { getNft } from 'api/api_custom'
@@ -18,8 +17,8 @@ export default function BasicCard({ data, refund = true }) {
     <div className="card nft-card mx-auto h-[545px] w-[375px] space-y-2 rounded-3xl p-6 text-center">
       <a className="flex justify-center">
         {isValidImage(card.image) ? (
-          <Image
-            className="rounded-3xl object-cover transition hover:bg-cyan-300"
+          <img
+            className="rounded-3xl object-cover transition hover:bg-cyan-300 nft-img"
             width="322"
             height="370"
             src={card.image}
