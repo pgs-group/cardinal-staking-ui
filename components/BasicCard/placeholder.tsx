@@ -1,5 +1,5 @@
 export default function placeholder() {
   return (
-    <div className="h-[23.7rem] w-80 animate-pulse rounded-2xl  bg-white bg-opacity-5 p-10"></div>
+    <div className="h-[545px] w-[375px] animate-pulse rounded-3xl  bg-white bg-opacity-5 p-10"></div>
   )
 }

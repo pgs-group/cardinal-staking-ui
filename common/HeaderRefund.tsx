@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import AppBrand from 'common/AppBrand'
 import WalletButton from './WalletButton'
 
@@ -9,27 +10,25 @@ const HeaderRefund = () => {
           <AppBrand />
         </div>
         <div className="relative my-auto flex items-center align-middle">
-          <ul className="mb-2 flex">
+          <ul className="mb-0 flex">
             <li>
               <a
-                className="pr-8 text-base font-semi-bold text-white hover:text-white"
+                className="pr-8 text-base font-semibold text-white hover:text-white"
                 href="https://honey.land/"
               >
                 Home
               </a>
             </li>
             <li>
-              <a
-                className="pr-8 text-base font-semi-bold text-white hover:text-white"
-                href=""
-              >
-                Explore
-              </a>
+              <Link href="/refund">
+                <a className="pr-8 text-base font-semibold text-white hover:text-white">
+                  Explore
+                </a>
+              </Link>
             </li>
-
             <li>
               <a
-                className="pr-8 text-base font-semi-bold text-white hover:text-white"
+                className="pr-8 text-base font-semibold text-white hover:text-white"
                 href=""
               >
                 Contact us

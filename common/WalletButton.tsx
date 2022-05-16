@@ -8,6 +8,7 @@ import { AddressImage, DisplayAddress } from '@cardinal/namespaces-components'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
+import { BiWallet } from 'react-icons/bi'
 
 export default function WalletButton() {
   const ctx = useEnvironmentCtx()
@@ -61,7 +62,10 @@ export default function WalletButton() {
           />
         </div>
       ) : (
-        <WalletMultiButton />
+        <WalletMultiButton>
+          <BiWallet size="22" className="mr-2" />
+          Connect Wallet
+        </WalletMultiButton>
       )}
     </div>
   )
