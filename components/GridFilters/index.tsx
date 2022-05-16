@@ -1,13 +1,13 @@
 import cn from 'classnames'
 import { FiSearch } from 'react-icons/fi'
-export default function GridFilters({ filters, updateFilter }) {
+export default function GridFilters({ filters, updateFilters }) {
   return (
-    <div className="mb-6 flex">
-      <div className="divide-slate- inline-flex divide-x divide-slate-800 pr-3">
+    <div className="mb-12 flex">
+      <div className="divide-slate- inline-flex divide-x divide-slate-800 pr-6">
         <button
-          onClick={() => updateFilter({})}
+          onClick={() => updateFilters({})}
           className={cn(
-            'font-bold rounded-l-lg bg-slate-700 py-3 px-4 text-gray-200 hover:bg-slate-800',
+            'rounded-l-lg bg-slate-700 py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800',
             {
               'bg-slate-800': !filters.type,
             }
@@ -16,9 +16,9 @@ export default function GridFilters({ filters, updateFilter }) {
           All
         </button>
         <button
-          onClick={() => updateFilter({ type: 'refundable' })}
+          onClick={() => updateFilters({ type: 'refundable' })}
           className={cn(
-            'font-bold rounded-r-lg bg-slate-700 py-3 px-4 text-gray-200 hover:bg-slate-800',
+            'rounded-r-lg bg-slate-700 py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800',
             {
               'bg-slate-800': filters.type === 'refundable',
             }
@@ -27,17 +27,20 @@ export default function GridFilters({ filters, updateFilter }) {
           Refundable
         </button>
       </div>
-      {/* <div className="relative w-96 text-gray-600">
+      <div className="relative w-96 text-gray-600">
         <input
           type="search"
           name="search"
           placeholder="Search"
-          className="h-12 w-full rounded-lg bg-slate-700 px-5 pl-10 text-sm text-white focus:bg-slate-800 focus:outline-none"
+          className="h-16 w-full rounded-lg bg-slate-700 px-5 pl-12 text-base text-white focus:bg-slate-800 focus:outline-none"
+          onChange={(event) =>
+            updateFilters({ ...filters, search: event.target.value })
+          }
         />
-        <button type="submit" className="absolute left-3 top-4 text-white">
-          <FiSearch size="18" />
+        <button className="absolute left-3 top-5 cursor-none text-white">
+          <FiSearch size="22" />
         </button>
-      </div> */}
+      </div>
     </div>
   )
 }

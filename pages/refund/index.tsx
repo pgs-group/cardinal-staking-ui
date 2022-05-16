@@ -11,7 +11,7 @@ import BasicBreadcrumb from 'common/BasicBreadCrumb'
 
 export function Placeholder() {
   return (
-    <div className="h-[25rem] w-80 animate-pulse rounded-xl  bg-white bg-opacity-5 p-10"></div>
+    <div className="h-[545px] w-[375px] animate-pulse rounded-xl  bg-white bg-opacity-5 p-10"></div>
   )
 }
 
@@ -20,16 +20,23 @@ export default function refund() {
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(false)
   const [filters, setFilters] = useState({})
+  const filteredCards = () => {
+    if (!cards) return
+    return cards.filter((card) => {
+      if (!filters.search) return true
+      return card.data && !card.data.name.indexOf(filters.search)
+    })
+  }
   useEffect(() => {
     if (!publicKey) return
     setCards([])
     setLoading(true)
     fetchNfts(publicKey, filters).then((res) => {
-      console.log(res)
       setCards(res)
       setLoading(false)
     })
-  }, [publicKey, filters])
+  }, [publicKey, filters.type])
+
   return (
     <div>
       <Head>
@@ -48,7 +55,7 @@ export default function refund() {
           {publicKey && (
             <GridFilters
               filters={filters}
-              updateFilter={(val) => setFilters(val)}
+              updateFilters={(val) => setFilters(val)}
             />
           )}
           {!wallet && !connecting && !connected && (
@@ -56,8 +63,8 @@ export default function refund() {
               Please connect to your wallet
             </h3>
           )}
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {cards.map((card, index) => (
+          <div className="grid justify-center gap-8 lg:grid-cols-2 xl:grid-cols-3">
+            {filteredCards().map((card, index) => (
               <BasicCard data={card.data} key={index} />
             ))}
             {loading && <Placeholder />}
@@ -73,7 +80,7 @@ export default function refund() {
             {loading && <Placeholder />}
           </div>
         </div>
-        {/* <FooterRefund /> */}
+        <FooterRefund />
       </div>
     </div>
   )
