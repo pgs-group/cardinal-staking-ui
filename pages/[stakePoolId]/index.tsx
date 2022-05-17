@@ -269,7 +269,7 @@ function Home() {
 
   return (
     <div
-      className={`md:container-fluid container mx-auto w-full max-w-[1600px]`}
+      className={`container mx-auto`}
     >
       <div className="my-10 w-full pb-5 text-center text-4xl font-semibold text-white xl:text-5xl">
         {!stakePool && stakePoolLoaded && (
@@ -450,11 +450,13 @@ function Home() {
                 </p>
               ) : (
                 <div
-                  className={'grid grid-cols-2 gap-1 md:gap-4 lg:grid-cols-3'}
+                  className={
+                    'grid grid-cols-2 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3'
+                  }
                 >
                   {(filteredTokens || []).map((tk) => (
                     <div key={tk.tokenAccount?.pubkey.toString()}>
-                      <div className="relative w-44 md:w-auto 2xl:w-48">
+                      <div className="relative">
                         <label
                           htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
                           className="relative"
@@ -709,7 +711,7 @@ function Home() {
                         {(loadingUnstake || loadingClaimRewards) &&
                           isStakedTokenSelected(tk) && (
                             <div>
-                              <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
+                              <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-3xl bg-black bg-opacity-50  align-middle">
                                 <div className="mx-auto flex items-center justify-center">
                                   <span className="mr-2">
                                     <LoadingSpinner height="25px" />
@@ -842,7 +844,10 @@ function Home() {
                                   }
                                 }}
                               />
-                              <span className="checkmark"></span>
+                              {!(
+                                (loadingUnstake || loadingClaimRewards) &&
+                                isStakedTokenSelected(tk)
+                              ) && <span className="checkmark"></span>}
                             </label>
                           </div>
                         </label>
@@ -868,6 +873,7 @@ function Home() {
                   stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
                 color: stakePoolMetadata?.colors?.fontColor,
               }}
+              disabled={loadingUnstake}
               className="button-custom button-unstake my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
             >
               <span className="mr-1 inline-block">
