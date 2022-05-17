@@ -13,12 +13,14 @@ import tw from 'twin.macro'
 export const LoadingSpinner = ({
   fill = '#FFF',
   height = '40px',
+  margin = 'auto',
 }: {
   fill?: string
   height?: string
+  margin?: string
 }) => {
   return (
-    <div style={{ height, width: height, margin: 'auto' }}>
+    <div style={{ height, width: height, margin }}>
       <svg
         version="1.1"
         id="loader-1"

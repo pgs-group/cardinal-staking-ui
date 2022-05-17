@@ -7,10 +7,10 @@ export default function GridFilters({ filters, updateFilters }) {
         <button
           onClick={() => updateFilters({})}
           className={cn(
-            'rounded-l-lg bg-slate-700 py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800',
             {
               'bg-slate-800': !filters.type,
-            }
+            },
+            'rounded-l-lg bg-slate-700 py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800',
           )}
         >
           All
@@ -20,7 +20,7 @@ export default function GridFilters({ filters, updateFilters }) {
           className={cn(
             'rounded-r-lg bg-slate-700 py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800',
             {
-              'bg-slate-800': filters.type === 'refundable',
+              'bg-slate-800': filters.type === 'refundable' || true,
             }
           )}
         >
