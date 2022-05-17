@@ -2,9 +2,10 @@ import HeadDefault from './HeadDefault'
 import HeaderDefault from './HeaderDefault'
 import FooterDefault from './FooterDefault/FooterDefault'
 import MainDefault from './MainDefault'
-export default function DefaultLayout({ children }) {
+import cn from "classnames"
+export default function DefaultLayout({ children , className }) {
   return (
-    <div className="default-layout flex h-screen flex-col">
+    <div className={cn("default-layout min-h-screen flex flex-col",className)} >
       <HeadDefault />
       <HeaderDefault />
       <MainDefault>{children}</MainDefault>

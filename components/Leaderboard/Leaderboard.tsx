@@ -36,12 +36,12 @@ export default function Leaderboard() {
   }, [])
   return (
     <>
-      <p
-        className="my-auto mr-10 py-2 hover:cursor-pointer"
+      <a
+        className="pr-8 text-base font-semibold text-white hover:text-white"
         onClick={() => show()}
       >
         Leaderboard
-      </p>
+      </a>
       <div className={cn('leaderboard-modal', { show: showModal })}>
         <div className="leaderboard-overlay" onClick={() => close()}></div>
         <div className={cn('leaderboard-modal-body', { show: showModal })}>

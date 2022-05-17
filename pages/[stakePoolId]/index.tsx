@@ -5,6 +5,7 @@ import {
   claimRewards,
   executeTransaction,
 } from '@cardinal/staking'
+import cn from 'classnames'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
@@ -267,12 +268,23 @@ function Home() {
     )
 
   return (
-    <div className={`container mx-auto w-full`}>
-      {!stakePool && stakePoolLoaded && (
-        <div className="mb-5 w-full text-center text-lg font-semibold">
-          Stake pool not found
-        </div>
-      )}
+    <div
+      className={`md:container-fluid container mx-auto w-full max-w-[1600px]`}
+    >
+      <div className="my-10 w-full pb-5 text-center text-4xl font-semibold text-white xl:text-5xl">
+        {!stakePool && stakePoolLoaded && (
+          <p className="my-0 py-0">Stake pool not found</p>
+        )}
+        {stakePool && stakePoolLoaded && (
+          <p className="my-0 py-0">Staking Your NFTs</p>
+        )}
+        {!stakePool && !stakePoolLoaded && (
+          <div className="align-center flex justify-center">
+            <p className="my-0 py-0 pl-2">Loading Stake Pool</p>
+          </div>
+        )}
+      </div>
+
       {(maxStaked || rewardDistibutorData.data) && (
         <div
           className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
@@ -382,16 +394,19 @@ function Home() {
           )}
         </div>
       )}
-      <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="my-2 mx-5 grid gap-10 md:grid-cols-2">
         <div
-          className={`flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200`}
+          className={`flex-col rounded-3xl bg-white bg-opacity-20 py-7 px-10 text-gray-200`}
           style={{
             border: stakePoolMetadata?.colors?.accent
               ? `2px solid ${stakePoolMetadata?.colors?.accent}`
               : '',
           }}
         >
-          <div className="mt-2 flex w-full flex-row justify-between">
+          <h4 className="mb-6 text-center text-xl font-semibold text-white">
+            Select Your NFTs
+          </h4>
+          {/* <div className="mt-2 flex w-full flex-row justify-between">
             <div className="flex flex-row">
               <p className="mb-3 mr-3 inline-block text-lg">
                 Select Your Tokens
@@ -419,17 +434,15 @@ function Home() {
                 {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
               </button>
             </div>
-          </div>
+          </div> */}
           {showAllowedTokens && (
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
           )}
           <div className="my-3 flex-auto overflow-auto">
-            <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
+            <div className="relative my-auto mb-4 h-[56vh] overflow-y-auto overflow-x-hidden rounded-3xl bg-white bg-opacity-20 p-5 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700">
               {!userTokenAccounts.loaded ? (
-                <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-                  <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                  <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                  <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                <div className="align-center flex h-full w-full justify-center">
+                  <LoadingSpinner height="100px" />
                 </div>
               ) : (filteredTokens || []).length == 0 ? (
                 <p className="text-gray-400">
@@ -437,9 +450,7 @@ function Home() {
                 </p>
               ) : (
                 <div
-                  className={
-                    'grid grid-cols-2 gap-1 md:gap-4 lg:grid-cols-2 xl:grid-cols-3'
-                  }
+                  className={'grid grid-cols-2 gap-1 md:gap-4 lg:grid-cols-3'}
                 >
                   {(filteredTokens || []).map((tk) => (
                     <div key={tk.tokenAccount?.pubkey.toString()}>
@@ -450,10 +461,10 @@ function Home() {
                         >
                           <div className="relative">
                             <div>
-                              <div className="relative">
+                              <div className="relative cursor-pointer">
                                 {loadingStake && isUnstakedTokenSelected(tk) && (
                                   <div>
-                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle">
+                                    <div className="absolute top-0 left-0 right-0 bottom-0 z-10 flex justify-center rounded-3xl bg-black bg-opacity-50  align-middle">
                                       <div className="my-auto flex">
                                         <span className="mr-2">
                                           <LoadingSpinner height="25px" />
@@ -464,7 +475,7 @@ function Home() {
                                   </div>
                                 )}
                                 <img
-                                  className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                                  className="border-2-white mx-auto rounded-3xl border-2 bg-opacity-5 object-cover"
                                   src={
                                     tk.metadata?.data.image ||
                                     tk.tokenListData?.logoURI
@@ -495,42 +506,55 @@ function Home() {
                                 </div>
                               )}
                             </div>
-
-                            <input
-                              disabled={loadingStake || loadingUnstake}
-                              placeholder={
-                                tk.tokenAccount?.account.data.parsed.info
-                                  .tokenAmount.amount > 1
-                                  ? '1'
-                                  : ''
-                              }
-                              autoComplete="off"
-                              type={
-                                tk.tokenAccount?.account.data.parsed.info
-                                  .tokenAmount.amount > 1
-                                  ? 'text'
-                                  : 'checkbox'
-                              }
-                              className={`absolute h-4 ${
-                                tk.tokenAccount?.account.data.parsed.info
-                                  .tokenAmount.amount > 1
-                                  ? `w-20 py-3 px-2 text-right`
-                                  : 'w-4'
-                              } top-2 right-2 rounded-sm font-medium text-black focus:outline-none`}
-                              id={tk?.tokenAccount?.pubkey.toBase58()}
-                              name={tk?.tokenAccount?.pubkey.toBase58()}
-                              checked={isUnstakedTokenSelected(tk)}
-                              onChange={(e) => {
-                                const amount = Number(e.target.value)
-                                if (
+                            <label className="custom-checkbox">
+                              <input
+                                disabled={loadingStake || loadingUnstake}
+                                placeholder={
                                   tk.tokenAccount?.account.data.parsed.info
                                     .tokenAmount.amount > 1
-                                ) {
-                                  if (e.target.value.length > 0 && !amount) {
-                                    notify({
-                                      message: 'Please enter a valid amount',
-                                      type: 'error',
-                                    })
+                                    ? '1'
+                                    : ''
+                                }
+                                autoComplete="off"
+                                type={
+                                  tk.tokenAccount?.account.data.parsed.info
+                                    .tokenAmount.amount > 1
+                                    ? 'text'
+                                    : 'checkbox'
+                                }
+                                className={`absolute h-4 ${
+                                  tk.tokenAccount?.account.data.parsed.info
+                                    .tokenAmount.amount > 1
+                                    ? `w-20 py-3 px-2 text-right`
+                                    : 'w-4'
+                                } top-2 right-2 rounded-sm font-medium text-black focus:outline-none`}
+                                id={tk?.tokenAccount?.pubkey.toBase58()}
+                                name={tk?.tokenAccount?.pubkey.toBase58()}
+                                checked={isUnstakedTokenSelected(tk)}
+                                onChange={(e) => {
+                                  const amount = Number(e.target.value)
+                                  if (
+                                    tk.tokenAccount?.account.data.parsed.info
+                                      .tokenAmount.amount > 1
+                                  ) {
+                                    if (e.target.value.length > 0 && !amount) {
+                                      notify({
+                                        message: 'Please enter a valid amount',
+                                        type: 'error',
+                                      })
+                                      setUnstakedSelected(
+                                        unstakedSelected.filter(
+                                          (data) =>
+                                            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
+                                            tk.tokenAccount?.account.data.parsed.info.mint.toString()
+                                        )
+                                      )
+                                      return
+                                    }
+                                    tk.amountToStake = amount
+                                  }
+
+                                  if (isUnstakedTokenSelected(tk)) {
                                     setUnstakedSelected(
                                       unstakedSelected.filter(
                                         (data) =>
@@ -538,30 +562,24 @@ function Home() {
                                           tk.tokenAccount?.account.data.parsed.info.mint.toString()
                                       )
                                     )
-                                    return
+                                  } else {
+                                    if (
+                                      tk.tokenAccount?.account.data.parsed.info
+                                        .tokenAmount.amount > 1
+                                    ) {
+                                      tk.amountToStake = amount
+                                    }
+                                    setUnstakedSelected([
+                                      ...unstakedSelected,
+                                      tk,
+                                    ])
                                   }
-                                  tk.amountToStake = amount
-                                }
-
-                                if (isUnstakedTokenSelected(tk)) {
-                                  setUnstakedSelected(
-                                    unstakedSelected.filter(
-                                      (data) =>
-                                        data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-                                        tk.tokenAccount?.account.data.parsed.info.mint.toString()
-                                    )
-                                  )
-                                } else {
-                                  if (
-                                    tk.tokenAccount?.account.data.parsed.info
-                                      .tokenAmount.amount > 1
-                                  ) {
-                                    tk.amountToStake = amount
-                                  }
-                                  setUnstakedSelected([...unstakedSelected, tk])
-                                }
-                              }}
-                            />
+                                }}
+                              />
+                              {!(
+                                loadingStake && isUnstakedTokenSelected(tk)
+                              ) && <span className="checkmark"></span>}
+                            </label>
                           </div>
                         </label>
                       </div>
@@ -573,7 +591,7 @@ function Home() {
           </div>
 
           <div className="mt-2 flex items-center justify-between">
-            {!stakePoolMetadata?.receiptType && (
+            {/* {!stakePoolMetadata?.receiptType && (
               <MouseoverTooltip
                 title={
                   receiptType === ReceiptType.Original
@@ -622,7 +640,7 @@ function Home() {
                   </div>
                 </div>
               </MouseoverTooltip>
-            )}
+            )} */}
             <button
               onClick={() => {
                 if (unstakedSelected.length === 0) {
@@ -638,24 +656,28 @@ function Home() {
                   stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
                 color: stakePoolMetadata?.colors?.fontColor,
               }}
-              className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+              disabled={loadingStake}
+              className="button-custom button-stake my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
             >
               <span className="mr-1 inline-block">
                 {loadingStake && <LoadingSpinner height="25px" />}
               </span>
-              <span className="my-auto">Stake Tokens</span>
+              <span className="my-auto">Stake NFTS</span>
             </button>
           </div>
         </div>
         <div
-          className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200"
+          className="flex-col rounded-3xl bg-white bg-opacity-20 py-7 px-10 text-gray-200"
           style={{
             border: stakePoolMetadata?.colors?.accent
               ? `2px solid ${stakePoolMetadata?.colors?.accent}`
               : '',
           }}
         >
-          <div className="mt-2 flex flex-row">
+          <h4 className="mb-6 text-center text-xl font-semibold text-white">
+            Your Stacked NFTs
+          </h4>
+          {/* <div className="mt-2 flex flex-row">
             <p className="mr-3 text-lg">
               View Staked Tokens{' '}
               {stakedTokenDatas.loaded &&
@@ -667,14 +689,12 @@ function Home() {
                 <LoadingSpinner height="25px" />
               )}
             </div>
-          </div>
+          </div> */}
           <div className="my-3 flex-auto overflow-auto">
-            <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
+            <div className="relative my-auto mb-4 h-[56vh] overflow-y-auto overflow-x-hidden rounded-3xl bg-white bg-opacity-20 p-5 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700">
               {!stakedTokenDatas.loaded ? (
-                <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-                  <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                  <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                  <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                <div className="align-center flex h-full w-full justify-center">
+                  <LoadingSpinner height="100px" />
                 </div>
               ) : stakedTokenDatas.data?.length === 0 ? (
                 <p className="text-gray-400">No tokens currently staked.</p>
@@ -705,10 +725,10 @@ function Home() {
                           htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
                           className="relative"
                         >
-                          <div className="relative">
+                          <div className="relative cursor-pointer">
                             <div>
                               <img
-                                className="rounded-lg"
+                                className="border-2-white mx-auto rounded-3xl border-2 bg-opacity-5 object-cover"
                                 src={
                                   tk.metadata?.data.image ||
                                   tk.tokenListData?.logoURI
@@ -787,41 +807,43 @@ function Home() {
                                   </div>
                                 )}
                             </div>
-
-                            <input
-                              disabled={loadingStake || loadingUnstake}
-                              placeholder={
-                                tk.stakeEntry!.parsed.amount.toNumber() > 1
-                                  ? Number(
-                                      getMintDecimalAmountFromNaturalV2(
-                                        tk.tokenListData!.decimals,
-                                        new BN(
-                                          tk.stakeEntry!.parsed.amount.toNumber()
-                                        )
-                                      ).toFixed(2)
-                                    ).toString()
-                                  : ''
-                              }
-                              autoComplete="off"
-                              type="checkbox"
-                              className={`absolute top-2 right-2 h-4 w-4 rounded-sm font-medium text-black focus:outline-none`}
-                              id={tk?.stakeEntry?.pubkey.toBase58()}
-                              name={tk?.stakeEntry?.pubkey.toBase58()}
-                              checked={isStakedTokenSelected(tk)}
-                              onChange={() => {
-                                if (isStakedTokenSelected(tk)) {
-                                  setStakedSelected(
-                                    stakedSelected.filter(
-                                      (data) =>
-                                        data.stakeEntry?.pubkey.toString() !==
-                                        tk.stakeEntry?.pubkey.toString()
-                                    )
-                                  )
-                                } else {
-                                  setStakedSelected([...stakedSelected, tk])
+                            <label className="custom-checkbox">
+                              <input
+                                disabled={loadingStake || loadingUnstake}
+                                placeholder={
+                                  tk.stakeEntry!.parsed.amount.toNumber() > 1
+                                    ? Number(
+                                        getMintDecimalAmountFromNaturalV2(
+                                          tk.tokenListData!.decimals,
+                                          new BN(
+                                            tk.stakeEntry!.parsed.amount.toNumber()
+                                          )
+                                        ).toFixed(2)
+                                      ).toString()
+                                    : ''
                                 }
-                              }}
-                            />
+                                autoComplete="off"
+                                type="checkbox"
+                                className={`checkbox-custom absolute top-2 right-2 h-4 w-4 rounded-sm font-medium text-black focus:outline-none`}
+                                id={tk?.stakeEntry?.pubkey.toBase58()}
+                                name={tk?.stakeEntry?.pubkey.toBase58()}
+                                checked={isStakedTokenSelected(tk)}
+                                onChange={() => {
+                                  if (isStakedTokenSelected(tk)) {
+                                    setStakedSelected(
+                                      stakedSelected.filter(
+                                        (data) =>
+                                          data.stakeEntry?.pubkey.toString() !==
+                                          tk.stakeEntry?.pubkey.toString()
+                                      )
+                                    )
+                                  } else {
+                                    setStakedSelected([...stakedSelected, tk])
+                                  }
+                                }}
+                              />
+                              <span className="checkmark"></span>
+                            </label>
                           </div>
                         </label>
                       </div>
@@ -846,12 +868,12 @@ function Home() {
                   stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
                 color: stakePoolMetadata?.colors?.fontColor,
               }}
-              className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+              className="button-custom button-unstake my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
             >
               <span className="mr-1 inline-block">
                 {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
               </span>
-              <span className="my-auto">Unstake Tokens</span>
+              <span className="my-auto">Unstake NFTs</span>
             </button>
             {rewardDistibutorData.data &&
             rewards.data?.claimableRewards.gt(new BN(0)) ? (
@@ -888,9 +910,8 @@ function Home() {
     </div>
   )
 }
-
 Home.getLayout = function getLayout(page) {
-  return <DefaultLayout>{page}</DefaultLayout>
+  return <DefaultLayout className="bg-staking-pool">{page}</DefaultLayout>
 }
 
 export default Home

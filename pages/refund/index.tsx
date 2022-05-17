@@ -69,5 +69,5 @@ export default function RefundPage() {
 }
 
 RefundPage.getLayout = function getLayout(page) {
-  return <DefaultLayout>{page}</DefaultLayout>
+  return <DefaultLayout className="bg-refund">{page}</DefaultLayout>
 }

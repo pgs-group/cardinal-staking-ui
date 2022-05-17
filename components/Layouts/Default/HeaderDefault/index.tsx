@@ -1,8 +1,11 @@
+import {useRouter} from 'next/router'
 import Link from 'next/link'
 import AppBrand from 'common/AppBrand'
 import WalletButton from 'common/WalletButton'
+import Leaderboard from 'components/Leaderboard/Leaderboard'
 
 const HeaderDefault = () => {
+  const router = useRouter()
   return (
     <div className="container mx-auto">
       <div className={`flex h-20 justify-between text-white`}>
@@ -20,20 +23,17 @@ const HeaderDefault = () => {
               </a>
             </li>
             <li>
-              <Link href="/refund">
+              <Link href="/">
                 <a className="pr-8 text-base font-semibold text-white hover:text-white">
                   Explore
                 </a>
               </Link>
             </li>
-            <li>
-              <a
-                className="pr-8 text-base font-semibold text-white hover:text-white"
-                href=""
-              >
-                Contact us
-              </a>
-            </li>
+            {
+              router.pathname === '/' &&
+              <li>
+               <Leaderboard/>
+            </li>}
           </ul>
           <WalletButton />
         </div>
