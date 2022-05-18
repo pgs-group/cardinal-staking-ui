@@ -12,6 +12,7 @@
   transition: all 0.2s;
   z-index: 1;
 }
+
 .leaderboard-modal.show {
   opacity: 1 !important;
   visibility: visible;
@@ -26,6 +27,7 @@
   transition: all 0.2s;
   z-index: 10;
 }
+
 .leaderboard-modal-body.show {
   transform: scale(1);
 }
@@ -34,18 +36,22 @@
   background: #00000014;
   color: white;
 }
+
 .leaderboard-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .leaderboard-close {
   cursor: pointer;
   color: white;
 }
+
 .leaderboard-close:hover {
   transform: scale(1.08);
 }
+
 .leaderboard-overlay {
   position: fixed;
   width: 100vw;
@@ -56,21 +62,25 @@
   transition: all 0.5s;
   z-index: -1;
 }
+
 .Leaderboard {
   padding: 5px 0px;
   margin: auto;
   max-width: 800px;
 }
+
 .Leaderboard-title {
   text-align: center;
   font-size: 2rem;
 }
+
 .leader-wrap {
   display: flex;
 }
 
 .leader {
-  padding: 8px 16px;
+  padding: 13px;
+  border-radius: 5px;
   margin-bottom: 8px;
   animation-name: revealLeaders;
   animation-duration: 0.4s;
@@ -78,30 +88,45 @@
   animation-timing-function: ease-in-out;
 }
 
+.current-user-leader-icon {
+  position: absolute;
+  right: 13px;
+  top: 24px;
+  background: #ffffff;
+  border-radius: 5px;
+  padding: 2px;
+  color: black;
+}
+
 .leader-ava {
   padding: 8px;
   margin-right: 16px;
   position: relative;
 }
+
 .leader-name {
   font-weight: medium;
   margin-bottom: 2px;
 }
+
 .leader-score {
   display: flex;
   align-items: center;
   opacity: 0.6;
 }
+
 .leader-stat {
   display: flex;
 }
+
 .leader-stat-item {
   display: flex;
   align-items: center;
   padding-right: .5rem;
   opacity: 0.6;
 }
-.leader-stat-item > div {
+
+.leader-stat-item>div {
   padding-left: 0.2rem;
 }
 
@@ -148,6 +173,7 @@
     transform: translateX(-200px);
     opacity: 0;
   }
+
   to {
     transform: none;
     opacity: 1;
@@ -158,6 +184,7 @@
   from {
     transform: scaleX(0);
   }
+
   to {
     transform: scaleX(1);
   }

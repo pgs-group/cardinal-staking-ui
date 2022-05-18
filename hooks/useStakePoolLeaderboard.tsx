@@ -77,8 +77,6 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
             const lastStakedAt: number = +new Date(stakedToken.parsed.lastStakedAt.toNumber() * 1000)
             const score: number = Math.floor((today - lastStakedAt) / SCORE_PER_MILLISECOND)
 
-            if (wallet === '11111111111111111111111111111111') return
-
             if (!data[wallet])
                 data[wallet] = {
                     nftCount: 0,
@@ -86,7 +84,9 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
                     wallet,
                 }
 
+            // @ts-ignore
             data[wallet].nftCount++
+            // @ts-ignore
             data[wallet].score += score
         })
 

@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react'
-import { FiX } from 'react-icons/fi'
 import cn from 'classnames'
 import { colors } from './constant'
+import { FiX, FiUser } from 'react-icons/fi'
 import { shortPubKey } from 'common/utils'
+import { useState } from 'react'
 import { useStakePoolLeaderboard } from "../../hooks/useStakePoolLeaderboard";
+import { useWallet } from '@solana/wallet-adapter-react'
 
 
 export default function Leaderboard() {
-  const [showModal, setShowModal] = useState(false)
+
   const { leaderboard, fetchLeaderboard, topScore, loading } = useStakePoolLeaderboard()
+  const [showModal, setShowModal] = useState(false)
+  const wallet = useWallet()
 
   const show = () => {
+    fetchLeaderboard()
     setShowModal(true)
     document.body.setAttribute('style', 'position: fixed;top:0;right:0;left:0')
   }
@@ -45,10 +49,11 @@ export default function Leaderboard() {
                 <div
                   key={index}
                   style={{
-                    animationDelay: index * 0.1 + 's',
+                    animationDelay: index * 0.1 + 's'
                   }}
                   className="leader"
                 >
+                  {wallet?.publicKey?.toString() === item.wallet && (<FiUser size={24} className="current-user-leader-icon" />)}
                   <div className="leader-wrap">
                     {index < 3 ? (
                       <div
