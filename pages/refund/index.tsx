@@ -35,7 +35,7 @@ export default function RefundPage() {
 
   return (
     <>
-      <div className="container container-custom mx-auto flex-auto py-10">
+      <div className="container-custom container mx-auto flex-auto py-10">
         <BasicBreadcrumb title="Explore" />
         {publicKey && (
           <GridFilters
@@ -48,7 +48,7 @@ export default function RefundPage() {
             Please connect to your wallet
           </h3>
         )}
-        <div className="grid justify-center gap-8 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid justify-center justify-center gap-8  px-10 sm:grid-cols-2 lg:grid-cols-3 lg:px-5 xl:px-0">
           {filteredCards().map((card, index) => (
             <BasicCard data={card} key={index} />
           ))}

@@ -29,10 +29,7 @@ body {
     max-width: 1170px;
   }
 }
-.nft-img {
-  width: 322px;
-  height: 370px;
-}
+
 .bg-refund {
   background: url('../assets/img/bg-refund.svg');
   background-color: #0f172a !important;
