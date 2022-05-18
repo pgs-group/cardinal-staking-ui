@@ -4,7 +4,10 @@ import {
   guestIdentity,
 } from '@metaplex-foundation/js-next'
 import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
-import {createConnectionConfig, getParsedNftAccountsByOwner} from "@nfteyez/sol-rayz";
+import {
+  createConnectionConfig,
+  getParsedNftAccountsByOwner,
+} from '@nfteyez/sol-rayz'
 const moment = require('moment')
 
 export const wallet_analyzer_for_nft = async (
@@ -342,29 +345,41 @@ enum NFTMoveType {
 
 // })();
 
-
-
 export const getProvider = () => {
-    if ("solana" in window) {
-        const provider = window.solana;
-        if (provider.isPhantom) {
-            return provider;
-        }
+  if ('solana' in window) {
+    const provider = window.solana
+    if (provider.isPhantom) {
+      return provider
     }
-};
+  }
+}
 
 export const getAllNftData = async () => {
-    try {
-        const connect = createConnectionConfig(clusterApiUrl("devnet"));
-        const provider = getProvider();
-        let ownerToken = provider.publicKey;
-        const nfts = await getParsedNftAccountsByOwner({
-            publicAddress: ownerToken,
-            connection: connect,
-            serialization: true,
-        });
-        return nfts
-    } catch (error) {
-        console.log(error);
-    }
-};
+  try {
+    const connect = createConnectionConfig(clusterApiUrl('devnet'))
+    const provider = getProvider()
+    let ownerToken = provider.publicKey
+    const nfts = await getParsedNftAccountsByOwner({
+      publicAddress: ownerToken,
+      connection: connect,
+      serialization: true,
+    })
+    let result = nfts.map((nft) => nftResponseAdaptor(nft.data))
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function nftResponseAdaptor(data) {
+  return {
+    name: data.name || data.Name || null,
+    tokenAddress: data.tokenAddress || data.TokenAddress || '',
+    uri: data.uri || data.Uri || null,
+    price: data.price || data.Price || null,
+    amount: data.amount || data.Amount || null,
+    days: data.days || data.Days || null,
+    wallet: data.wallet || data.Wallet || null,
+    refund: data.refund || data.Refund || null,
+  }
+}

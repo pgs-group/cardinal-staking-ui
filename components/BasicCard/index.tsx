@@ -10,7 +10,13 @@ export default function BasicCard({ data, refund = true }) {
   }
   useEffect(() => {
     if (!data) return
-    getNft(data.uri).then((res) => setCard(res.data))
+    if (!data.uri) {
+      setCard(data)
+      return
+    }
+    getNft(data.uri).then((res) => {
+      setCard({ ...data, image: res.data?.image })
+    })
   }, [data])
   if (!card) return <Placeholder />
   return (
