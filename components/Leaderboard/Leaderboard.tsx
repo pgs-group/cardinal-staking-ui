@@ -41,19 +41,19 @@ export default function Leaderboard() {
             <h3 className="Leaderboard-title">Leaderboard</h3>
             <div className="leaders">
               {loading && <h1>Loading...</h1>}
-              {leaderboard && leaderboard.map((el: any, i) => (
+              {leaderboard && leaderboard.map((item: any, index: number) => (
                 <div
-                  key={i}
+                  key={index}
                   style={{
-                    animationDelay: i * 0.1 + 's',
+                    animationDelay: index * 0.1 + 's',
                   }}
                   className="leader"
                 >
                   <div className="leader-wrap">
-                    {i < 3 ? (
+                    {index < 3 ? (
                       <div
                         style={{
-                          backgroundColor: colors[i],
+                          backgroundColor: colors[index],
                         }}
                         className="leader-ava"
                       >
@@ -70,30 +70,30 @@ export default function Leaderboard() {
                     ) : null}
                     <div className="leader-content">
                       <div className="leader-name">
-                        {el.rank}. {shortPubKey(el.wallet)}
+                        {item.rank}. {shortPubKey(item.wallet)}
                       </div>
                       <div className="leader-stat">
                         <div className="leader-stat-item">
                           <span>Score :</span>
-                          <div className="leader-score_title">{el.score}</div>
+                          <div className="leader-score_title">{item.score}</div>
                         </div>
                         <div className="leader-stat-item">
                           <span>Nft :</span>
                           <div className="leader-score_title">
-                            {el.nftCount}
+                            {item.nftCount}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div
-                    style={{ animationDelay: 0.4 + i * 0.2 + 's' }}
+                    style={{ animationDelay: 0.4 + index * 0.2 + 's' }}
                     className="leader-bar"
                   >
                     <div
                       style={{
-                        backgroundColor: colors[i],
-                        width: (el.score / (topScore || 100)) * 100 + '%',
+                        backgroundColor: colors[index],
+                        width: (item.score / (topScore || 100)) * 100 + '%',
                       }}
                       className="bar"
                     />
