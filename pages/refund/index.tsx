@@ -11,7 +11,7 @@ import CardPlaceholder from 'components/BasicCard/CardPlaceholder'
 export default function RefundPage() {
   const { wallet, publicKey, connecting, connected } = useWallet()
   const [cards, setCards] = useState([])
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useState({ type: '', search: '' })
   const [loading, setLoading] = useState(false)
 
   const filteredCards = () => {
@@ -40,13 +40,25 @@ export default function RefundPage() {
         {publicKey && (
           <GridFilters
             filters={filters}
-            updateFilters={(val) => setFilters(val)}
+            updateFilters={(val) =>
+              setFilters((oldVal) => ({ ...oldVal, ...val }))
+            }
           />
         )}
-        {!wallet && !connecting && !connected && (
+        {/* {!wallet && !connecting && !connected && (
           <h3 className="py-10 text-center text-2xl text-white">
             Please connect to your wallet
           </h3>
+        )} */}
+        {/* {cards.length === 0 && !loading && publicKey && !connecting && (
+          <h4 className="mt-20 text-center text-2xl font-semibold text-white">
+            There is no NFT to show
+          </h4>
+        )} */}
+        {filteredCards().length === 0 && cards.length !== 0 && (
+          <h4 className="mt-20 text-center text-2xl font-semibold text-white">
+            Your Search has no result
+          </h4>
         )}
         <div className="grid justify-center justify-center gap-8  px-10 sm:grid-cols-2 lg:grid-cols-3 lg:px-5 xl:px-0">
           {filteredCards().map((card, index) => (

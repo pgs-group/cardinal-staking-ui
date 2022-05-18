@@ -5,7 +5,7 @@ export default function GridFilters({ filters, updateFilters }) {
     <div className="mb-12 flex px-10 lg:px-5 xl:px-0">
       <div className="divide-slate- inline-flex divide-x divide-slate-800 pr-6">
         <button
-          onClick={() => updateFilters({})}
+          onClick={() => updateFilters({ ...filters, type: '' })}
           className={cn(
             !filters.type ? 'bg-slate-800' : 'bg-slate-700',
             'rounded-l-lg py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800'
@@ -14,7 +14,7 @@ export default function GridFilters({ filters, updateFilters }) {
           All
         </button>
         <button
-          onClick={() => updateFilters({ type: 'refundable' })}
+          onClick={() => updateFilters({ ...filters, type: 'refundable' })}
           className={cn(
             filters.type === 'refundable' ? 'bg-slate-800' : 'bg-slate-700',
             'rounded-r-lg py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800'
