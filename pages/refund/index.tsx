@@ -18,7 +18,8 @@ export default function RefundPage() {
     if (!cards || !cards.length) return []
     if (!filters.search) return cards
     return cards.filter((card) => {
-      return !(card.name.indexOf(filters.search) > -1)
+      const result = card.name.indexOf(filters.search)
+      return result > -1
     })
   }
 
