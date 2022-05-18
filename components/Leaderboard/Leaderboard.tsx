@@ -3,127 +3,24 @@ import { FiX } from 'react-icons/fi'
 import cn from 'classnames'
 import { colors } from './constant'
 import { shortPubKey } from 'common/utils'
-import {
-  STAKE_POOL_ADDRESS,
-  STAKE_POOL_IDL,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { StakeEntryData } from '@cardinal/staking/src/programs/stakePool/constants'
-import { useEnvironmentCtx } from '../../providers/EnvironmentProvider'
-import { BorshAccountsCoder } from '@project-serum/anchor'
-import { useStakePoolData } from '../../hooks/useStakePoolData'
-import { AccountData } from '@cardinal/common'
-import { PublicKey } from '@solana/web3.js'
+import { useStakePoolLeaderboard } from "../../hooks/useStakePoolLeaderboard";
 
-interface LeaderboardItemType {
-  wallet: string
-  nftCount: number
-  score: number
-}
 
 export default function Leaderboard() {
   const [showModal, setShowModal] = useState(false)
-  const [leaders, setLeaders] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [maxScore, setMaxScore] = useState(100)
-  const { connection } = useEnvironmentCtx()
-  const { data: stakePool }: any = useStakePoolData()
-
-  const parseStakedTokens = (stakedTokens: any) => {
-    const stakeEntryDatas: AccountData<StakeEntryData>[] = []
-    const coder = new BorshAccountsCoder(STAKE_POOL_IDL)
-    stakedTokens.forEach((account: any) => {
-      try {
-        const stakeEntryData: StakeEntryData = coder.decode(
-          'stakeEntry',
-          account.account.data
-        )
-        if (stakeEntryData) {
-          stakeEntryDatas.push({
-            ...account,
-            parsed: stakeEntryData,
-          })
-        }
-      } catch (e) {
-        console.log('Failed to decode token manager data')
-      }
-    })
-    return stakeEntryDatas
-  }
-  const getStakedTokens = async () => {
-    const stakedTokens = await connection.getProgramAccounts(
-      STAKE_POOL_ADDRESS,
-      {
-        filters: [
-          {
-            memcmp: {
-              offset: 9,
-              bytes: new PublicKey(stakePool?.pubkey).toBase58(),
-            },
-          },
-        ],
-      }
-    )
-    return parseStakedTokens(stakedTokens)
-  }
-
-  const getLeaderboard = async () => {
-    const leaderboard: { [key: string]: LeaderboardItemType } = {}
-    const stakedTokens = await getStakedTokens()
-    stakedTokens.forEach((stakedToken) => {
-      const walletId: string = new PublicKey(
-        stakedToken.parsed.lastStaker
-      ).toBase58()
-
-      console.log()
-      const score: number = Math.floor(
-        (+new Date() -
-          +new Date(stakedToken.parsed.lastStakedAt.toNumber() * 1000)) /
-          86400000
-      )
-
-      if (!leaderboard[walletId])
-        leaderboard[walletId] = {
-          nftCount: 0,
-          score: 0,
-          wallet: walletId,
-        }
-
-      // @ts-ignore
-      leaderboard[walletId].nftCount++
-      // @ts-ignore
-      leaderboard[walletId].score += score
-    })
-    let items = Object.values(leaderboard).sort(
-      (a: LeaderboardItemType, b: LeaderboardItemType) => {
-        return b.score - a.score
-      }
-    )
-    return items
-      .map((item, index) => {
-        return {
-          ...item,
-          rank: index + 1,
-        }
-      })
-      .filter((item) => item.wallet !== '11111111111111111111111111111111')
-  }
+  const { leaderboard, fetchLeaderboard, topScore, loading } = useStakePoolLeaderboard()
 
   const show = () => {
-    setLoading(true)
-    getLeaderboard().then((res: any) => {
-      setLoading(false)
-      const max = res.length ? res[0].score : 100
-      setLeaders(res)
-      setMaxScore(max)
-    })
     setShowModal(true)
     document.body.setAttribute('style', 'position: fixed;top:0;right:0;left:0')
   }
+
   const close = () => {
     setShowModal(false)
     document.body.setAttribute('style', '')
     window.scrollTo(0, 0)
   }
+
   return (
     <>
       <a
@@ -144,7 +41,7 @@ export default function Leaderboard() {
             <h3 className="Leaderboard-title">Leaderboard</h3>
             <div className="leaders">
               {loading && <h1>Loading...</h1>}
-              {leaders.map((el: any, i) => (
+              {leaderboard && leaderboard.map((el: any, i) => (
                 <div
                   key={i}
                   style={{
@@ -196,7 +93,7 @@ export default function Leaderboard() {
                     <div
                       style={{
                         backgroundColor: colors[i],
-                        width: (el.score / maxScore) * 100 + '%',
+                        width: (el.score / (topScore || 100)) * 100 + '%',
                       }}
                       className="bar"
                     />
