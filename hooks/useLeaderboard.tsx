@@ -36,12 +36,11 @@ export const useLeaderboard = async () => {
         });
         return stakeEntryDatas
     }
-    console.log(stakePool?.pubkey)
     const getStakedTokens = async () => {
         const stakedTokens = await connection.getProgramAccounts(
             STAKE_POOL_ADDRESS,
             {
-                filters: [{memcmp: {offset: 9, bytes: ''}}],
+                filters: [{memcmp: {offset: 9, bytes: new PublicKey(stakePool?.pubkey).toBase58()}}],
             }
         )
         return parseStakedTokens(stakedTokens)
@@ -74,7 +73,7 @@ export const useLeaderboard = async () => {
     }
 
     getLeaderboard().then( res => {
-        console.log(res)
+        console.log()
     })
     return {}
 }
