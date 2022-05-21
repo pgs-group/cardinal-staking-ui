@@ -10,4 +10,4 @@ export const NFT_URI_TEST =
   'https://arweave.net/UsyQlC1tfhWOsfpBm0odHA0GRq_4iR_4faTG3pzYMd4'
 
 export const STAKE_POOL_ID_HONEYLAND =
-  '379e1cdUCrFd7e8rVesg1aZtQQe9a7HnrVSJ9ttFEgbA'
+  'A6MbGX6A1LUvuddHv7pV4fX9aSzBKCFyEFE5Th8dn63F'
