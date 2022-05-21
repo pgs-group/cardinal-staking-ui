@@ -3,12 +3,15 @@
 @tailwind utilities;
 
 @import 'Leaderboard.css';
+@import 'Layout.scss';
 
 body {
   font-family: 'Urbanist', sans-serif !important;
   background-color: #0f172a !important;
-  /* background: url('../assets/img/bg.svg'); */
+  background: url('../assets/img/background.jpg');
   background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center;
 }
 .wallet-adapter-button {
   border-radius: 10px !important;

@@ -1,15 +1,17 @@
-import HeadDefault from './HeadDefault'
+import cn from 'classnames'
 import HeaderDefault from './HeaderDefault'
-import FooterDefault from './FooterDefault/FooterDefault'
-import MainDefault from './MainDefault'
-import cn from "classnames"
-export default function DefaultLayout({ children , className }) {
+export default function DefaultLayout({
+  children,
+  className,
+}: {
+  children: JSX.Element | JSX.Element[] | string
+  className: string
+}) {
   return (
-    <div className={cn("default-layout min-h-screen flex flex-col",className)} >
-      <HeadDefault />
+    <div className={cn('default-layout container mx-auto w-full', className)}>
       <HeaderDefault />
-      <MainDefault>{children}</MainDefault>
-      <FooterDefault />
+      <div className="header">HoneyLand</div>
+      {/* children */}
     </div>
   )
 }
