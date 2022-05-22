@@ -1,26 +1,35 @@
 .v-header {
   display: flex;
+  margin-top: 30px;
   &-logo {
-    width: 100px;
-    height: 100px;
-    background-color: red;
+    width: 150px;
+    height: 150px;
+    display: flex;
   }
   &-content {
-    height: 100px;
-    background-color: blue;
+    height: 150px;
     flex: 1;
     display: flex;
     flex-direction: column;
   }
 
   &-menu {
-    background-color: antiquewhite;
     width: 100%;
-    height: 50px;
+    height: 75px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    &-title {
+      padding-left: 20px;
+      height: 75px;
+      line-height: 75px;
+      color: #3d0a00;
+      font-weight: bold;
+      font-size: 40px;
+    }
     &-buttons {
       a {
+        font-size: 25px;
         background: radial-gradient(
               106.52% 100% at 86.81% 100%,
               rgba(0, 0, 0, 0.1) 0%,
@@ -38,10 +47,10 @@
         box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
         border-radius: 109px;
         color: white;
-        height: 50px;
-        padding: 0 15px;
+        height: 55px;
+        padding: 0 25px;
         display: inline-block;
-        line-height: 50px;
+        line-height: 55px;
       }
       a:nth-child(1) {
         background: radial-gradient(
@@ -66,8 +75,7 @@
     }
   }
   &-statistics {
-    background-color: aquamarine;
     width: 100%;
-    height: 50px;
+    height: 75px;
   }
 }

@@ -7,6 +7,9 @@
 
 body {
   font-family: 'Lilita One', sans-serif !important;
+  * {
+    font-family: 'Lilita One', sans-serif !important;
+  }
   /* background-color: #0f172a !important; */
   /* background: url('../assets/img/bg.svg'); */
   background-repeat: no-repeat;
@@ -37,12 +40,6 @@ body {
 
 .bg-refund {
   background: url('../assets/img/bg-refund.svg');
-  background-color: #0f172a !important;
-  background-repeat: no-repeat;
-  background-blend-mode: saturation;
-}
-.bg-staking-pool {
-  background: url('../assets/img/bg-staking-pool.svg');
   background-color: #0f172a !important;
   background-repeat: no-repeat;
   background-blend-mode: saturation;

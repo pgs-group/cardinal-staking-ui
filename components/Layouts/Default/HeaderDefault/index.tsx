@@ -1,10 +1,10 @@
-import AppLogo from '../../../../assets/img/honeyland-logo.png'
+import Image from 'next/image'
 
 const HeaderDefault = () => {
   return (
     <div className="v-header">
       <div className="v-header-logo">
-        <AppLogo />
+        <img src="/honey/honeyland-logo.png" width="100%" />
       </div>
       <div className="v-header-content">
         <div className="v-header-menu">
