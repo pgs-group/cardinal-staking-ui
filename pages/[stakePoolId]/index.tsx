@@ -73,10 +73,9 @@ function Home() {
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
-
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  console.log(filteredTokens)
+
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
       notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
@@ -273,6 +272,20 @@ function Home() {
 
   return (
     <div className={`container mx-auto`}>
+      <div className="my-10 w-full pb-5 text-center text-4xl font-semibold text-white xl:text-5xl">
+        {!stakePool && stakePoolLoaded && (
+          <p className="my-0 py-0">Stake pool not found</p>
+        )}
+        {stakePool && stakePoolLoaded && (
+          <p className="my-0 py-0">Staking Your NFTs</p>
+        )}
+        {!stakePool && !stakePoolLoaded && (
+          <div className="align-center flex justify-center">
+            <p className="my-0 py-0 pl-2">Loading Stake Pool</p>
+          </div>
+        )}
+      </div>
+
       {(maxStaked || rewardDistibutorData.data) && (
         <div
           className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
@@ -388,123 +401,43 @@ function Home() {
           {showAllowedTokens && (
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
           )}
-          <div
-            className={cn(
-              styles.grid,
-              'custom-scrollbar grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3'
-            )}
-          >
+          <div className={cn(styles.grid, 'custom-scrollbar')}>
             {(filteredTokens || []).map((tk, i) => (
               <div
                 className={styles.gridItem}
                 key={tk.tokenAccount?.pubkey.toString()}
               >
-                <label>
-                  <div
-                    className={cn(styles.card, {
-                      [styles.selected]: isUnstakedTokenSelected(tk),
-                    })}
-                  >
-                    <img
-                      className={styles.image}
-                      src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
-                      alt={tk.metadata?.data.name || tk.tokenListData?.name}
-                    />
-                    <div className={styles.detail}>
-                      <span className={styles.title}>
-                        {tk.metadata?.data.name}
-                      </span>
-                      {/* <span className={styles.title}>#941</span> */}
-                      {/* <span className={styles.timeAgo}>
+                <div className={styles.card}>
+                  <img
+                    className={styles.image}
+                    src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
+                    alt={tk.metadata?.data.name || tk.tokenListData?.name}
+                  />
+                  <div className={styles.detail}>
+                    <span className={styles.title}>
+                      {tk.tokenListData && tk.tokenListData.name}
+                    </span>
+                    <span className={styles.title}>
+                      {tk.tokenListData &&
+                        Number(
+                          (
+                            tk.tokenAccount?.account.data.parsed.info
+                              .tokenAmount.amount /
+                            10 ** tk.tokenListData.decimals
+                          ).toFixed(2)
+                        )}{' '}
+                    </span>
+                    {/* <span className={styles.timeAgo}>
                       <Image src={StopWatchIcon} />
                       <span>27 days</span>
                     </span> */}
-                    </div>
                   </div>
-                  <input
-                    disabled={loadingStake || loadingUnstake}
-                    placeholder={
-                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                        .amount > 1
-                        ? '1'
-                        : ''
-                    }
-                    className="hidden"
-                    autoComplete="off"
-                    type={
-                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                        .amount > 1
-                        ? 'text'
-                        : 'checkbox'
-                    }
-                    id={tk?.tokenAccount?.pubkey.toBase58()}
-                    name={tk?.tokenAccount?.pubkey.toBase58()}
-                    checked={isUnstakedTokenSelected(tk)}
-                    onChange={(e) => {
-                      const amount = Number(e.target.value)
-                      if (
-                        tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                          .amount > 1
-                      ) {
-                        if (e.target.value.length > 0 && !amount) {
-                          notify({
-                            message: 'Please enter a valid amount',
-                            type: 'error',
-                          })
-                          setUnstakedSelected(
-                            unstakedSelected.filter(
-                              (data) =>
-                                data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-                                tk.tokenAccount?.account.data.parsed.info.mint.toString()
-                            )
-                          )
-                          return
-                        }
-                        tk.amountToStake = amount
-                      }
-
-                      if (isUnstakedTokenSelected(tk)) {
-                        setUnstakedSelected(
-                          unstakedSelected.filter(
-                            (data) =>
-                              data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-                              tk.tokenAccount?.account.data.parsed.info.mint.toString()
-                          )
-                        )
-                      } else {
-                        if (
-                          tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                            .amount > 1
-                        ) {
-                          tk.amountToStake = amount
-                        }
-                        setUnstakedSelected([...unstakedSelected, tk])
-                      }
-                    }}
-                  />
-                </label>
+                </div>
               </div>
             ))}
           </div>
           <div className={styles.footer}>
-            <button
-              onClick={() => {
-                if (unstakedSelected.length === 0) {
-                  notify({
-                    message: `No tokens selected`,
-                    type: 'error',
-                  })
-                }
-                handleStake()
-              }}
-              className={styles.button}
-              disabled={loadingStake}
-            >
-              <span className="mr-1 inline-block">
-                {loadingStake && <LoadingSpinner height="25px" />}
-              </span>
-              <span className="my-auto">Incubate</span>
-            </button>
+            <button className={styles.button}>Incubate</button>
           </div>
         </div>
         {/* <div
@@ -700,114 +633,7 @@ function Home() {
             </button>
           </div>
         </div> */}
-        <div className={styles.wrapper}>
-          <h3 className={styles.heading}>YOUR INCUBATED EGGS</h3>
-          {showAllowedTokens && (
-            <AllowedTokens stakePool={stakePool}></AllowedTokens>
-          )}
-          <div
-            className={cn(
-              styles.grid,
-              'custom-scrollbar grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3'
-            )}
-          >
-            {stakedTokenDatas.data &&
-              stakedTokenDatas.data.map((tk, i) => (
-                <div
-                  className={styles.gridItem}
-                  key={tk.tokenAccount?.pubkey.toString()}
-                >
-                  <label>
-                    <div
-                      className={cn(styles.card, {
-                        [styles.selected]: isStakedTokenSelected(tk),
-                      })}
-                    >
-                      <img
-                        className={styles.image}
-                        src={
-                          tk.metadata?.data.image || tk.tokenListData?.logoURI
-                        }
-                        alt={tk.metadata?.data.name || tk.tokenListData?.name}
-                      />
-                      <div className={styles.detail}>
-                        <span className={styles.title}>
-                          {tk.metadata?.data.name}
-                        </span>
-                        <span className={styles.title}>
-                          {tk.tokenListData &&
-                            Number(
-                              (
-                                tk.tokenAccount?.account.data.parsed.info
-                                  .tokenAmount.amount /
-                                10 ** tk.tokenListData.decimals
-                              ).toFixed(2)
-                            )}{' '}
-                        </span>
-                        {/* <span className={styles.timeAgo}>
-                      <Image src={StopWatchIcon} />
-                      <span>27 days</span>
-                    </span> */}
-                      </div>
-                    </div>
-                    <input
-                      disabled={loadingStake || loadingUnstake}
-                      placeholder={
-                        tk.stakeEntry!.parsed.amount.toNumber() > 1
-                          ? Number(
-                              getMintDecimalAmountFromNaturalV2(
-                                tk.tokenListData!.decimals,
-                                new BN(tk.stakeEntry!.parsed.amount.toNumber())
-                              ).toFixed(2)
-                            ).toString()
-                          : ''
-                      }
-                      autoComplete="off"
-                      type="checkbox"
-                      className="hidden"
-                      id={tk?.stakeEntry?.pubkey.toBase58()}
-                      name={tk?.stakeEntry?.pubkey.toBase58()}
-                      checked={isStakedTokenSelected(tk)}
-                      onChange={() => {
-                        if (isStakedTokenSelected(tk)) {
-                          setStakedSelected(
-                            stakedSelected.filter(
-                              (data) =>
-                                data.stakeEntry?.pubkey.toString() !==
-                                tk.stakeEntry?.pubkey.toString()
-                            )
-                          )
-                        } else {
-                          setStakedSelected([...stakedSelected, tk])
-                        }
-                      }}
-                    />
-                  </label>
-                </div>
-              ))}
-          </div>
-          <div className={styles.footer}>
-            <button
-              className={cn(styles.button, styles.button_red)}
-              onClick={() => {
-                if (stakedSelected.length === 0) {
-                  notify({
-                    message: `No tokens selected`,
-                    type: 'error',
-                  })
-                }
-                handleUnstake()
-              }}
-              disabled={loadingUnstake}
-            >
-              <span className="mr-1 inline-block">
-                {loadingUnstake && <LoadingSpinner height="25px" />}
-              </span>
-              <span className="my-auto">release</span>
-            </button>
-          </div>
-        </div>
-        {/* <div
+        <div
           className="flex-col rounded-3xl bg-white bg-opacity-20 py-7 px-10 text-gray-200"
           style={{
             border: stakePoolMetadata?.colors?.accent
@@ -818,7 +644,7 @@ function Home() {
           <h4 className="mb-6 text-center text-xl font-semibold text-white">
             Your Stacked NFTs
           </h4>
-          <div className="mt-2 flex flex-row">
+          {/* <div className="mt-2 flex flex-row">
             <p className="mr-3 text-lg">
               View Staked Tokens{' '}
               {stakedTokenDatas.loaded &&
@@ -830,7 +656,7 @@ function Home() {
                 <LoadingSpinner height="25px" />
               )}
             </div>
-          </div>
+          </div> */}
           <div className="my-3 flex-auto overflow-auto">
             <div className="relative my-auto mb-4 h-[56vh] overflow-y-auto overflow-x-hidden rounded-3xl bg-white bg-opacity-20 p-5 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700">
               {!stakedTokenDatas.loaded ? (
@@ -1050,7 +876,7 @@ function Home() {
               ''
             )}
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   )

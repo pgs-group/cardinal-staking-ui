@@ -1,5 +1,5 @@
 import Image from 'next/image'
-
+import Leaderboard from 'components/Leaderboard/Leaderboard'
 const HeaderDefault = () => {
   return (
     <div className="v-header">
@@ -10,7 +10,7 @@ const HeaderDefault = () => {
         <div className="v-header-menu">
           <div className="v-header-menu-title">GENESIS EGG INCUBATOR</div>
           <div className="v-header-menu-buttons">
-            <a>LEADERBOARD</a>
+            <Leaderboard />
             <a>CONNECT WALLET</a>
           </div>
         </div>

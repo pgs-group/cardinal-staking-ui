@@ -13,6 +13,7 @@ import { TokenAccountsProvider } from 'providers/TokenDataProvider'
 import { StakedTokenDataProvider } from 'providers/StakedTokenDataProvider'
 import { TokenListProvider } from 'providers/TokenListProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
+import { LeaderboardProvider } from 'providers/LeaderboardProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -31,7 +32,9 @@ const App = ({
               <TokenListProvider>
                 <TokenAccountsProvider>
                   <StakedTokenDataProvider>
-                    {getLayout(<Component {...pageProps} />)}
+                    <LeaderboardProvider>
+                      {getLayout(<Component {...pageProps} />)}
+                    </LeaderboardProvider>
                   </StakedTokenDataProvider>
                 </TokenAccountsProvider>
               </TokenListProvider>
