@@ -406,7 +406,7 @@ function Home() {
               </div>
             ) : (filteredTokens || []).length == 0 ? (
               <p className="text-gray-400">
-                No allowed tokens found in wallet.
+                {/* No allowed tokens found in wallet. */}
               </p>
             ) : (
               (filteredTokens || []).map((tk, i) => (
@@ -582,7 +582,7 @@ function Home() {
                         ></span>
                         <span className={styles.timeAgo}>
                           <StopWatchIcon />
-                          <span>27days</span>
+                          <span>?days</span>
                         </span>
                       </div>
                     </div>
