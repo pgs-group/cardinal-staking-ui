@@ -1,12 +1,15 @@
+@import './mixins.scss';
 .v-header {
   display: flex;
   margin-top: 30px;
+  position: relative;
   &-logo {
-    width: 150px;
-    height: 150px;
+    width: 215px;
+    height: 180px;
     display: flex;
   }
   &-content {
+    margin: 15px 0;
     height: 150px;
     flex: 1;
     display: flex;
@@ -30,6 +33,7 @@
     &-buttons {
       a {
         font-size: 25px;
+        text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
         background: radial-gradient(
               106.52% 100% at 86.81% 100%,
               rgba(0, 0, 0, 0.1) 0%,
@@ -48,9 +52,12 @@
         border-radius: 109px;
         color: white;
         height: 55px;
-        padding: 0 25px;
+        padding: 0 40px;
         display: inline-block;
         line-height: 55px;
+        &:hover {
+          color: white;
+        }
       }
       a:nth-child(1) {
         background: radial-gradient(
@@ -78,7 +85,7 @@
     width: 100%;
     height: 75px;
     display: flex;
-    padding: 0 150px 0 20px;
+    padding: 0 180px 0 20px;
     justify-content: space-between;
     align-items: center;
     &-box {
@@ -87,12 +94,25 @@
         line-height: 45px;
         color: #43a705;
         font-size: 45px;
+        text-shadow: 0px 2px 3px #183f00;
       }
       &__title {
         line-height: 30px;
         color: #3d0a00;
-        font-size: 20px;
+        font-size: 18px;
       }
     }
+  }
+  &-top-bee {
+    position: absolute;
+    right: 15px;
+    bottom: -75px;
+    width: 150px;
+  }
+  &-bottom-bee {
+    position: absolute;
+    top: calc(100vh - 260px);
+    left: -75px;
+    width: 150px;
   }
 }

@@ -35,6 +35,8 @@ const HeaderDefault = () => {
           </div>
         </div>
       </div>
+      <img src="/honey/bee-01.png" className="v-header-top-bee" />
+      <img src="/honey/bee-02.png" className="v-header-bottom-bee" />
     </div>
   )
 }
