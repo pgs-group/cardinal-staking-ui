@@ -1,16 +1,55 @@
 @import './mixins.scss';
+
+:root {
+  --v-header-height: 180px;
+  --v-header-logo-width: 215px;
+  --v-header-content-margin-x: 15px;
+  --v-header-title-font-size: 37px;
+  --v-header-button-height: 55px;
+  --v-header-button-padding: 0 40px;
+  --v-header-button-font-size: 22px;
+  --v-header-statistics-box-count-height: 10px;
+}
+
+@include on-lg {
+  :root {
+    --v-header-height: 140px;
+    --v-header-logo-width: 168px;
+    --v-header-content-margin-x: 0px;
+    --v-header-title-font-size: 34px;
+    --v-header-button-height: 45px;
+    --v-header-button-padding: 0 20px;
+    --v-header-button-font-size: 19px;
+  }
+}
+
+@include on-md {
+  :root {
+    --v-header-height: 120px;
+    --v-header-logo-width: 145px;
+    --v-header-content-margin-x: 0px;
+    --v-header-title-font-size: 24px;
+    --v-header-button-height: 45px;
+    --v-header-button-padding: 0 15px;
+    --v-header-button-font-size: 17px;
+  }
+}
+
 .v-header {
   display: flex;
   margin-top: 30px;
   position: relative;
   &-logo {
-    width: 215px;
-    height: 180px;
+    width: var(--v-header-logo-width);
+    height: var(--v-header-height);
     display: flex;
   }
   &-content {
-    margin: 15px 0;
-    height: 150px;
+    margin: var(--v-header-content-margin-x) 0;
+    height: calc(
+      var(--v-header-height) - var(--v-header-content-margin-x) -
+        var(--v-header-content-margin-x)
+    );
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -22,17 +61,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: calc(var(--v-header-height) / 2 - var(--v-header-content-margin-x));
     &-title {
       padding-left: 20px;
-      height: 75px;
-      line-height: 75px;
+      height: calc(var(--v-header-height) / 2);
+      line-height: calc(var(--v-header-height) / 2);
       color: #3d0a00;
       font-weight: bold;
-      font-size: 37px;
+      font-size: var(--v-header-title-font-size);
     }
     &-buttons {
       a {
-        font-size: 22px;
+        font-size: var(--v-header-button-font-size);
         text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
         background: radial-gradient(
               106.52% 100% at 86.81% 100%,
@@ -51,10 +91,10 @@
         box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
         border-radius: 109px;
         color: white;
-        height: 55px;
-        padding: 0 40px;
+        height: var(--v-header-button-height);
+        padding: var(--v-header-button-padding);
+        line-height: var(--v-header-button-height);
         display: inline-block;
-        line-height: 55px;
         &:hover {
           color: white;
         }
@@ -76,16 +116,15 @@
           #ff4b0e;
         box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
         border-radius: 109px;
-
         margin-right: 15px;
       }
     }
   }
   &-statistics {
     width: 100%;
-    height: 75px;
+    height: calc(var(--v-header-height) / 2 - var(--v-header-content-margin-x));
+    padding: 0 var(--v-header-height) 0 20px;
     display: flex;
-    padding: 0 180px 0 20px;
     justify-content: space-between;
     align-items: center;
     &-box {
@@ -95,11 +134,21 @@
         color: #43a705;
         font-size: 45px;
         text-shadow: 0px 2px 3px #183f00;
+        @include on-md {
+          font-size: 25px;
+          line-height: 25px;
+          height: 25px;
+        }
       }
       &__title {
-        line-height: 30px;
         color: #3d0a00;
         font-size: 18px;
+        line-height: 30px;
+        @include on-md {
+          font-size: 16px;
+          line-height: 16px;
+          height: 35px;
+        }
       }
     }
   }
@@ -108,11 +157,37 @@
     right: 15px;
     bottom: -75px;
     width: 150px;
+    z-index: -1;
+    @include on-lg {
+      bottom: -75px;
+      width: 130px;
+    }
+    @include on-md {
+      width: 110px;
+      bottom: -65px;
+    }
   }
   &-bottom-bee {
     position: absolute;
     top: calc(100vh - 260px);
     left: -75px;
     width: 150px;
+    z-index: 1;
+    // animation-duration: 4s;
+    // animation-iteration-count: infinite;
+    // animation-name: bee-bottom-animation;
+    // animation-timing-function: wave;
+    // transform: translate(40px 30px);
+  }
+}
+
+@keyframes bee-bottom-animation {
+  0% {
+    left: -300px;
+    top: calc(100vh - 350px);
+  }
+  100% {
+    left: -75px;
+    top: calc(100vh - 260px);
   }
 }

@@ -12,7 +12,6 @@ export default function DefaultLayout({
     <div className={cn('default-layout container mx-auto w-full', className)}>
       <HeadDefault />
       <HeaderDefault />
-      <div className="header">HoneyLand</div>
       {children}
     </div>
   )
