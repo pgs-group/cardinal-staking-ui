@@ -21,7 +21,7 @@ export default function WalletButton({ btnClass }) {
           <div className="text-white">
             {wallet?.publicKey ? shortPubKey(wallet?.publicKey) : ''}
           </div>
-          <AddressImage
+          {/* <AddressImage
             connection={ctx.connection}
             address={wallet.publicKey || undefined}
             height="30px"
@@ -44,7 +44,7 @@ export default function WalletButton({ btnClass }) {
                 </div>
               </div>
             }
-          />
+          /> */}
         </div>
       ) : (
         <WalletMultiButton className={btnClass}>
