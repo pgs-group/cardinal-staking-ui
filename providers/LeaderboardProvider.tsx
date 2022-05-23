@@ -17,7 +17,6 @@ const LeaderboardContext: React.Context<LeaderboardContextValues> =
 export function LeaderboardProvider({ children }: { children: ReactChild }) {
   const { leaderboard, loading, topScore, fetchLeaderboard } =
     useStakePoolLeaderboard()
-
   return (
     <LeaderboardContext.Provider
       value={{
