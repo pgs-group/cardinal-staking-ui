@@ -74,9 +74,10 @@ function Home() {
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
+
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-
+  console.log(filteredTokens)
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
       notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
@@ -273,20 +274,6 @@ function Home() {
 
   return (
     <div className={`container mx-auto`}>
-      <div className="my-10 w-full pb-5 text-center text-4xl font-semibold text-white xl:text-5xl">
-        {!stakePool && stakePoolLoaded && (
-          <p className="my-0 py-0">Stake pool not found</p>
-        )}
-        {stakePool && stakePoolLoaded && (
-          <p className="my-0 py-0">Staking Your NFTs</p>
-        )}
-        {!stakePool && !stakePoolLoaded && (
-          <div className="align-center flex justify-center">
-            <p className="my-0 py-0 pl-2">Loading Stake Pool</p>
-          </div>
-        )}
-      </div>
-
       {(maxStaked || rewardDistibutorData.data) && (
         <div
           className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
@@ -512,7 +499,24 @@ function Home() {
             )}
           </div>
           <div className={styles.footer}>
-            <button className={styles.button}>Incubate</button>
+            <button
+              onClick={() => {
+                if (unstakedSelected.length === 0) {
+                  notify({
+                    message: `No tokens selected`,
+                    type: 'error',
+                  })
+                }
+                handleStake()
+              }}
+              className={styles.button}
+              disabled={loadingStake}
+            >
+              <span className="mr-1 inline-block">
+                {loadingStake && <LoadingSpinner height="25px" />}
+              </span>
+              <span className="my-auto">Incubate</span>
+            </button>
           </div>
         </div>
 
@@ -838,7 +842,7 @@ function Home() {
           <h4 className="mb-6 text-center text-xl font-semibold text-white">
             Your Stacked NFTs
           </h4>
-          {/* <div className="mt-2 flex flex-row">
+          <div className="mt-2 flex flex-row">
             <p className="mr-3 text-lg">
               View Staked Tokens{' '}
               {stakedTokenDatas.loaded &&
@@ -850,7 +854,7 @@ function Home() {
                 <LoadingSpinner height="25px" />
               )}
             </div>
-          </div> */}
+          </div>
           <div className="my-3 flex-auto overflow-auto">
             <div className="relative my-auto mb-4 h-[56vh] overflow-y-auto overflow-x-hidden rounded-3xl bg-white bg-opacity-20 p-5 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700">
               {!stakedTokenDatas.loaded ? (
@@ -1070,7 +1074,7 @@ function Home() {
               ''
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
