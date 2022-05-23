@@ -5,7 +5,7 @@ import { shortPubKey } from 'common/utils'
 import { useState } from 'react'
 import { useStakePoolLeaderboard } from '../../hooks/useStakePoolLeaderboard'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { useLeaderboard } from 'providers/LeaderboardProvider'
+import { useLeaderboard } from '../../providers/LeaderboardProvider'
 
 export default function Leaderboard() {
   const { leaderboard, loading, topScore } = useLeaderboard()
@@ -13,7 +13,6 @@ export default function Leaderboard() {
   const wallet = useWallet()
 
   const show = () => {
-    // fetchLeaderboard()
     setShowModal(true)
     document.body.setAttribute('style', 'position: fixed;top:0;right:0;left:0')
   }
