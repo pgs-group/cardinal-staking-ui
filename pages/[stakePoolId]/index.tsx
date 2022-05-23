@@ -45,6 +45,9 @@ import { Switch } from '@headlessui/react'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MouseoverTooltip } from 'common/Tooltip'
 import DefaultLayout from 'components/Layouts/Default'
+import Image from 'next/image'
+
+import styles from './StakePoolId.module.scss'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -268,9 +271,7 @@ function Home() {
     )
 
   return (
-    <div
-      className={`container mx-auto`}
-    >
+    <div className={`container mx-auto`}>
       <div className="my-10 w-full pb-5 text-center text-4xl font-semibold text-white xl:text-5xl">
         {!stakePool && stakePoolLoaded && (
           <p className="my-0 py-0">Stake pool not found</p>
@@ -395,8 +396,52 @@ function Home() {
         </div>
       )}
       <div className="my-2 mx-5 grid gap-10 md:grid-cols-2">
-        <div
-          className={`flex-col rounded-3xl bg-white bg-opacity-20 py-7 px-10 text-gray-200`}
+        <div className={styles.wrapper}>
+          <h3 className={styles.heading}>select eggs to incubate</h3>
+          {showAllowedTokens && (
+            <AllowedTokens stakePool={stakePool}></AllowedTokens>
+          )}
+          <div className={cn(styles.grid, 'custom-scrollbar')}>
+            {(filteredTokens || []).map((tk, i) => (
+              <div
+                className={styles.gridItem}
+                key={tk.tokenAccount?.pubkey.toString()}
+              >
+                <div className={styles.card}>
+                  <img
+                    className={styles.image}
+                    src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
+                    alt={tk.metadata?.data.name || tk.tokenListData?.name}
+                  />
+                  <div className={styles.detail}>
+                    <span className={styles.title}>
+                      {tk.tokenListData && tk.tokenListData.name}
+                    </span>
+                    <span className={styles.title}>
+                      {tk.tokenListData &&
+                        Number(
+                          (
+                            tk.tokenAccount?.account.data.parsed.info
+                              .tokenAmount.amount /
+                            10 ** tk.tokenListData.decimals
+                          ).toFixed(2)
+                        )}{' '}
+                    </span>
+                    {/* <span className={styles.timeAgo}>
+                      <Image src={StopWatchIcon} />
+                      <span>27 days</span>
+                    </span> */}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className={styles.footer}>
+            <button className={styles.button}>Incubate</button>
+          </div>
+        </div>
+        {/* <div
+          className={styles.wrapper}
           style={{
             border: stakePoolMetadata?.colors?.accent
               ? `2px solid ${stakePoolMetadata?.colors?.accent}`
@@ -406,40 +451,11 @@ function Home() {
           <h4 className="mb-6 text-center text-xl font-semibold text-white">
             Select Your NFTs
           </h4>
-          {/* <div className="mt-2 flex w-full flex-row justify-between">
-            <div className="flex flex-row">
-              <p className="mb-3 mr-3 inline-block text-lg">
-                Select Your Tokens
-              </p>
-              <div className="inline-block">
-                {userTokenAccounts.refreshing && userTokenAccounts.loaded && (
-                  <LoadingSpinner height="25px" />
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-row">
-              <button
-                onClick={() => setShowAllowedTokens(!showAllowedTokens)}
-                className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
-              >
-                {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
-              </button>
-              <button
-                onClick={() => {
-                  setShowFungibleTokens(!showFungibleTokens)
-                }}
-                className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
-              >
-                {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
-              </button>
-            </div>
-          </div> */}
           {showAllowedTokens && (
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
           )}
           <div className="my-3 flex-auto overflow-auto">
-            <div className="relative my-auto mb-4 h-[56vh] overflow-y-auto overflow-x-hidden rounded-3xl bg-white bg-opacity-20 p-5 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700">
+            <div>
               {!userTokenAccounts.loaded ? (
                 <div className="align-center flex h-full w-full justify-center">
                   <LoadingSpinner height="100px" />
@@ -591,58 +607,7 @@ function Home() {
               )}
             </div>
           </div>
-
           <div className="mt-2 flex items-center justify-between">
-            {/* {!stakePoolMetadata?.receiptType && (
-              <MouseoverTooltip
-                title={
-                  receiptType === ReceiptType.Original
-                    ? 'Lock the original token(s) in your wallet when you stake'
-                    : 'Receive a dynamically generated NFT receipt representing your stake'
-                }
-              >
-                <div className="flex cursor-pointer flex-row gap-2">
-                  <Switch
-                    checked={receiptType === ReceiptType.Original}
-                    onChange={() =>
-                      setReceiptType(
-                        receiptType === ReceiptType.Original
-                          ? ReceiptType.Receipt
-                          : ReceiptType.Original
-                      )
-                    }
-                    style={{
-                      background:
-                        stakePoolMetadata?.colors?.secondary ||
-                        defaultSecondaryColor,
-                      color: stakePoolMetadata?.colors?.fontColor,
-                    }}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full`}
-                  >
-                    <span className="sr-only">Receipt Type</span>
-                    <span
-                      className={`${
-                        receiptType === ReceiptType.Original
-                          ? 'translate-x-6'
-                          : 'translate-x-1'
-                      } inline-block h-4 w-4 transform rounded-full bg-white`}
-                    />
-                  </Switch>
-                  <div className="flex items-center gap-1">
-                    <span
-                      style={{
-                        color: stakePoolMetadata?.colors?.fontColor,
-                      }}
-                    >
-                      {receiptType === ReceiptType.Original
-                        ? 'Original'
-                        : 'Receipt'}
-                    </span>
-                    <FaInfoCircle />
-                  </div>
-                </div>
-              </MouseoverTooltip>
-            )} */}
             <button
               onClick={() => {
                 if (unstakedSelected.length === 0) {
@@ -667,7 +632,7 @@ function Home() {
               <span className="my-auto">Stake NFTS</span>
             </button>
           </div>
-        </div>
+        </div> */}
         <div
           className="flex-col rounded-3xl bg-white bg-opacity-20 py-7 px-10 text-gray-200"
           style={{
