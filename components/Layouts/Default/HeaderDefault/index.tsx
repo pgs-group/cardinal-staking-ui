@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Leaderboard from 'components/Leaderboard/Leaderboard'
+import WalletButton from 'common/WalletButton'
 const HeaderDefault = () => {
   return (
     <div className="v-header">
@@ -11,7 +12,9 @@ const HeaderDefault = () => {
           <div className="v-header-menu-title">GENESIS EGG INCUBATOR</div>
           <div className="v-header-menu-buttons">
             <Leaderboard />
-            <a>CONNECT WALLET</a>
+            <a>
+              <WalletButton btnClass="walletButton" />
+            </a>
           </div>
         </div>
         <div className="v-header-statistics">
