@@ -1,6 +1,28 @@
 import Image from 'next/image'
 import Leaderboard from 'components/Leaderboard/Leaderboard'
+import { useLeaderboard } from 'providers/LeaderboardProvider'
+import { useEffect, useState } from 'react'
+import { number } from 'yup/lib/locale'
 const HeaderDefault = () => {
+  const { leaderboard } = useLeaderboard()
+  const [statistics, setStatistics] = useState({
+    totalStakedNft: 10,
+    totalScore: 0,
+  })
+  useEffect(() => {
+    if (Array.isArray(leaderboard)) {
+      const temp = {
+        totalStakedNft: 0,
+        totalScore: 0,
+      }
+
+      leaderboard.forEach((item) => {
+        temp.totalStakedNft += item.nftCount
+        temp.totalScore += item.score
+      })
+      setStatistics(temp)
+    }
+  }, [leaderboard])
   return (
     <div className="v-header">
       <div className="v-header-logo">
@@ -16,21 +38,27 @@ const HeaderDefault = () => {
         </div>
         <div className="v-header-statistics">
           <div className="v-header-statistics-box">
-            <div className="v-header-statistics-box__count">48%</div>
+            <div className="v-header-statistics-box__count">
+              {statistics.totalStakedNft}
+            </div>
+            <div className="v-header-statistics-box__title">
+              Total Genesis Eggs Incubating
+            </div>
+          </div>
+          <div className="v-header-statistics-box">
+            <div className="v-header-statistics-box__count">
+              {(statistics.totalStakedNft * 0.0181).toFixed(2)}%
+            </div>
             <div className="v-header-statistics-box__title">
               % of Genesis Eggs Incubating
             </div>
           </div>
           <div className="v-header-statistics-box">
-            <div className="v-header-statistics-box__count">48%</div>
-            <div className="v-header-statistics-box__title">
-              % of Genesis Eggs Incubating
+            <div className="v-header-statistics-box__count">
+              {statistics.totalScore}
             </div>
-          </div>
-          <div className="v-header-statistics-box">
-            <div className="v-header-statistics-box__count">48%</div>
             <div className="v-header-statistics-box__title">
-              % of Genesis Eggs Incubating
+              Total Incubating Points Earned
             </div>
           </div>
         </div>

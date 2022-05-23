@@ -77,7 +77,6 @@ function Home() {
 
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  console.log(filteredTokens)
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
       notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
