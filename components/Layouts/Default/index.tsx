@@ -13,7 +13,7 @@ export default function DefaultLayout({
       <HeadDefault />
       <HeaderDefault />
       <div className="header">HoneyLand</div>
-      {/* children */}
+      {children}
     </div>
   )
 }
