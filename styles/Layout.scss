@@ -125,6 +125,8 @@
         text-shadow: 1px 2px 2px rgb(0 0 0 / 50%);
         height: var(--v-header-button-height);
         font-size: var(--v-header-button-font-size);
+        text-transform: uppercase;
+        font-weight: initial;
         .wallet-adapter-button-start-icon {
           display: none;
         }
@@ -176,6 +178,10 @@
     bottom: -75px;
     width: 150px;
     z-index: -1;
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+    animation-name: bee-top-animation;
+    animation-timing-function: wave;
     @include on-lg {
       bottom: -75px;
       width: 130px;
@@ -191,18 +197,36 @@
     left: -75px;
     width: 150px;
     z-index: 1;
-    // animation-duration: 4s;
-    // animation-iteration-count: infinite;
-    // animation-name: bee-bottom-animation;
-    // animation-timing-function: wave;
-    // transform: translate(40px 30px);
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+    animation-name: bee-bottom-animation;
+    animation-timing-function: wave;
+  }
+}
+
+@keyframes bee-top-animation {
+  0% {
+    opacity: 0;
+    right: -300px;
+    bottom: 55px;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    right: 15px;
+    bottom: -75px;
   }
 }
 
 @keyframes bee-bottom-animation {
   0% {
-    left: -300px;
-    top: calc(100vh - 350px);
+    opacity: 0;
+    left: -500px;
+    top: calc(100vh - 600px);
+  }
+  25% {
+    opacity: 1;
   }
   100% {
     left: -75px;

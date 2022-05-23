@@ -92,6 +92,8 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
         (today - lastStakedAt) / SCORE_PER_MILLISECOND
       )
 
+      if (wallet === '11111111111111111111111111111111') return
+
       if (!data[wallet])
         data[wallet] = {
           nftCount: 0,
