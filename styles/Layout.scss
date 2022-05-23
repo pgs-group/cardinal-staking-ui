@@ -77,5 +77,22 @@
   &-statistics {
     width: 100%;
     height: 75px;
+    display: flex;
+    padding: 0 150px 0 20px;
+    justify-content: space-between;
+    align-items: center;
+    &-box {
+      text-align: center;
+      &__count {
+        line-height: 45px;
+        color: #43a705;
+        font-size: 45px;
+      }
+      &__title {
+        line-height: 30px;
+        color: #3d0a00;
+        font-size: 20px;
+      }
+    }
   }
 }

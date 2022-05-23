@@ -14,7 +14,26 @@ const HeaderDefault = () => {
             <a>CONNECT WALLET</a>
           </div>
         </div>
-        <div className="v-header-statistics"></div>
+        <div className="v-header-statistics">
+          <div className="v-header-statistics-box">
+            <div className="v-header-statistics-box__count">48%</div>
+            <div className="v-header-statistics-box__title">
+              % of Genesis Eggs Incubating
+            </div>
+          </div>
+          <div className="v-header-statistics-box">
+            <div className="v-header-statistics-box__count">48%</div>
+            <div className="v-header-statistics-box__title">
+              % of Genesis Eggs Incubating
+            </div>
+          </div>
+          <div className="v-header-statistics-box">
+            <div className="v-header-statistics-box__count">48%</div>
+            <div className="v-header-statistics-box__title">
+              % of Genesis Eggs Incubating
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
