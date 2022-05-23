@@ -3,6 +3,7 @@ import Leaderboard from 'components/Leaderboard/Leaderboard'
 import { useLeaderboard } from 'providers/LeaderboardProvider'
 import { useEffect, useState } from 'react'
 import { number } from 'yup/lib/locale'
+import WalletButton from 'common/WalletButton'
 const HeaderDefault = () => {
   const { leaderboard } = useLeaderboard()
   const [statistics, setStatistics] = useState({
@@ -33,7 +34,9 @@ const HeaderDefault = () => {
           <div className="v-header-menu-title">GENESIS EGG INCUBATOR</div>
           <div className="v-header-menu-buttons">
             <Leaderboard />
-            <a>CONNECT WALLET</a>
+            <a>
+              <WalletButton btnClass="walletButton" />
+            </a>
           </div>
         </div>
         <div className="v-header-statistics">
