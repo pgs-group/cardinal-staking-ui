@@ -70,7 +70,6 @@ function Home() {
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const [totalPoints, setTotalPoints] = useState('')
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
-
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { leaderboard } = useLeaderboard()
@@ -429,13 +428,13 @@ function Home() {
                         alt={tk.metadata?.data.name || tk.tokenListData?.name}
                       />
                       <div className={styles.detail}>
+                        <span className={styles.title}>EGG</span>
                         <span
-                          className={styles.title}
                           title={tk.metadata?.data.name}
+                          className={styles.title}
                         >
                           {tk.metadata?.data.name}
                         </span>
-                        <span className={styles.title}>#941</span>
                       </div>
                     </div>
                     <input
