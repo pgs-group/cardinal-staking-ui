@@ -268,7 +268,7 @@ function Home() {
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        fallbackSrc="https://bitsofco.de/content/images/2018/12/broken-1.png"
+                        fallbackSrc="honey/solana.png"
                       />
                       <div className={styles.detail}>
                         <span className={styles.title}>EGG</span>
@@ -411,7 +411,7 @@ function Home() {
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        fallbackSrc="https://bitsofco.de/content/images/2018/12/broken-1.png"
+                        fallbackSrc="honey/no-image-placeholder.svg"
                       />
                       <div className={styles.detail}>
                         <span
