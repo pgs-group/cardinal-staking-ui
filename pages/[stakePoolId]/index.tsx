@@ -277,6 +277,11 @@ function Home() {
         tk.stakeEntry?.parsed.originalMint.toString()
     )
 
+  const getStakedDaysAgo = (lastStakedAt: any) => {
+    return Math.floor(
+      (+new Date() - +new Date(lastStakedAt.toNumber() * 1000)) / 86400000
+    )
+  }
   return (
     <div className={`container mx-auto`}>
       {(maxStaked || rewardDistibutorData.data) && (
@@ -582,7 +587,12 @@ function Home() {
                         ></span>
                         <span className={styles.timeAgo}>
                           <StopWatchIcon />
-                          <span>?days</span>
+                          <span>
+                            {getStakedDaysAgo(
+                              tk.stakeEntry.parsed.lastStakedAt
+                            )}
+                            days
+                          </span>
                         </span>
                       </div>
                     </div>
