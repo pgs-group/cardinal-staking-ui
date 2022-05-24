@@ -44,6 +44,7 @@ import StopWatchIcon from 'components/StopWatchIcon'
 import { useLeaderboard } from 'providers/LeaderboardProvider'
 import Item from 'antd/lib/list/Item'
 import { compileString } from 'sass'
+import BasicImage from 'common/BasicImage'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -427,12 +428,12 @@ function Home() {
                         [styles.selected]: isUnstakedTokenSelected(tk),
                       })}
                     >
-                      <img
+                      <BasicImage
                         className={styles.image}
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        alt={tk.metadata?.data.name || tk.tokenListData?.name}
+                        fallbackSrc="https://bitsofco.de/content/images/2018/12/broken-1.png"
                       />
                       <div className={styles.detail}>
                         <span className={styles.title}>EGG</span>
@@ -544,7 +545,9 @@ function Home() {
           <div
             className={cn(styles.grid, 'custom-scrollbar', {
               'grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3':
-                stakedTokenDatas.loaded,
+                stakedTokenDatas.loaded &&
+                stakedTokenDatas.data &&
+                stakedTokenDatas.data.length != 0,
             })}
           >
             {!stakedTokenDatas.loaded ? (
@@ -552,7 +555,7 @@ function Home() {
                 <LoadingSpinner height="100px" />
               </div>
             ) : stakedTokenDatas.data?.length === 0 ? (
-              <p className="mx-auto text-xl text-gray-400">
+              <p className="text-center text-2xl text-green-500">
                 No tokens currently staked.
               </p>
             ) : (
@@ -568,12 +571,12 @@ function Home() {
                         [styles.selected]: isStakedTokenSelected(tk),
                       })}
                     >
-                      <img
+                      <BasicImage
                         className={styles.image}
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        alt={tk.metadata?.data.name || tk.tokenListData?.name}
+                        fallbackSrc="https://bitsofco.de/content/images/2018/12/broken-1.png"
                       />
                       <div className={styles.detail}>
                         <span
