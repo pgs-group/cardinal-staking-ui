@@ -44,6 +44,7 @@ import StopWatchIcon from 'components/StopWatchIcon'
 import { useLeaderboard } from 'providers/LeaderboardProvider'
 import Item from 'antd/lib/list/Item'
 import { compileString } from 'sass'
+import BasicImage from 'common/BasicImage'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -402,16 +403,23 @@ function Home() {
           <div
             className={cn(styles.grid, 'custom-scrollbar', {
               'grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3':
-                userTokenAccounts.loaded,
+                userTokenAccounts.loaded &&
+                filteredTokens &&
+                filteredTokens.length != 0,
             })}
           >
-            {!userTokenAccounts.loaded ? (
+            {!wallet.wallet && !wallet.connected && !wallet.connecting && (
+              <p className="text-center text-2xl text-yellow-500">
+                No connected wallet detected
+              </p>
+            )}
+            {wallet.connected && !userTokenAccounts.loaded ? (
               <div className="align-center flex h-full w-full justify-center">
                 <LoadingSpinner height="100px" />
               </div>
-            ) : (filteredTokens || []).length == 0 ? (
-              <p className="text-gray-400">
-                {/* No allowed tokens found in wallet. */}
+            ) : (filteredTokens || []).length == 0 && wallet.connected ? (
+              <p className="text-center text-2xl text-green-500">
+                No allowed tokens found in wallet.
               </p>
             ) : (
               (filteredTokens || []).map((tk, i) => (
@@ -425,12 +433,12 @@ function Home() {
                         [styles.selected]: isUnstakedTokenSelected(tk),
                       })}
                     >
-                      <img
+                      <BasicImage
                         className={styles.image}
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        alt={tk.metadata?.data.name || tk.tokenListData?.name}
+                        fallbackSrc="https://bitsofco.de/content/images/2018/12/broken-1.png"
                       />
                       <div className={styles.detail}>
                         <span className={styles.title}>EGG</span>
@@ -542,7 +550,9 @@ function Home() {
           <div
             className={cn(styles.grid, 'custom-scrollbar', {
               'grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3':
-                stakedTokenDatas.loaded,
+                stakedTokenDatas.loaded &&
+                stakedTokenDatas.data &&
+                stakedTokenDatas.data.length != 0,
             })}
           >
             {!stakedTokenDatas.loaded ? (
@@ -550,8 +560,8 @@ function Home() {
                 <LoadingSpinner height="100px" />
               </div>
             ) : stakedTokenDatas.data?.length === 0 ? (
-              <p className="mx-auto text-xl text-gray-400">
-                {/* No tokens currently staked. */}
+              <p className="text-center text-2xl text-green-500">
+                No tokens currently staked.
               </p>
             ) : (
               stakedTokenDatas.data &&
@@ -566,12 +576,12 @@ function Home() {
                         [styles.selected]: isStakedTokenSelected(tk),
                       })}
                     >
-                      <img
+                      <BasicImage
                         className={styles.image}
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        alt={tk.metadata?.data.name || tk.tokenListData?.name}
+                        fallbackSrc="https://bitsofco.de/content/images/2018/12/broken-1.png"
                       />
                       <div className={styles.detail}>
                         <span
