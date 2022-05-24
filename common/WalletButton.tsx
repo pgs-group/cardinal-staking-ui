@@ -9,11 +9,17 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
 import { BiWallet } from 'react-icons/bi'
+import { useEffect } from 'react'
 
 export default function WalletButton({ btnClass }) {
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
+  useEffect(() => {
+    if (!wallet.connected && !wallet.connecting && !wallet.wallet) {
+      setVisible(true)
+    }
+  }, [])
   return (
     <div>
       {wallet.connected ? (
@@ -21,30 +27,6 @@ export default function WalletButton({ btnClass }) {
           <div className="text-white">
             {wallet?.publicKey ? shortPubKey(wallet?.publicKey) : ''}
           </div>
-          {/* <AddressImage
-            connection={ctx.connection}
-            address={wallet.publicKey || undefined}
-            height="30px"
-            width="30px"
-            dark={true}
-            placeholder={
-              <div
-                style={{
-                  color: 'white',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  marginLeft: '5px',
-                }}
-              >
-                <div style={{ height: '40px', width: '40px' }}>
-                  <HiUserCircle style={{ height: '100%', width: '100%' }} />
-                </div>
-              </div>
-            }
-          /> */}
         </div>
       ) : (
         <WalletMultiButton className={btnClass}>
