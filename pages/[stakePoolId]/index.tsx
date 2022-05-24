@@ -3,7 +3,6 @@ import {
   createStakeEntryAndStakeMint,
   stake,
   unstake,
-  claimRewards,
   executeTransaction,
 } from '@cardinal/staking'
 import cn from 'classnames'
@@ -17,33 +16,20 @@ import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
-  formatMintNaturalAmountAsDecimal,
-  getMintDecimalAmountFromNatural,
   getMintDecimalAmountFromNaturalV2,
   getMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewards } from 'hooks/useRewards'
-import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { AllowedTokens } from 'components/AllowedTokens'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { shortPubKey } from '@cardinal/namespaces-components'
-import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
-import { useRewardEntries } from 'hooks/useRewardEntries'
 import DefaultLayout from 'components/Layouts/Default'
 import styles from './StakePoolId.module.scss'
 import StopWatchIcon from 'components/StopWatchIcon'
 import { useLeaderboard } from 'providers/LeaderboardProvider'
-import Item from 'antd/lib/list/Item'
-import { compileString } from 'sass'
 import BasicImage from 'common/BasicImage'
 
 function Home() {
@@ -52,12 +38,7 @@ function Home() {
   const userTokenAccounts = useUserTokenData()
   const { data: stakePool, loaded: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
-  const rewardDistibutorData = useRewardDistributorData()
-  const rewardMintInfo = useRewardMintInfo()
   const stakePoolEntries = useStakePoolEntries()
-  const maxStaked = useStakePoolMaxStaked()
-  const rewardEntries = useRewardEntries()
-  const rewards = useRewards()
 
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
@@ -66,13 +47,10 @@ function Home() {
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
-  const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const [totalPoints, setTotalPoints] = useState('')
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { leaderboard, fetchLeaderboard } = useLeaderboard()
 
   useEffect(() => {
@@ -84,47 +62,6 @@ function Home() {
       })
     }
   }, [leaderboard, stakedTokenDatas])
-  async function handleClaimRewards() {
-    if (stakedSelected.length > 4) {
-      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
-      return
-    }
-    setLoadingClaimRewards(true)
-    if (!wallet) {
-      throw new Error('Wallet not connected')
-    }
-    if (!stakePool) {
-      notify({ message: `No stake pool detected`, type: 'error' })
-      return
-    }
-
-    for (let step = 0; step < stakedSelected.length; step++) {
-      try {
-        let token = stakedSelected[step]
-        if (!token || !token.stakeEntry) {
-          throw new Error('No stake entry for token')
-        }
-        console.log('Claiming rewards...')
-
-        const transaction = await claimRewards(connection, wallet as Wallet, {
-          stakePoolId: stakePool.pubkey,
-          stakeEntryId: token.stakeEntry.pubkey,
-        })
-        await executeTransaction(connection, wallet as Wallet, transaction, {})
-        notify({ message: `Successfully claimed rewards`, type: 'success' })
-        console.log('Successfully claimed rewards')
-      } catch (e) {
-        notify({ message: `Transaction failed: ${e}`, type: 'error' })
-        console.error(e)
-      } finally {
-        break
-      }
-    }
-
-    rewardDistibutorData.refresh()
-    rewardDistributorTokenAccountData.refresh()
-    setLoadingClaimRewards(false)
-  }
 
   async function handleUnstake() {
     if (!wallet.connected) {
@@ -287,115 +224,6 @@ function Home() {
   }
   return (
     <div className={`container mx-auto`}>
-      {(maxStaked || rewardDistibutorData.data) && (
-        <div
-          className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
-          style={{
-            border: stakePoolMetadata?.colors?.accent
-              ? `2px solid ${stakePoolMetadata?.colors?.accent}`
-              : '',
-          }}
-        >
-          {stakePoolEntries.data ? (
-            <>
-              <div className="inline-block text-lg">
-                Total Staked: {stakePoolEntries.data?.length}
-              </div>
-              {maxStaked > 0 && (
-                <div className="inline-block text-lg">
-                  {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
-                  Percent Staked:{' '}
-                  {stakePoolEntries.data?.length &&
-                    Math.floor(
-                      ((stakePoolEntries.data?.length * 100) / maxStaked) *
-                        10000
-                    ) / 10000}
-                  %
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="relative flex h-8 w-full items-center justify-center">
-              <span className="text-gray-500">Loading pool info...</span>
-              <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
-            </div>
-          )}
-          {rewardDistibutorData.data && rewardMintInfo.data ? (
-            <>
-              <div className="inline-block text-lg">
-                <span>Rewards Rate</span>:{' '}
-                <span>
-                  {(
-                    (Number(
-                      getMintDecimalAmountFromNatural(
-                        rewardMintInfo.data.mintInfo,
-                        new BN(rewardDistibutorData.data.parsed.rewardAmount)
-                      )
-                    ) /
-                      rewardDistibutorData.data.parsed.rewardDurationSeconds.toNumber()) *
-                    86400
-                  ).toPrecision(4)}{' '}
-                  <a
-                    className="text-white underline"
-                    target="_blank"
-                    href={pubKeyUrl(
-                      rewardDistibutorData.data.parsed.rewardMint,
-                      environment.label
-                    )}
-                  >
-                    {rewardMintInfo.data.tokenListData?.name}
-                  </a>{' '}
-                  / Day
-                </span>
-              </div>
-              <div className="flex min-w-[200px] flex-col text-lg">
-                {!rewardMintInfo || !rewards.data ? (
-                  <div className="relative flex h-8 w-full items-center justify-center">
-                    <span className="text-gray-500"></span>
-                    <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
-                  </div>
-                ) : (
-                  <>
-                    <div>
-                      Earnings:{' '}
-                      {formatMintNaturalAmountAsDecimal(
-                        rewardMintInfo.data.mintInfo,
-                        rewards.data.claimableRewards,
-                        6
-                      )}{' '}
-                      {rewardMintInfo.data.tokenListData?.name ?? '???'}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      <a
-                        target={'_blank'}
-                        href={pubKeyUrl(
-                          rewardDistibutorData.data.pubkey,
-                          environment.label
-                        )}
-                      >
-                        {shortPubKey(rewardDistibutorData.data.pubkey)}
-                      </a>{' '}
-                      {rewardDistributorTokenAccountData.data
-                        ? formatMintNaturalAmountAsDecimal(
-                            rewardMintInfo.data.mintInfo,
-                            rewardDistributorTokenAccountData.data.amount,
-                            6
-                          )
-                        : ''}{' '}
-                      Left
-                    </div>
-                  </>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="relative flex w-full items-center justify-center">
-              <span className="text-gray-500">Loading rewards...</span>
-              <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
-            </div>
-          )}
-        </div>
-      )}
       <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
         <div className={styles.wrapper}>
           <h3 className={styles.heading}>SELECT EGGS TO INCUBATE</h3>
