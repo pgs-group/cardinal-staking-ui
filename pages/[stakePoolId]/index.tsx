@@ -397,16 +397,23 @@ function Home() {
           <div
             className={cn(styles.grid, 'custom-scrollbar', {
               'grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3':
-                userTokenAccounts.loaded,
+                userTokenAccounts.loaded &&
+                filteredTokens &&
+                filteredTokens.length != 0,
             })}
           >
-            {!userTokenAccounts.loaded ? (
+            {!wallet.wallet && !wallet.connected && !wallet.connecting && (
+              <p className="text-center text-2xl text-yellow-500">
+                No connected wallet detected
+              </p>
+            )}
+            {wallet.connected && !userTokenAccounts.loaded ? (
               <div className="align-center flex h-full w-full justify-center">
                 <LoadingSpinner height="100px" />
               </div>
-            ) : (filteredTokens || []).length == 0 ? (
-              <p className="text-gray-400">
-                {/* No allowed tokens found in wallet. */}
+            ) : (filteredTokens || []).length == 0 && wallet.connected ? (
+              <p className="text-center text-2xl text-green-500">
+                No allowed tokens found in wallet.
               </p>
             ) : (
               (filteredTokens || []).map((tk, i) => (
@@ -546,7 +553,7 @@ function Home() {
               </div>
             ) : stakedTokenDatas.data?.length === 0 ? (
               <p className="mx-auto text-xl text-gray-400">
-                {/* No tokens currently staked. */}
+                No tokens currently staked.
               </p>
             ) : (
               stakedTokenDatas.data &&
