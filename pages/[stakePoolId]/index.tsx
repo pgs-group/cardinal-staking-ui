@@ -49,7 +49,7 @@ function Home() {
   )
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
-  const [totalPoints, setTotalPoints] = useState('')
+  const [totalPoints, setTotalPoints] = useState(null)
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { leaderboard, fetchLeaderboard } = useLeaderboard()
 
@@ -371,7 +371,8 @@ function Home() {
           <div className="flex justify-around">
             <h3 className={styles.heading}>YOUR INCUBATED EGGS</h3>
             <h3 className={styles.heading}>
-              Total Points: {totalPoints || '...'}
+              Total Points:{' '}
+              {totalPoints || totalPoints == 0 ? totalPoints : '...'}
             </h3>
           </div>
           {showAllowedTokens && (
