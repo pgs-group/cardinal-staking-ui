@@ -5,6 +5,7 @@ export interface LeaderboardContextValues {
   leaderboard?: any[]
   loading?: boolean
   topScore?: number
+  fetchLeaderboard?: () => {}
 }
 
 const LeaderboardContext: React.Context<LeaderboardContextValues> =
@@ -12,6 +13,7 @@ const LeaderboardContext: React.Context<LeaderboardContextValues> =
     loading: undefined,
     leaderboard: undefined,
     topScore: undefined,
+    fetchLeaderboard: undefined,
   })
 
 export function LeaderboardProvider({ children }: { children: ReactChild }) {
@@ -23,6 +25,7 @@ export function LeaderboardProvider({ children }: { children: ReactChild }) {
         leaderboard,
         loading,
         topScore,
+        fetchLeaderboard,
       }}
     >
       {children}

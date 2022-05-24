@@ -73,7 +73,7 @@ function Home() {
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  const { leaderboard } = useLeaderboard()
+  const { leaderboard, fetchLeaderboard } = useLeaderboard()
 
   useEffect(() => {
     if (Array.isArray(leaderboard)) {
@@ -83,7 +83,7 @@ function Home() {
         }
       })
     }
-  }, [leaderboard])
+  }, [leaderboard, stakedTokenDatas])
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
       notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
@@ -154,6 +154,7 @@ function Home() {
           message: `Successfully unstaked ${step + 1}/${stakedSelected.length}`,
           type: 'success',
         })
+        fetchLeaderboard && fetchLeaderboard()
         console.log('Successfully unstaked')
         userTokenAccounts
           .refreshTokenAccounts(true)
@@ -248,6 +249,7 @@ function Home() {
           message: `Successfully staked ${step + 1}/${unstakedSelected.length}`,
           type: 'success',
         })
+        fetchLeaderboard && fetchLeaderboard()
         console.log('Successfully staked')
         userTokenAccounts
           .refreshTokenAccounts(true)
