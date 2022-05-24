@@ -4,7 +4,9 @@
 
 @import 'Leaderboard.css';
 @import 'Layout.scss';
-
+html {
+  height: initial !important;
+}
 body {
   font-family: 'Lilita One', sans-serif !important;
   * {
@@ -16,8 +18,9 @@ body {
   background-position: center bottom;
   background-size: cover;
   min-height: 100vh;
-  height: initial;
+  height: initial !important;
 }
+
 .wallet-adapter-button {
   border-radius: 10px !important;
   background: linear-gradient(207.67deg, #8ff6fd 3.43%, #1c4efd 104.7%);
