@@ -13,9 +13,9 @@ export default function DefaultLayout({
 }) {
   const [screenLoading, setScreenLoading] = useState(true)
   useEffect(() => {
-    window.onload = () => {
+    setTimeout(() => {
       setScreenLoading(false)
-    }
+    }, 1000)
   }, [])
   return (
     <>
