@@ -10,7 +10,7 @@ import { AccountData } from '@cardinal/common'
 import { PublicKey } from '@solana/web3.js'
 import { useEffect, useState } from 'react'
 
-const SCORE_PER_MILLISECOND = 5 * 60 * 1000 // each 5 minutes has one point
+const SCORE_PER_MILLISECOND = 24 * 60 * 60 * 1000 // each day has one point
 
 interface LeaderboardItem {
   wallet: string
