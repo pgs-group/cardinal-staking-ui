@@ -1,3 +1,4 @@
+@import 'styles/mixins.scss';
 .wrapper {
   height: 670px;
   padding: 1rem 2rem 1rem 2rem;
@@ -17,6 +18,9 @@
   font-weight: medium;
   font-size: 1.4rem;
   letter-spacing: 1px;
+  @include on-lg {
+    font-size: 1.1rem;
+  }
 }
 .grid {
   background-color: rgba(252, 212, 59, 0.5);

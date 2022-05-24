@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   createStakeEntryAndStakeMint,
   stake,
@@ -40,6 +41,9 @@ import { useRewardEntries } from 'hooks/useRewardEntries'
 import DefaultLayout from 'components/Layouts/Default'
 import styles from './StakePoolId.module.scss'
 import StopWatchIcon from 'components/StopWatchIcon'
+import { useLeaderboard } from 'providers/LeaderboardProvider'
+import Item from 'antd/lib/list/Item'
+import { compileString } from 'sass'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -64,10 +68,21 @@ function Home() {
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
+  const [totalPoints, setTotalPoints] = useState('')
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
-
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
+  const { leaderboard } = useLeaderboard()
+
+  useEffect(() => {
+    if (Array.isArray(leaderboard)) {
+      leaderboard.find((item) => {
+        if (item.wallet == wallet?.publicKey?.toString()) {
+          setTotalPoints(item.score)
+        }
+      })
+    }
+  }, [leaderboard])
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
       notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
@@ -373,7 +388,7 @@ function Home() {
           )}
         </div>
       )}
-      <div className="my-2 mx-5 grid gap-10 md:grid-cols-2">
+      <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
         <div className={styles.wrapper}>
           <h3 className={styles.heading}>SELECT EGGS TO INCUBATE</h3>
           {showAllowedTokens && (
@@ -391,7 +406,7 @@ function Home() {
               </div>
             ) : (filteredTokens || []).length == 0 ? (
               <p className="text-gray-400">
-                No allowed tokens found in wallet.
+                {/* No allowed tokens found in wallet. */}
               </p>
             ) : (
               (filteredTokens || []).map((tk, i) => (
@@ -413,13 +428,13 @@ function Home() {
                         alt={tk.metadata?.data.name || tk.tokenListData?.name}
                       />
                       <div className={styles.detail}>
+                        <span className={styles.title}>EGG</span>
                         <span
-                          className={styles.title}
                           title={tk.metadata?.data.name}
+                          className={styles.title}
                         >
                           {tk.metadata?.data.name}
                         </span>
-                        <span className={styles.title}>#941</span>
                       </div>
                     </div>
                     <input
@@ -512,7 +527,9 @@ function Home() {
         <div className={styles.wrapper}>
           <div className="flex justify-around">
             <h3 className={styles.heading}>YOUR INCUBATED EGGS</h3>
-            <h3 className={styles.heading}>Total Points: 127</h3>
+            <h3 className={styles.heading}>
+              Total Points: {totalPoints || '...'}
+            </h3>
           </div>
           {showAllowedTokens && (
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
@@ -565,7 +582,7 @@ function Home() {
                         ></span>
                         <span className={styles.timeAgo}>
                           <StopWatchIcon />
-                          <span>27days</span>
+                          <span>?days</span>
                         </span>
                       </div>
                     </div>

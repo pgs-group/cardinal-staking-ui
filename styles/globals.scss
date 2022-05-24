@@ -11,10 +11,12 @@ body {
     font-family: 'Lilita One', sans-serif !important;
   }
   background-repeat: no-repeat;
-  background-image: url('../assets/img/bg.png');
+  background-image: url('../assets/img/bg.jpg');
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
+  min-height: 100vh;
+  height: initial;
 }
 .wallet-adapter-button {
   border-radius: 10px !important;
