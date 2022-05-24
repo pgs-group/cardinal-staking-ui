@@ -14,12 +14,12 @@ export default function Leaderboard() {
 
   const show = () => {
     setShowModal(true)
-    document.body.setAttribute('style', 'position: fixed;top:0;right:0;left:0')
+    // document.body.setAttribute('style', 'position: fixed;top:0;right:0;left:0')
   }
 
   const close = () => {
     setShowModal(false)
-    document.body.setAttribute('style', '')
+    // document.body.setAttribute('style', '')
     window.scrollTo(0, 0)
   }
 
