@@ -52,7 +52,11 @@ function Home() {
   const [totalPoints, setTotalPoints] = useState(null)
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { leaderboard, fetchLeaderboard } = useLeaderboard()
-
+  const showResultTokens = () => {
+    if (!wallet.connected) return []
+    if (!filteredTokens) return []
+    else return filteredTokens
+  }
   useEffect(() => {
     if (Array.isArray(leaderboard)) {
       leaderboard.find((item) => {
@@ -234,8 +238,8 @@ function Home() {
             className={cn(styles.grid, 'custom-scrollbar', {
               'grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3':
                 userTokenAccounts.loaded &&
-                filteredTokens &&
-                filteredTokens.length != 0,
+                showResultTokens() &&
+                showResultTokens().length != 0,
             })}
           >
             {!wallet.wallet && !wallet.connected && !wallet.connecting && (
@@ -247,12 +251,12 @@ function Home() {
               <div className="align-center flex h-full w-full justify-center">
                 <LoadingSpinner height="100px" />
               </div>
-            ) : (filteredTokens || []).length == 0 && wallet.connected ? (
+            ) : (showResultTokens() || []).length == 0 && wallet.connected ? (
               <p className="text-center text-2xl text-green-500">
                 No allowed tokens found in wallet.
               </p>
             ) : (
-              (filteredTokens || []).map((tk, i) => (
+              (showResultTokens() || []).map((tk, i) => (
                 <div
                   className={styles.gridItem}
                   key={tk.tokenAccount?.pubkey.toString()}
