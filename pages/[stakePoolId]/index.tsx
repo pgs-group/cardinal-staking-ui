@@ -269,7 +269,7 @@ function Home() {
               </div>
             ) : (showResultTokens() || []).length == 0 && wallet.connected ? (
               <p className="text-center text-2xl text-green-500">
-                No allowed genesis eggs found in wallet.
+                No allowed Genesis Eggs found in wallet.
               </p>
             ) : (
               (showResultTokens() || []).map((tk, i) => (
@@ -405,7 +405,7 @@ function Home() {
               </div>
             ) : stakedTokenDatas.data?.length === 0 ? (
               <p className="text-center text-2xl text-green-500">
-                No genesis eggs currently incubated.
+                No Genesis Eggs currently incubated.
               </p>
             ) : (
               stakedTokenDatas.data &&

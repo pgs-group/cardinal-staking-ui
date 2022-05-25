@@ -36,15 +36,11 @@
   // grid-gap: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  > div {
-    float: left;
-    width: calc(33.333333% - 20px);
-    margin: 10px;
-  }
 }
 .gridItem {
-  // height: 200px;
-  // width: 180px;
+  float: left;
+  width: calc(33.333333% - 20px);
+  margin: 10px;
 }
 .cardWrapper {
   display: inline-block;
