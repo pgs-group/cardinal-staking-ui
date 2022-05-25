@@ -31,7 +31,7 @@ import styles from './StakePoolId.module.scss'
 import StopWatchIcon from 'components/StopWatchIcon'
 import { useLeaderboard } from 'providers/LeaderboardProvider'
 import BasicImage from 'common/BasicImage'
-
+import ReleaseConfirmModal from 'components/ReleaseConfirmModal'
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
@@ -52,6 +52,11 @@ function Home() {
   const [totalPoints, setTotalPoints] = useState(null)
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { leaderboard, fetchLeaderboard } = useLeaderboard()
+  const [showReleaseConfirm, setShowReleaseConfirm] = useState(false)
+  const handleReleaseConfirm = () => {
+    setShowReleaseConfirm(false)
+    handleUnstake()
+  }
   const showResultTokens = () => {
     if (!wallet.connected) return []
     if (!filteredTokens) return []
@@ -226,8 +231,24 @@ function Home() {
       (+new Date() - +new Date(lastStakedAt.toNumber() * 1000)) / 86400000
     )
   }
+  const handleReleaseClick = () => {
+    if (stakedSelected.length === 0) {
+      notify({
+        message: `No tokens selected`,
+        type: 'error',
+      })
+    } else {
+      setShowReleaseConfirm(true)
+    }
+  }
   return (
     <div className={`container mx-auto`}>
+      <ReleaseConfirmModal
+        show={showReleaseConfirm}
+        handleConfirm={handleReleaseConfirm}
+        onClose={() => setShowReleaseConfirm(false)}
+      />
+
       <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
         <div className={styles.wrapper}>
           <h3 className={styles.heading}>SELECT EGGS TO INCUBATE</h3>
@@ -272,7 +293,7 @@ function Home() {
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        fallbackSrc="honey/solana.png"
+                        fallbackSrc="honey/no-image-placeholder.svg"
                       />
                       <div className={styles.detail}>
                         <span className={styles.title}>EGG</span>
@@ -481,15 +502,7 @@ function Home() {
           <div className={styles.footer}>
             <button
               className={cn(styles.button, styles.button_red)}
-              onClick={() => {
-                if (stakedSelected.length === 0) {
-                  notify({
-                    message: `No tokens selected`,
-                    type: 'error',
-                  })
-                }
-                handleUnstake()
-              }}
+              onClick={handleReleaseClick}
               disabled={loadingUnstake}
             >
               <span className="mr-1 inline-block">
