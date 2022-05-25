@@ -30,11 +30,8 @@ export default function WalletButton({ btnClass }) {
   return (
     <div>
       {wallet.connected ? (
-        <div
-          className="flex flex-row items-center"
-          onClick={() => setVisible(true)}
-        >
-          <div className="text-white">
+        <div className="flex flex-row items-center">
+          <div className="text-white" onClick={() => setVisible(true)}>
             {wallet?.publicKey ? shortPubKey(wallet?.publicKey) : ''}
           </div>
           <FiPower
