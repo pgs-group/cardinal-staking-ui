@@ -31,13 +31,13 @@ export default function Leaderboard() {
         <div className={cn('leaderboard-modal-body', { show: showModal })}>
           <FiX
             onClick={() => close()}
-            size="22"
+            size="24"
             className="leaderboard-close"
           />
           <div className="Leaderboard">
-            <h3 className="Leaderboard-title">Leaderboard</h3>
+            <h3 className="Leaderboard-title">LEADERBOARD</h3>
             <div className="leaders">
-              {loading && <h1>Loading...</h1>}
+              {loading && <h1 className="leaders-loading">LOADING...</h1>}
               {leaderboard &&
                 leaderboard.map((item: any, index: number) => (
                   <div
@@ -75,13 +75,13 @@ export default function Leaderboard() {
                         </div>
                         <div className="leader-stat">
                           <div className="leader-stat-item">
-                            <span>Score :</span>
+                            <span>Score:</span>
                             <div className="leader-score_title">
                               {item.score}
                             </div>
                           </div>
                           <div className="leader-stat-item">
-                            <span>Nft :</span>
+                            <span>NFTs:</span>
                             <div className="leader-score_title">
                               {item.nftCount}
                             </div>
