@@ -16,11 +16,9 @@ export default function WalletButton({ btnClass }) {
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
-  const logOut = () => {
-    if (confirm('Press yes if you want to logout')) {
-      if (wallet && wallet.connected) wallet.disconnect()
-      if (wallet.disconnecting) wallet.disconnect()
-    }
+  const disconnectWallet = () => {
+    if (wallet && wallet.connected) wallet.disconnect()
+    if (wallet.disconnecting) wallet.disconnect()
   }
   useEffect(() => {
     if (!wallet.connected && !wallet.connecting && !wallet.wallet) {
@@ -31,15 +29,9 @@ export default function WalletButton({ btnClass }) {
     <div>
       {wallet.connected ? (
         <div className="flex flex-row items-center">
-          <div className="text-white" onClick={() => setVisible(true)}>
-            {wallet?.publicKey ? shortPubKey(wallet?.publicKey) : ''}
+          <div className="text-white" onClick={() => disconnectWallet()}>
+            DISCONNECT WALLET
           </div>
-          <FiPower
-            title="Log out"
-            size="28"
-            className="ml-3 text-white hover:text-red-200"
-            onClick={logOut}
-          />
         </div>
       ) : (
         <WalletMultiButton className={btnClass}>

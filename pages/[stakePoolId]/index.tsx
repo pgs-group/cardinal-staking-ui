@@ -64,13 +64,15 @@ function Home() {
   }
   useEffect(() => {
     if (Array.isArray(leaderboard)) {
+      let walletPoints = null
       leaderboard.find((item) => {
         if (item.wallet == wallet?.publicKey?.toString()) {
-          setTotalPoints(item.score)
+          walletPoints = item.score
         }
       })
+      setTotalPoints(walletPoints)
     }
-  }, [leaderboard, stakedTokenDatas])
+  }, [leaderboard, stakedTokenDatas, wallet?.publicKey])
 
   async function handleUnstake() {
     if (!wallet.connected) {
@@ -267,7 +269,7 @@ function Home() {
               </div>
             ) : (showResultTokens() || []).length == 0 && wallet.connected ? (
               <p className="text-center text-2xl text-green-500">
-                No allowed Genesis Eggs found in wallet.
+                No allowed genesis eggs found in wallet.
               </p>
             ) : (
               (showResultTokens() || []).map((tk, i) => (
@@ -403,7 +405,7 @@ function Home() {
               </div>
             ) : stakedTokenDatas.data?.length === 0 ? (
               <p className="text-center text-2xl text-green-500">
-                No tokens currently staked.
+                No genesis eggs currently incubated.
               </p>
             ) : (
               stakedTokenDatas.data &&
@@ -442,7 +444,7 @@ function Home() {
                           <span>
                             {getStakedDaysAgo(
                               tk.stakeEntry.parsed.lastStakedAt
-                            )}
+                            )}{' '}
                             days
                           </span>
                         </span>

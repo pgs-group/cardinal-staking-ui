@@ -30,8 +30,8 @@
     --v-header-content-margin-x: 0px;
     --v-header-title-font-size: 21px;
     --v-header-button-height: 45px;
-    --v-header-button-padding: 0 15px;
-    --v-header-button-font-size: 17px;
+    --v-header-button-padding: 0 10px;
+    --v-header-button-font-size: 15px;
   }
 }
 
@@ -222,8 +222,8 @@
   &-bottom-bee {
     position: absolute;
     top: calc(100vh - 260px);
-    left: -75px;
-    width: 150px;
+    left: -85px;
+    width: 180px;
     z-index: 1;
     animation-duration: 4s;
     animation-iteration-count: 1;

@@ -52,6 +52,11 @@ export default function Leaderboard() {
             <h3 className="Leaderboard-title">LEADERBOARD</h3>
             <div className="leaders custom-scrollbar">
               {loading && <h1 className="leaders-loading">LOADING...</h1>}
+              {!loading && leaderboard && leaderboard.length === 0 && (
+                <h1 className="leaders-loading" style={{ fontSize: '15px' }}>
+                  No Items Found
+                </h1>
+              )}
               {leaderboard &&
                 leaderboard.map((item: any, index: number) => (
                   <div
