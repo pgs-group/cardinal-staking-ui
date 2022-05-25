@@ -62,6 +62,11 @@ function Home() {
     if (!filteredTokens) return []
     else return filteredTokens
   }
+  const showStakeTokens = () => {
+    if (!wallet.connected) return []
+    if (!stakedTokenDatas.data) return []
+    else return stakedTokenDatas.data
+  }
   useEffect(() => {
     if (Array.isArray(leaderboard)) {
       let walletPoints = null
@@ -267,7 +272,9 @@ function Home() {
               <div className="align-center flex h-full w-full justify-center">
                 <LoadingSpinner height="100px" />
               </div>
-            ) : (showResultTokens() || []).length == 0 && wallet.connected ? (
+            ) : (showResultTokens() || []).length == 0 &&
+              userTokenAccounts.loaded &&
+              wallet.connected ? (
               <p className="text-center text-2xl text-green-500">
                 No allowed Genesis Eggs found in wallet.
               </p>
@@ -408,8 +415,8 @@ function Home() {
                 No Genesis Eggs currently incubated.
               </p>
             ) : (
-              stakedTokenDatas.data &&
-              stakedTokenDatas.data.map((tk, i) => (
+              showStakeTokens() &&
+              showStakeTokens().map((tk, i) => (
                 <div
                   className={styles.gridItem}
                   key={tk.tokenAccount?.pubkey.toString()}
