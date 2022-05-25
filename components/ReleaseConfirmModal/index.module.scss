@@ -79,9 +79,12 @@
   justify-content: center;
   align-items: center;
   transition: all 0.1s ease;
+  svg {
+    fill: white;
+  }
   &:hover {
     background-color: white;
-    path {
+    svg {
       fill: #ff4b0e !important;
     }
   }

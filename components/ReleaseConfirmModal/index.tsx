@@ -24,17 +24,8 @@ export default function ReleaseConfirmModal({ show, handleConfirm, onClose }) {
     >
       <div className={styles.header}>
         <span className={styles.closeButton} onClick={onClose}>
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 13 13"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3.3056 0.585136L6.50015 3.77725L9.69469 0.585136C11.4816 -1.2042 14.2045 1.51627 12.4152 3.3056L9.22305 6.50015L12.4152 9.69469C14.2045 11.4816 11.4816 14.2045 9.69469 12.4152L6.50015 9.22305L3.3056 12.4152C1.51627 14.2045 -1.2042 11.4816 0.585136 9.69469L3.77725 6.50015L0.585136 3.3056C-1.2042 1.51627 1.51627 -1.2042 3.3056 0.585136Z"
-              fill="white"
-            />
+          <svg width="14" height="14">
+            <path d="M14 12.461 8.3 6.772l5.234-5.233L12.006 0 6.772 5.234 1.54 0 0 1.539l5.234 5.233L0 12.006l1.539 1.528L6.772 8.3l5.69 5.7L14 12.461z"></path>
           </svg>
         </span>
       </div>
