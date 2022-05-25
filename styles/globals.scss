@@ -194,7 +194,7 @@ body {
   }
   .wallet-adapter-modal-list {
     margin-top: 15px;
-    padding: 0px 35px;
+    padding: 0px 30px;
     background: white;
     .wallet-adapter-button {
       background: linear-gradient(180deg, #fff 54.17%, #f1f0f0 100%);
@@ -204,6 +204,7 @@ body {
       height: 57px;
       padding: 0px 15px;
       margin-bottom: 0.8rem;
+      border-radius: 20px !important;
     }
   }
 }
