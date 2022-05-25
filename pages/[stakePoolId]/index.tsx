@@ -255,14 +255,7 @@ function Home() {
           {showAllowedTokens && (
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
           )}
-          <div
-            className={cn(styles.grid, 'custom-scrollbar', {
-              'grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3':
-                userTokenAccounts.loaded &&
-                showResultTokens() &&
-                showResultTokens().length != 0,
-            })}
-          >
+          <div className={cn(styles.grid, 'custom-scrollbar')}>
             {!wallet.wallet && !wallet.connected && !wallet.connecting && (
               <p className="text-center text-2xl text-yellow-500">
                 No connected wallet detected
@@ -274,7 +267,7 @@ function Home() {
               </div>
             ) : (showResultTokens() || []).length == 0 && wallet.connected ? (
               <p className="text-center text-2xl text-green-500">
-                No allowed tokens found in wallet.
+                No allowed Genesis Eggs found in wallet.
               </p>
             ) : (
               (showResultTokens() || []).map((tk, i) => (
@@ -403,14 +396,7 @@ function Home() {
           {showAllowedTokens && (
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
           )}
-          <div
-            className={cn(styles.grid, 'custom-scrollbar', {
-              'grid grid-cols-2 grid-rows-3 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3':
-                stakedTokenDatas.loaded &&
-                stakedTokenDatas.data &&
-                stakedTokenDatas.data.length != 0,
-            })}
-          >
+          <div className={cn(styles.grid, 'custom-scrollbar')}>
             {!stakedTokenDatas.loaded ? (
               <div className="align-center flex h-full w-full justify-center">
                 <LoadingSpinner height="100px" />

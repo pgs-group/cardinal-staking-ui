@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useStakePoolLeaderboard } from '../../hooks/useStakePoolLeaderboard'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useLeaderboard } from '../../providers/LeaderboardProvider'
-
+import BasicModal from '../../components/BasicModal'
 export default function Leaderboard() {
   const { leaderboard, loading, topScore } = useLeaderboard()
   const [showModal, setShowModal] = useState(false)
@@ -26,17 +26,31 @@ export default function Leaderboard() {
   return (
     <>
       <a onClick={() => show()}>LEADERBOARD</a>
-      <div className={cn('leaderboard-modal', { show: showModal })}>
-        <div className="leaderboard-overlay" onClick={() => close()}></div>
-        <div className={cn('leaderboard-modal-body', { show: showModal })}>
-          <FiX
-            onClick={() => close()}
-            size="24"
-            className="leaderboard-close"
-          />
+      <BasicModal
+        show={showModal}
+        closeModal={() => {
+          close()
+        }}
+      >
+        <>
+          <span className="leaderboard-close" onClick={close}>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 13 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3.3056 0.585136L6.50015 3.77725L9.69469 0.585136C11.4816 -1.2042 14.2045 1.51627 12.4152 3.3056L9.22305 6.50015L12.4152 9.69469C14.2045 11.4816 11.4816 14.2045 9.69469 12.4152L6.50015 9.22305L3.3056 12.4152C1.51627 14.2045 -1.2042 11.4816 0.585136 9.69469L3.77725 6.50015L0.585136 3.3056C-1.2042 1.51627 1.51627 -1.2042 3.3056 0.585136Z"
+                fill="white"
+              />
+            </svg>
+          </span>
+
           <div className="Leaderboard">
             <h3 className="Leaderboard-title">LEADERBOARD</h3>
-            <div className="leaders">
+            <div className="leaders custom-scrollbar">
               {loading && <h1 className="leaders-loading">LOADING...</h1>}
               {leaderboard &&
                 leaderboard.map((item: any, index: number) => (
@@ -105,8 +119,8 @@ export default function Leaderboard() {
                 ))}
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      </BasicModal>
     </>
   )
 }

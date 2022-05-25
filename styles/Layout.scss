@@ -28,7 +28,7 @@
     --v-header-height: 120px;
     --v-header-logo-width: 145px;
     --v-header-content-margin-x: 0px;
-    --v-header-title-font-size: 24px;
+    --v-header-title-font-size: 21px;
     --v-header-button-height: 45px;
     --v-header-button-padding: 0 15px;
     --v-header-button-font-size: 17px;
@@ -223,7 +223,7 @@
     position: absolute;
     top: calc(100vh - 260px);
     left: -75px;
-    width: 160px;
+    width: 150px;
     z-index: 1;
     animation-duration: 4s;
     animation-iteration-count: 1;

@@ -1,6 +1,6 @@
 @import 'styles/mixins.scss';
 .wrapper {
-  height: 670px;
+  height: calc(100vh - 250px);
   padding: 1rem 2rem 1rem 2rem;
   border-radius: 40px;
   background-image: linear-gradient(
@@ -11,6 +11,8 @@
   box-shadow: 0px 4px 26px -1px #d67f02;
   backdrop-filter: blur(25px);
   border-radius: 30px;
+  display: flex;
+  flex-direction: column;
 }
 .heading {
   color: #ff4b0e;
@@ -25,7 +27,7 @@
 .grid {
   background-color: rgba(252, 212, 59, 0.5);
   border-radius: 25px;
-  height: 500px;
+  height: 100%;
   box-shadow: 0px 0px 20px 0px #d67f02 inset;
   padding: 1rem;
   // display: grid;
@@ -34,6 +36,11 @@
   // grid-gap: 20px;
   overflow-x: hidden;
   overflow-y: auto;
+  > div {
+    float: left;
+    width: calc(33.333333% - 20px);
+    margin: 10px;
+  }
 }
 .gridItem {
   // height: 200px;
@@ -60,7 +67,7 @@
 .image {
   border-radius: 15px;
   object-fit: cover;
-  height: 115px;
+  height: 135px;
   width: 100%;
 }
 .detail {

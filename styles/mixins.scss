@@ -14,7 +14,7 @@ $xl: 1170px;
 }
 
 @mixin on-lg {
-  @media only screen and (min-width: $lg) and (max-width: 1170px) {
+  @media only screen and (min-width: $lg) and (max-width: $xl) {
     @content;
   }
 }
