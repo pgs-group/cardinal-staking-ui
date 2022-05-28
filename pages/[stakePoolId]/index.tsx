@@ -57,6 +57,20 @@ function Home() {
     setShowReleaseConfirm(false)
     handleUnstake()
   }
+
+  const [tokensLoading, setTokensLoading] = useState(false)
+  const [stakeTokensLoading, setStakeTokensLoading] = useState(false)
+  useEffect(() => {
+    setTokensLoading(!userTokenAccounts.loaded)
+    setStakeTokensLoading(!stakedTokenDatas.loaded)
+  }, [])
+  useEffect(() => {
+    // compensate tokens loading delay
+    setTimeout(() => {
+      setTokensLoading(!userTokenAccounts.loaded)
+      setStakeTokensLoading(!stakedTokenDatas.loaded)
+    }, 500)
+  }, [userTokenAccounts.loaded, stakedTokenDatas.loaded])
   const showResultTokens = () => {
     if (!wallet.connected) return []
     if (!filteredTokens) return []
@@ -268,7 +282,7 @@ function Home() {
                 No connected wallet detected
               </p>
             )}
-            {wallet.connected && !userTokenAccounts.loaded ? (
+            {wallet.connected && tokensLoading ? (
               <div className="align-center flex h-full w-full justify-center">
                 <LoadingSpinner height="100px" />
               </div>
@@ -406,7 +420,7 @@ function Home() {
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
           )}
           <div className={cn(styles.grid, 'custom-scrollbar')}>
-            {!stakedTokenDatas.loaded ? (
+            {wallet.connected && stakeTokensLoading ? (
               <div className="align-center flex h-full w-full justify-center">
                 <LoadingSpinner height="100px" />
               </div>
