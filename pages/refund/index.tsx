@@ -35,7 +35,7 @@ export default function RefundPage() {
 
   return (
     <>
-      <div className="container-custom container mx-auto flex-auto py-10">
+      <div className="container mx-auto">
         <BasicBreadcrumb title="Explore" />
         {publicKey && (
           <GridFilters
@@ -82,5 +82,5 @@ export default function RefundPage() {
 }
 
 RefundPage.getLayout = function getLayout(page) {
-  return <DefaultLayout className="bg-refund">{page}</DefaultLayout>
+  return <DefaultLayout className="bg-staking-pool">{page}</DefaultLayout>
 }

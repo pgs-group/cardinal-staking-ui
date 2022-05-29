@@ -75,6 +75,16 @@
       a {
         font-size: var(--v-header-button-font-size);
         text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
+
+        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 109px;
+        color: white;
+        height: var(--v-header-button-height);
+        // padding: var(--v-header-button-padding);
+        padding: 0 1.4rem;
+        line-height: var(--v-header-button-height);
+        display: inline-block;
+
         background: radial-gradient(
               106.52% 100% at 86.81% 100%,
               rgba(0, 0, 0, 0.1) 0%,
@@ -88,15 +98,7 @@
               rgba(255, 255, 255, 0) 100%
             )
             /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
-          #00da9a;
-        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
-        border-radius: 109px;
-        color: white;
-        height: var(--v-header-button-height);
-        // padding: var(--v-header-button-padding);
-        padding: 0 1.4rem;
-        line-height: var(--v-header-button-height);
-        display: inline-block;
+          #ff4b0e;
         transition: background 0.15s ease-in;
         &:hover {
           color: white;
@@ -111,7 +113,7 @@
               rgba(255, 255, 255, 0) 69.79%,
               rgba(255, 255, 255, 0) 100%
             ),
-            #04b07e;
+            #b73407;
         }
       }
       a:nth-child(1) {
@@ -128,7 +130,7 @@
               rgba(255, 255, 255, 0) 100%
             )
             /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
-          #ff4b0e;
+          #00da9a;
         box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
         border-radius: 109px;
         margin-right: 15px;
@@ -144,7 +146,7 @@
               rgba(255, 255, 255, 0) 69.79%,
               rgba(255, 255, 255, 0) 100%
             ),
-            #b73407;
+            #04b07e;
         }
       }
       .walletButton {
