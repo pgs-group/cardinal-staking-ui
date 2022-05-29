@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './mixins.scss';
 @import 'Leaderboard.css';
 @import 'Layout.scss';
 html {
@@ -205,6 +206,145 @@ body {
       padding: 0px 15px;
       margin-bottom: 0.8rem;
       border-radius: 20px !important;
+    }
+  }
+}
+
+.card-wrapper {
+  height: calc(100vh - 250px);
+  padding: 2rem;
+  border-radius: 40px;
+  background-image: linear-gradient(
+    154.62deg,
+    rgba(255, 253, 253, 0.7) 3.67%,
+    rgba(255, 250, 250, 0.1) 98.21%
+  );
+  box-shadow: 0px 4px 26px -1px #d67f02;
+  backdrop-filter: blur(25px);
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  &-grid {
+    background-color: rgba(252, 212, 59, 0.5);
+    border-radius: 25px;
+    height: 100%;
+    box-shadow: 0px 0px 20px 0px #d67f02 inset;
+    padding: 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  &-filters {
+    margin-bottom: 2rem;
+    display: flex;
+    .filters-switch-button {
+      box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      height: 70px;
+      padding: 10px;
+      display: inline-flex;
+      border-radius: 40px;
+      button {
+        transition: background 0.3s;
+        padding: 0px 25px;
+        font-size: 1.1rem;
+        border-radius: 40px;
+        color: #7a7a7a;
+        &.active {
+          color: #fff;
+          background: radial-gradient(
+                106.52% 100% at 86.81% 100%,
+                rgba(0, 0, 0, 0.1) 0%,
+                rgba(0, 0, 0, 0) 86.18%
+              )
+              /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+            radial-gradient(
+                55.45% 54.3% at 25.93% 25.27%,
+                rgba(255, 255, 255, 0.679) 0%,
+                rgba(255, 255, 255, 0) 69.79%,
+                rgba(255, 255, 255, 0) 100%
+              )
+              /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+            #00da9a;
+        }
+      }
+    }
+    .filters-text-search {
+      box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      display: inline-flex;
+      height: 70px;
+      border-radius: 40px;
+      overflow: hidden;
+      margin-left: 30px;
+      input {
+        padding: 0px 20px;
+        font-size: 1.2rem;
+        color: #7a7a7a;
+        &:focus {
+          outline: none !important;
+        }
+      }
+      button {
+        color: #7a7a7a;
+        padding: 0px 20px;
+      }
+    }
+  }
+}
+.card-wrapper-grid-item {
+  width: calc(25% - 20px);
+  @include on-md {
+    width: calc(33.3333% - 20px);
+  }
+  @include on-sm {
+    width: calc(50% - 20px);
+  }
+  margin: 10px;
+  float: left;
+  background: white;
+  padding: 5px;
+  border-radius: 22px;
+  > img {
+    width: 100%;
+    border-radius: 20px;
+    height: 200px;
+    object-fit: cover;
+  }
+  > h4 {
+    height: 40px;
+    color: #f9a01b;
+    text-align: center;
+    font-size: 1rem;
+    padding: 10px 0;
+    line-height: 30px;
+    overflow: hidden;
+  }
+  > a {
+    height: 45px;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    > button {
+      font-size: 1rem;
+      background: radial-gradient(
+            106.52% 100% at 86.81% 100%,
+            rgba(0, 0, 0, 0.1) 0%,
+            rgba(0, 0, 0, 0) 86.18%
+          )
+          /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+        radial-gradient(
+            55.45% 54.3% at 25.93% 25.27%,
+            rgba(255, 255, 255, 0.679) 0%,
+            rgba(255, 255, 255, 0) 69.79%,
+            rgba(255, 255, 255, 0) 100%
+          )
+          /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+        #ff4b0e;
+      box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
+      color: white;
+      height: 45px;
+      padding: 0 40px;
+      border-radius: 30px;
     }
   }
 }

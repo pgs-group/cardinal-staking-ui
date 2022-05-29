@@ -2,38 +2,31 @@ import cn from 'classnames'
 import { FiSearch } from 'react-icons/fi'
 export default function GridFilters({ filters, updateFilters }) {
   return (
-    <div className="mb-12 flex px-10 lg:px-5 xl:px-0">
-      <div className="divide-slate- inline-flex divide-x divide-slate-800 pr-6">
+    <div className="card-wrapper-filters">
+      <div className="filters-switch-button">
         <button
           onClick={() => updateFilters({ ...filters, type: '' })}
-          className={cn(
-            !filters.type ? 'bg-slate-800' : 'bg-slate-700',
-            'rounded-l-lg py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800'
-          )}
+          className={cn(!filters.type ? 'active' : '')}
         >
-          All
+          ALL
         </button>
         <button
           onClick={() => updateFilters({ ...filters, type: 'refundable' })}
-          className={cn(
-            filters.type === 'refundable' ? 'bg-slate-800' : 'bg-slate-700',
-            'rounded-r-lg py-4 px-4 text-base font-semibold text-gray-200 hover:bg-slate-800'
-          )}
+          className={cn(filters.type === 'refundable' ? 'active' : '')}
         >
-          Refundable
+          REFUNDABLES
         </button>
       </div>
-      <div className="relative w-96 text-gray-600">
+      <div className="filters-text-search">
         <input
           type="search"
           name="search"
-          placeholder="Search"
-          className="h-16 w-full rounded-lg bg-slate-700 px-5 pl-12 text-base text-white focus:bg-slate-800 focus:outline-none"
+          placeholder="SEARCH..."
           onChange={(event) =>
             updateFilters({ ...filters, search: event.target.value })
           }
         />
-        <button className="absolute left-3 top-5 cursor-none text-white">
+        <button>
           <FiSearch size="22" />
         </button>
       </div>
