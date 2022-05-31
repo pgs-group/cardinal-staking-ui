@@ -1,5 +1,5 @@
 {
-  "name": "HoneyLand Egg NFT",
+  "name": "UMC Egg NFT",
   "symbol": "EGG",
   "description": "with egg you can participate in hatching mechanism and produce bee for playing game",
   "seller_fee_basis_points": 500,
@@ -20,6 +20,6 @@
   },
   "collection": {
     "name": "eggs",
-    "family": "honeyland"
+    "family": "UMC"
   }
 }

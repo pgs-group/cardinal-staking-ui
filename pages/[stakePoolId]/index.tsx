@@ -272,7 +272,7 @@ function Home() {
 
       <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
         <div className={styles.wrapper}>
-          <h3 className={styles.heading}>SELECT EGGS TO INCUBATE</h3>
+          <h3 className={styles.heading}>SELECT NFT TO STAKE</h3>
           {showAllowedTokens && (
             <AllowedTokens stakePool={stakePool}></AllowedTokens>
           )}
@@ -290,7 +290,7 @@ function Home() {
               userTokenAccounts.loaded &&
               wallet.connected ? (
               <p className="text-center text-2xl text-green-500">
-                No allowed Genesis Eggs found in wallet.
+                No allowed NFTs found in wallet.
               </p>
             ) : (
               (showResultTokens() || []).map((tk, i) => (
@@ -309,7 +309,7 @@ function Home() {
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        fallbackSrc="honey/no-image-placeholder.svg"
+                        fallbackSrc="no-image-placeholder.svg"
                       />
                       <div className={styles.detail}>
                         <span className={styles.title}>EGG</span>
@@ -404,13 +404,13 @@ function Home() {
               <span className="mr-1 inline-block">
                 {loadingStake && <LoadingSpinner height="25px" />}
               </span>
-              <span className="my-auto">Incubate</span>
+              <span className="my-auto">Stake</span>
             </button>
           </div>
         </div>
         <div className={styles.wrapper}>
           <div className="flex justify-around">
-            <h3 className={styles.heading}>YOUR INCUBATED EGGS</h3>
+            <h3 className={styles.heading}>YOUR STAKED NFTs</h3>
             <h3 className={styles.heading}>
               Total Points:{' '}
               {totalPoints || totalPoints == 0 ? totalPoints : '...'}
@@ -426,7 +426,7 @@ function Home() {
               </div>
             ) : stakedTokenDatas.data?.length === 0 ? (
               <p className="text-center text-2xl text-green-500">
-                No Genesis Eggs currently incubated.
+                No NFTs currently staked.
               </p>
             ) : (
               showStakeTokens() &&
@@ -446,7 +446,7 @@ function Home() {
                         src={
                           tk.metadata?.data.image || tk.tokenListData?.logoURI
                         }
-                        fallbackSrc="honey/no-image-placeholder.svg"
+                        fallbackSrc="no-image-placeholder.svg"
                       />
                       <div className={styles.detail}>
                         <span

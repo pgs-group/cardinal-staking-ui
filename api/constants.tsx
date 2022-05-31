@@ -10,9 +10,8 @@ export const NFT_URI_TEST =
   'https://arweave.net/UsyQlC1tfhWOsfpBm0odHA0GRq_4iR_4faTG3pzYMd4'
 
 // APOORV_POOL_ID
-export const STAKE_POOL_ID_HONEYLAND =
-  'A6MbGX6A1LUvuddHv7pV4fX9aSzBKCFyEFE5Th8dn63F'
+export const STAKE_POOL_ID_UMC = 'A6MbGX6A1LUvuddHv7pV4fX9aSzBKCFyEFE5Th8dn63F'
 
-// HONEYLAND_POOL_ID
-// export const STAKE_POOL_ID_HONEYLAND =
+// UMC_POOL_ID
+// export const STAKE_POOL_ID_UMC =
 //   '379e1cdUCrFd7e8rVesg1aZtQQe9a7HnrVSJ9ttFEgbA'
