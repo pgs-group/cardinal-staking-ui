@@ -32,14 +32,12 @@ const HeaderDefault = () => {
   return (
     <div className="v-header">
       <div className="v-header-logo">
-        <img src="/honeyland-logo.png" width="100%" />
+        <img src="/UMCStaking/umc-logo.png" width="100%" />
       </div>
       <div className="v-header-content">
         <div className="v-header-menu">
           <div className="v-header-menu-title">
-            {page === 'refund'
-              ? 'REFUNDING GENESIS EGGs'
-              : 'GENESIS EGG INCUBATOR'}
+            {page === 'refund' ? 'REFUNDING NFTs' : 'UMC NFT STAKING'}
           </div>
           <div className="v-header-menu-buttons">
             {page !== 'refund' && <Leaderboard />}
@@ -55,7 +53,7 @@ const HeaderDefault = () => {
                 {statistics.totalStakedNft}
               </div>
               <div className="v-header-statistics-box__title">
-                Total Genesis Eggs Incubating
+                Total NFTs Staking
               </div>
             </div>
             <div className="v-header-statistics-box">
@@ -63,7 +61,7 @@ const HeaderDefault = () => {
                 {(statistics.totalStakedNft * 0.0181).toFixed(2)}%
               </div>
               <div className="v-header-statistics-box__title">
-                % of Genesis Eggs Incubating
+                % of NFTs Staking
               </div>
             </div>
             <div className="v-header-statistics-box">
@@ -71,14 +69,12 @@ const HeaderDefault = () => {
                 {statistics.totalScore}
               </div>
               <div className="v-header-statistics-box__title">
-                Total Incubating Points Earned
+                Total Staking Points Earned
               </div>
             </div>
           </div>
         )}
       </div>
-      <img src="/bee-01.png" className="v-header-top-bee" />
-      <img src="/bee-02.png" className="v-header-bottom-bee" />
     </div>
   )
 }

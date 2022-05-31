@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  basePath: '',
+  basePath: '/UMCStaking',
   images: {
     domains: ['www.arweave.net'],
   },
