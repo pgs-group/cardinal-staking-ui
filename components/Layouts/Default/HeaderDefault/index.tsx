@@ -12,7 +12,7 @@ const HeaderDefault = () => {
   const page = router.route.includes('refund') ? 'refund' : 'main'
 
   const [statistics, setStatistics] = useState({
-    totalStakedNft: 10,
+    totalStakedNft: 0,
     totalScore: 0,
   })
   useEffect(() => {
