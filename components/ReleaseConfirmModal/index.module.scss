@@ -1,10 +1,14 @@
 .wrapper {
   max-width: 500px;
   padding: 2rem 1.5rem 0.5rem 1.5rem;
+  font-family: 'Roboto', sans-serif !important;
+  * {
+    font-family: 'Roboto', sans-serif !important;
+  }
   p {
     font-weight: normal;
     font-size: 1.1rem;
-    color: #969696;
+    color: #535353;
     line-height: 22px;
   }
 }
@@ -15,6 +19,7 @@
   text-align: center;
   text-transform: uppercase;
   padding: 4px 0 15px 0;
+  font-weight: bold;
 }
 .cancelButton {
   text-transform: uppercase;
@@ -103,7 +108,7 @@
 }
 .checkboxFormLabel {
   padding-left: 1rem;
-  color: #b08372;
+  color: #994626;
   cursor: pointer;
 }
 .footer {

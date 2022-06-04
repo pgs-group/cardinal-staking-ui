@@ -22,6 +22,12 @@ body {
   height: initial !important;
 }
 
+.Leaderboard {
+  font-family: 'Roboto', sans-serif !important;
+  * {
+    font-family: 'Roboto', sans-serif !important;
+  }
+}
 .wallet-adapter-button {
   border-radius: 10px !important;
   background: linear-gradient(207.67deg, #8ff6fd 3.43%, #1c4efd 104.7%);
@@ -224,8 +230,8 @@ body {
   border-radius: 30px;
   display: flex;
   flex-direction: column;
-  @include on-sm{
-    height:500px;
+  @include on-sm {
+    height: 500px;
   }
   &-grid {
     background-color: rgba(252, 212, 59, 0.5);
