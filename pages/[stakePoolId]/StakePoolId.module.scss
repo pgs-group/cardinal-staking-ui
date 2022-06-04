@@ -1,6 +1,7 @@
 @import 'styles/mixins.scss';
 .wrapper {
-  height: calc(100vh - 250px);
+  min-height: calc(100vh - 250px);
+  height:400px;
   padding: 1rem 2rem 1rem 2rem;
   border-radius: 40px;
   background-image: linear-gradient(
@@ -13,6 +14,9 @@
   border-radius: 30px;
   display: flex;
   flex-direction: column;
+  @include on-sm {
+    font-size: 1rem;
+  }
 }
 .heading {
   color: #ff4b0e;
@@ -22,6 +26,9 @@
   letter-spacing: 1px;
   @include on-lg {
     font-size: 1.1rem;
+  }
+  @include on-sm {
+    font-size: 1rem;
   }
 }
 .grid {
@@ -41,6 +48,10 @@
   float: left;
   width: calc(33.333333% - 20px);
   margin: 10px;
+  @include on-sm {
+    width: calc(50% - 20px);
+    font-size: 1rem;
+  }
 }
 .cardWrapper {
   display: inline-block;

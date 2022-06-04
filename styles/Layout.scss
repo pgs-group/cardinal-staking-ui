@@ -35,10 +35,26 @@
   }
 }
 
+@include on-sm {
+  :root {
+    --v-header-height: 120px;
+    --v-header-logo-width: 145px;
+    --v-header-content-margin-x: 0px;
+    --v-header-title-font-size: 21px;
+    --v-header-button-height: 45px;
+    --v-header-button-padding: 0 10px;
+    --v-header-button-font-size: 15px;
+  }
+}
+
 .v-header {
   display: flex;
   padding-top: 30px;
   position: relative;
+  @include on-sm {
+    flex-direction: column;
+    align-items: center;
+  }
   &-logo {
     width: var(--v-header-logo-width);
     height: var(--v-header-height);
@@ -53,6 +69,9 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    @include on-sm {
+      height:auto;
+    }
   }
 
   &-menu {
@@ -61,6 +80,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @include on-sm {
+      flex-direction: column;
+      align-items: center;
+      height:auto;
+      margin-bottom: 15px;
+    }
     height: calc(var(--v-header-height) / 2 - var(--v-header-content-margin-x));
     &-title {
       padding-left: 20px;
@@ -177,14 +202,30 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @include on-sm {
+      flex-direction: column;
+      align-items: center;
+      height:auto;
+      padding: 0;
+      margin-bottom: 10px;
+    }
     &-box {
       text-align: center;
+      @include on-sm {
+        width: 100%;
+        padding: 10px; 
+      }
       &__count {
         line-height: 45px;
         color: #43a705;
         font-size: 45px;
         text-shadow: 0px 2px 3px #183f00;
         @include on-md {
+          font-size: 25px;
+          line-height: 25px;
+          height: 25px;
+        }
+        @include on-sm {
           font-size: 25px;
           line-height: 25px;
           height: 25px;
@@ -220,6 +261,9 @@
       width: 110px;
       bottom: -65px;
     }
+    @include on-sm {
+      display: none;
+    }
   }
   &-bottom-bee {
     position: absolute;
@@ -231,6 +275,9 @@
     animation-iteration-count: 1;
     animation-name: bee-bottom-animation;
     animation-timing-function: wave;
+    @include on-sm {
+      display: none;
+    }
   }
 }
 
