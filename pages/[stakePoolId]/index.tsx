@@ -39,7 +39,6 @@ function Home() {
   const { data: stakePool, loaded: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
   const stakePoolEntries = useStakePoolEntries()
-
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
   const [loadingStake, setLoadingStake] = useState(false)
@@ -77,6 +76,7 @@ function Home() {
     else return filteredTokens
   }
   const showStakeTokens = () => {
+    console.log(stakedTokenDatas.data)
     if (!wallet.connected) return []
     if (!stakedTokenDatas.data) return []
     else return stakedTokenDatas.data
@@ -273,9 +273,7 @@ function Home() {
       <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
         <div className={styles.wrapper}>
           <h3 className={styles.heading}>SELECT EGGS TO INCUBATE</h3>
-          {showAllowedTokens && (
-            <AllowedTokens stakePool={stakePool}></AllowedTokens>
-          )}
+
           <div className={cn(styles.grid, 'custom-scrollbar')}>
             {!wallet.wallet && !wallet.connected && !wallet.connecting && (
               <p className="text-center text-2xl text-yellow-500">
@@ -312,7 +310,6 @@ function Home() {
                         fallbackSrc="honey/no-image-placeholder.svg"
                       />
                       <div className={styles.detail}>
-                        <span className={styles.title}>EGG</span>
                         <span
                           title={tk.metadata?.data.name}
                           className={styles.title}
@@ -453,7 +450,10 @@ function Home() {
                           className={styles.title}
                           title={tk.metadata?.data.name}
                         >
-                          {tk.metadata?.data.name}
+                          {(tk.metadata?.data.name || '').replace(
+                            'Genesis ',
+                            ''
+                          )}
                         </span>
                         <span
                           className={cn(styles.divider, {
