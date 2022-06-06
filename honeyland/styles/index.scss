@@ -1,5 +1,5 @@
 @import './mixins.scss';
-@import "./../components/Leaderboard/Leaderboard";
+@import './../components/Leaderboard/Leaderboard';
 @import 'Layout.scss';
 
 html {
@@ -11,7 +11,7 @@ body {
     font-family: 'Lilita One', sans-serif !important;
   }
   background-repeat: no-repeat;
-  background-image: url('../public/honeyland/background.jpg');
+  background-image: url('../../public/honeyland/background.jpg');
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
