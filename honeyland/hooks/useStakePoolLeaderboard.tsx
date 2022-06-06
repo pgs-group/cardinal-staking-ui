@@ -9,6 +9,7 @@ import { useStakePoolData } from './../../hooks/useStakePoolData'
 import { AccountData } from '@cardinal/common'
 import { PublicKey } from '@solana/web3.js'
 import { useEffect, useState } from 'react'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 const SCORE_PER_MILLISECOND = 24 * 60 * 60 * 1000 // each day has one point
 
@@ -16,6 +17,7 @@ interface LeaderboardItem {
   wallet: string
   nftCount: number
   score: number
+  currentWalletTotalPoint: number
 }
 
 export function useStakePoolLeaderboard(url?: string, options?: any) {
@@ -24,10 +26,12 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
     error?: Error
     leaderboard?: any
     topScore?: number
+    currentWalletTotalPoint?: number
   }>({
     loading: false,
   })
 
+  const currentWallet = useWallet()
   const { connection } = useEnvironmentCtx()
   const { data: stakePool }: any = useStakePoolData()
 
@@ -35,6 +39,18 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
     console.log('stakepool watched')
     if (stakePool) fetchLeaderboard()
   }, [stakePool])
+
+  useEffect(() => {
+    if (Array.isArray(status?.leaderboard)) {
+      let currentWalletTotalPoint = 0
+      status.leaderboard.find((item) => {
+        if (item.wallet == currentWallet?.publicKey?.toString()) {
+          currentWalletTotalPoint = item.score
+        }
+      })
+      setStatus({...status , currentWalletTotalPoint })
+    }
+  }, [currentWallet , status.leaderboard , stakePool])
 
   const parseStakedTokens = (stakedTokens: any) => {
     const stakeEntryDatas: AccountData<StakeEntryData>[] = []
@@ -112,8 +128,12 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
       .map((item, index) => ({ ...item, rank: index + 1 }))
 
     const topScore = leaderboard.length ? leaderboard[0]?.score : 100
-
-    setStatus({ loading: false, leaderboard, topScore })
+    setStatus({
+      ...status,
+      loading: false,
+      leaderboard,
+      topScore,
+    })
   }
 
   return { ...status, fetchLeaderboard }

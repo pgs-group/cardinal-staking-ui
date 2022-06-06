@@ -2,6 +2,7 @@ import styles from './EggGrid.module.scss'
 import { notify } from 'common/Notification'
 import cn from 'classnames'
 import StopWatchIcon from "../StopWatchIcon";
+import { useLeaderboard } from '../../providers/LeaderboardProvider'
 
 function EggGrid({
   mode,
@@ -11,6 +12,10 @@ function EggGrid({
   isSelectedEgg,
   handleClick,
 }) {
+
+  const { currentWalletTotalPoint } = useLeaderboard()
+
+
   let cardTitle = 'SELECT EGGS TO INCUBATE'
   let buttonStyle = styles.button
   let buttonTitle = 'INCUBATE'
@@ -68,7 +73,7 @@ function EggGrid({
       <div className="flex justify-around">
         <h3 className={styles.heading}>{cardTitle}</h3>
         {mode === 'staked' && (
-          <h3 className={styles.heading}>Total Points: ...</h3>
+          <h3 className={styles.heading}>Total Points: {currentWalletTotalPoint || '...'}</h3>
         )}
       </div>
       <div className={styles.grid}>
