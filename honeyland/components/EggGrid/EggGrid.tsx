@@ -2,7 +2,7 @@ import styles from './EggGrid.module.scss'
 import { notify } from 'common/Notification'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import cn from 'classnames'
-import StopWatchIcon from "../StopWatchIcon";
+import StopWatchIcon from '../StopWatchIcon'
 import { useLeaderboard } from '../../providers/LeaderboardProvider'
 
 function EggGrid({
@@ -15,7 +15,6 @@ function EggGrid({
   loading,
   loadingButton,
 }) {
-
   const { currentWalletTotalPoint } = useLeaderboard()
   let cardTitle = 'SELECT EGGS TO INCUBATE'
   let buttonStyle = styles.button
@@ -29,7 +28,7 @@ function EggGrid({
 
   const getStakedDaysAgo = (lastStakedAt: any) => {
     return Math.floor(
-        (+new Date() - +new Date(lastStakedAt.toNumber() * 1000)) / 86400000
+      (+new Date() - +new Date(lastStakedAt.toNumber() * 1000)) / 86400000
     )
   }
 
@@ -96,28 +95,43 @@ function EggGrid({
                     })}
                   >
                     {loadingButton && isSelectedEgg(tk) && (
-                        <div className="relative">
-                        <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle">
+                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle">
                         <div className="my-auto flex">
-                          <span className="mr-2">
+                          <div>
                             <LoadingSpinner height="25px" />
-                          </span>
-                          {mode === 'staked'
-                            ? 'Incubating Token...'
-                            : 'Releasing Token...'}
+                          </div>
+                          <div className="ml-2">
+                            {mode === 'staked' ? 'Incubating' : 'Releasing'}
+                          </div>
                         </div>
                       </div>
-                        </div>
                     )}
                     <img
                       src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
                       className={styles.image}
                     />
                     <div className={styles.detail}>
-                  <span title={tk.metadata?.data.name} className={styles.title}>
-                    {(tk.metadata?.data.name || '').replace(mode === 'staked' ? 'Genesis ' : '' , '')}
-                  </span>
-                      { mode === 'staked' && (<><span className={styles.divider}></span><span className={styles.timeAgo}><StopWatchIcon/>{getStakedDaysAgo(tk.stakeEntry.parsed.lastStakedAt)} days</span></>) }
+                      <span
+                        title={tk.metadata?.data.name}
+                        className={styles.title}
+                      >
+                        {(tk.metadata?.data.name || '').replace(
+                          mode === 'staked' ? 'Genesis ' : '',
+                          ''
+                        )}
+                      </span>
+                      {mode === 'staked' && (
+                        <>
+                          <span className={styles.divider}></span>
+                          <span className={styles.timeAgo}>
+                            <StopWatchIcon />
+                            {getStakedDaysAgo(
+                              tk.stakeEntry.parsed.lastStakedAt
+                            )}{' '}
+                            days
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
                   <input
