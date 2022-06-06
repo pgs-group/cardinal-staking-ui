@@ -7,7 +7,8 @@ import {
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Signer, Transaction } from '@solana/web3.js'
-import { Header } from 'common/Header'
+// #honeyland: import header from honeyland
+import { Header } from 'honeyland/common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'

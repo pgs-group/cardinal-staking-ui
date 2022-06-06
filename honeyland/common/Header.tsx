@@ -31,7 +31,7 @@ const Header = () => {
   return (
       <div className="v-header">
         <div className="v-header-logo">
-          <img src="/honeyland-logo.png" width="100%" />
+          <img src="honeyland/logo.png" width="100%" />
         </div>
         <div className="v-header-content">
           <div className="v-header-menu">
@@ -76,8 +76,8 @@ const Header = () => {
               </div>
           )}
         </div>
-        <img src="/bee-01.png" className="v-header-top-bee" />
-        <img src="/bee-02.png" className="v-header-bottom-bee" />
+        <img src="honeyland/bee-01.png" className="v-header-top-bee" />
+        <img src="honeyland/bee-02.png" className="v-header-bottom-bee" />
       </div>
   )
 }
