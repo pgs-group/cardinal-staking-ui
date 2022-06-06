@@ -1,0 +1,212 @@
+@import 'honeyland/styles/mixins.scss';
+.wrapper {
+  min-height: calc(100vh - 250px);
+  height: 400px;
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 40px;
+  background-image: linear-gradient(
+    154.62deg,
+    rgba(255, 253, 253, 0.7) 3.67%,
+    rgba(255, 250, 250, 0.1) 98.21%
+  );
+  box-shadow: 0px 4px 26px -1px #d67f02;
+  backdrop-filter: blur(25px);
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  @include on-sm {
+    font-size: 1rem;
+  }
+}
+.heading {
+  color: #ff4b0e;
+  text-align: center;
+  font-weight: medium;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  width: 100%;
+  @include on-lg {
+    font-size: 1.1rem;
+  }
+  @include on-sm {
+    font-size: 1rem;
+  }
+}
+.grid {
+  background-color: rgba(252, 212, 59, 0.5);
+  border-radius: 25px;
+  height: 100%;
+  box-shadow: 0px 0px 20px 0px #d67f02 inset;
+  padding: 1rem;
+  // display: grid;
+  // grid-template-columns: 1fr 1fr 1fr;
+  // grid-template-rows: 1fr 1fr 1fr;
+  // grid-gap: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.gridItem {
+  float: left;
+  width: calc(33.333333% - 20px);
+  margin: 10px;
+  @include on-sm {
+    width: calc(50% - 20px);
+    font-size: 1rem;
+  }
+}
+.cardWrapper {
+  display: inline-block;
+  input {
+    &:checked {
+      background-color: black;
+    }
+  }
+}
+.card {
+  padding: 2px 2px 2px 2px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 0px 8px 0px #d67f02;
+  cursor: pointer;
+  text-align: center;
+  color: #d67f02;
+}
+
+.image {
+  border-radius: 15px;
+  object-fit: cover;
+  height: 135px;
+  width: 100%;
+}
+.detail {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  height: 23px;
+  overflow: hidden;
+  padding: 0px 10px;
+  @include on-xl-max {
+    flex-direction: column;
+    height: 46px;
+  }
+}
+.title {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: medium;
+  width: 100%;
+  overflow: hidden;
+  display: inline-block;
+  max-height: 20px;
+  text-overflow: ellipsis;
+  line-height: 1.3rem;
+  @include on-lg {
+    font-size: 0.7rem;
+  }
+}
+.timeAgo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #1fb9fc;
+  width: 110%;
+  font-size: 10px;
+  margin-top: 3px;
+  @include on-xl-max {
+    justify-content: center;
+  }
+  svg {
+    font-size: 11px;
+    transform: scale(0.8);
+  }
+  span {
+    padding-left: 2px;
+  }
+}
+.button {
+  height: 55px;
+  min-width: 180px;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  background: linear-gradient(
+    154.62deg,
+    rgba(255, 253, 253, 0.7) 3.67%,
+    rgba(255, 250, 250, 0.1) 98.21%
+  );
+  background: radial-gradient(
+        106.52% 100% at 86.81% 100%,
+        rgba(0, 0, 0, 0.1) 0%,
+        rgba(0, 0, 0, 0) 86.18%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    radial-gradient(
+        55.45% 54.3% at 25.93% 25.27%,
+        rgba(255, 255, 255, 0.679) 0%,
+        rgba(255, 255, 255, 0) 69.79%,
+        rgba(255, 255, 255, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    #00da9a;
+  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
+
+  border-radius: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.button_red {
+  background: radial-gradient(
+        106.52% 100% at 86.81% 100%,
+        rgba(0, 0, 0, 0.1) 0%,
+        rgba(0, 0, 0, 0) 86.18%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    radial-gradient(
+        55.45% 54.3% at 25.93% 25.27%,
+        rgba(255, 255, 255, 0.679) 0%,
+        rgba(255, 255, 255, 0) 69.79%,
+        rgba(255, 255, 255, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    #ff4b0e;
+  box-shadow: 1px 2px 10px 0px #00000080;
+}
+.footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.selected {
+  background-color: #00ffad;
+  color: #623ce7;
+  box-shadow: 0px 0px 12px 6px rgb(0 0 0 / 20%);
+  svg path {
+    fill: #55a55e;
+    color: #55a55e;
+  }
+  svg ~ span {
+    color: #55a55e;
+  }
+  .detail-divider {
+    color: #623ce7 !important;
+  }
+}
+.divider {
+  height: 16px;
+  width: 1px;
+  display: inline-block;
+  margin: 0 7px;
+  background-color: #cdcdcd;
+  opacity: 0.7;
+  @include on-xl-max {
+    display: none;
+  }
+}
+.dividerSelected {
+  background-color: #623ce7;
+}
