@@ -408,6 +408,8 @@ function Home() {
               setSelectedEggs={setUnstakedSelected}
               isSelectedEgg={isUnstakedTokenSelected}
               handleClick={handleStake}
+              loading={!allowedTokenDatas.isFetched}
+              loadingButton={loadingStake}
             />
           </div>
           <div>
@@ -418,6 +420,8 @@ function Home() {
               setSelectedEggs={setStakedSelected}
               isSelectedEgg={isStakedTokenSelected}
               handleClick={handleUnstake}
+              loading={!stakedTokenDatas.isFetched}
+              loadingButton={loadingUnstake}
             />
           </div>
         </div>
