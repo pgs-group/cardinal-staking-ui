@@ -1,5 +1,6 @@
 import StopWatchIcon from 'honeyland/components/StopWatchIcon'
 import { getStakedDaysAgo } from 'honeyland/utils'
+import { useLeaderboard } from 'honeyland/providers/LeaderboardProvider'
 import {
   createStakeEntryAndStakeMint,
   stake,
@@ -13,7 +14,7 @@ import { PublicKey, Signer, Transaction } from '@solana/web3.js'
 import { Header } from 'honeyland/common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Wallet } from '@metaplex/js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
@@ -88,6 +89,9 @@ function Home() {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
+
+  const [totalPoints, setTotalPoints] = useState(null)
+  const { leaderboard, fetchLeaderboard } = useLeaderboard()
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
@@ -395,7 +399,17 @@ function Home() {
         stk.stakeEntry?.parsed.originalMint.toString() ===
         tk.stakeEntry?.parsed.originalMint.toString()
     )
-
+  useEffect(() => {
+    if (Array.isArray(leaderboard)) {
+      let walletPoints = null
+      leaderboard.find((item) => {
+        if (item.wallet == wallet?.publicKey?.toString()) {
+          walletPoints = item.score
+        }
+      })
+      setTotalPoints(walletPoints)
+    }
+  }, [leaderboard, stakedTokenDatas, wallet?.publicKey])
   return (
     <div>
       {/* #honeyland: remove main div styles  */}
@@ -641,7 +655,8 @@ function Home() {
             <div className="honey-pool honey-pool--release my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-x-hidden overflow-y-hidden rounded-md bg-white bg-opacity-5 p-5">
                 <h4 className="honey-pool__heading">
-                  YOUR INCUBATED EGGS &nbsp; &nbsp; &nbsp; Total Points : 127{' '}
+                  YOUR INCUBATED EGGS &nbsp; &nbsp; &nbsp; Total Points :{' '}
+                  {totalPoints || totalPoints == 0 ? totalPoints : '...'}{' '}
                 </h4>
                 {!stakedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
