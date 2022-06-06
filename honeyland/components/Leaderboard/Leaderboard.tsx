@@ -21,7 +21,7 @@ export default function Leaderboard() {
 
   return (
     <>
-      <a onClick={() => show()}>LEADERBOARD</a>
+      <button onClick={() => show()}>LEADERBOARD</button>
       <BasicModal
         show={showModal}
         closeModal={() => {

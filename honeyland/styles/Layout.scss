@@ -51,6 +51,7 @@
   display: flex;
   padding-top: 30px;
   position: relative;
+  margin-bottom: 30px;
   @include on-sm {
     flex-direction: column;
     align-items: center;
@@ -97,7 +98,9 @@
     }
     &-buttons {
       display: flex;
-      a {
+      > button {
+        font-weight: 100;
+        text-transform: uppercase;
         font-size: var(--v-header-button-font-size);
         text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
 
@@ -141,7 +144,7 @@
             #b73407;
         }
       }
-      a:nth-child(1) {
+      > button:nth-child(1) {
         background: radial-gradient(
               106.52% 100% at 86.81% 100%,
               rgba(0, 0, 0, 0.1) 0%,
@@ -171,9 +174,10 @@
               rgba(255, 255, 255, 0) 69.79%,
               rgba(255, 255, 255, 0) 100%
             ),
-            #04b07e;
+            #04b07e!important;
         }
       }
+
       .walletButton {
         background: transparent;
         padding: 0;
