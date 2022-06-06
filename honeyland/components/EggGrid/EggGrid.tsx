@@ -1,9 +1,11 @@
 import styles from './EggGrid.module.scss'
 import { notify } from 'common/Notification'
+import { useState } from 'react'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import cn from 'classnames'
 import StopWatchIcon from '../StopWatchIcon'
 import { useLeaderboard } from '../../providers/LeaderboardProvider'
+import ReleaseConfirmModal from '../ReleaseConfirmModal'
 
 function EggGrid({
   mode,
@@ -15,6 +17,7 @@ function EggGrid({
   loading,
   loadingButton,
 }) {
+  const [showReleaseConfirm, setShowReleaseConfirm] = useState(false)
   const { currentWalletTotalPoint } = useLeaderboard()
   let cardTitle = 'SELECT EGGS TO INCUBATE'
   let buttonStyle = styles.button
@@ -67,9 +70,19 @@ function EggGrid({
       setSelectedEggs([...selectedEggs, tk])
     }
   }
-
+  const handleReleaseConfirm = () => {
+    setShowReleaseConfirm(false)
+  }
+  const handleReleaseClick = () => {
+    setShowReleaseConfirm(true)
+  }
   return (
     <div className={styles.wrapper}>
+      <ReleaseConfirmModal
+        show={showReleaseConfirm}
+        handleConfirm={handleReleaseConfirm}
+        onClose={() => setShowReleaseConfirm(false)}
+      />
       <div className="flex justify-around">
         <h3 className={styles.heading}>{cardTitle}</h3>
         {mode === 'staked' && (
@@ -101,7 +114,7 @@ function EggGrid({
                             <LoadingSpinner height="25px" />
                           </div>
                           <div className="ml-2">
-                            {mode === 'staked' ? 'Incubating' : 'Releasing'}
+                            {mode === 'staked' ? 'Releasing' : 'Incubating'}
                           </div>
                         </div>
                       </div>
@@ -171,7 +184,11 @@ function EggGrid({
                 type: 'error',
               })
             }
-            handleClick()
+            if (mode === 'staked') {
+              handleReleaseClick()
+            } else {
+              handleClick()
+            }
           }}
         >
           <span className="mr-1 inline-block">
