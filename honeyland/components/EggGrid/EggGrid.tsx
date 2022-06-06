@@ -1,5 +1,6 @@
 import styles from './EggGrid.module.scss'
 import { notify } from 'common/Notification'
+import { LoadingSpinner } from 'common/LoadingSpinner'
 import cn from 'classnames'
 
 function EggGrid({
@@ -9,6 +10,7 @@ function EggGrid({
   setSelectedEggs,
   isSelectedEgg,
   handleClick,
+  loading,
 }) {
   let cardTitle = 'SELECT EGGS TO INCUBATE'
   let buttonStyle = styles.button
@@ -64,51 +66,62 @@ function EggGrid({
         )}
       </div>
       <div className={styles.grid}>
-        {(eggs || []).map((tk) => (
-          <div
-            className={styles.gridItem}
-            key={tk.tokenAccount?.pubkey.toString()}
-          >
-            <label>
-              <div
-                className={cn(styles.card, {
-                  [styles.selected]: isSelectedEgg(tk),
-                })}
-              >
-                <img
-                  src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
-                  className={styles.image}
-                />
-                <div className={styles.detail}>
-                  <span title={tk.metadata?.data.name} className={styles.title}>
-                    {tk.metadata?.data.name}
-                  </span>
-                </div>
-              </div>
-              <input
-                disabled={/* loadingStake || loadingUnstake */ false}
-                placeholder={
-                  tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount >
-                  1
-                    ? '1'
-                    : ''
-                }
-                className="hidden"
-                autoComplete="off"
-                type={
-                  tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount >
-                  1
-                    ? 'text'
-                    : 'checkbox'
-                }
-                id={tk?.tokenAccount?.pubkey.toBase58()}
-                name={tk?.tokenAccount?.pubkey.toBase58()}
-                checked={isSelectedEgg(tk)}
-                onChange={(e) => onToggleSelection(e, tk)}
-              />
-            </label>
+        {loading ? (
+          <div className="align-center flex h-full w-full justify-center">
+            <LoadingSpinner height="100px" />
           </div>
-        ))}
+        ) : (
+          <>
+            {(eggs || []).map((tk) => (
+              <div
+                className={styles.gridItem}
+                key={tk.tokenAccount?.pubkey.toString()}
+              >
+                <label>
+                  <div
+                    className={cn(styles.card, {
+                      [styles.selected]: isSelectedEgg(tk),
+                    })}
+                  >
+                    <img
+                      src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
+                      className={styles.image}
+                    />
+                    <div className={styles.detail}>
+                      <span
+                        title={tk.metadata?.data.name}
+                        className={styles.title}
+                      >
+                        {tk.metadata?.data.name}
+                      </span>
+                    </div>
+                  </div>
+                  <input
+                    disabled={/* loadingStake || loadingUnstake */ false}
+                    placeholder={
+                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
+                        .amount > 1
+                        ? '1'
+                        : ''
+                    }
+                    className="hidden"
+                    autoComplete="off"
+                    type={
+                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
+                        .amount > 1
+                        ? 'text'
+                        : 'checkbox'
+                    }
+                    id={tk?.tokenAccount?.pubkey.toBase58()}
+                    name={tk?.tokenAccount?.pubkey.toBase58()}
+                    checked={isSelectedEgg(tk)}
+                    onChange={(e) => onToggleSelection(e, tk)}
+                  />
+                </label>
+              </div>
+            ))}
+          </>
+        )}
       </div>
       <div className={styles.footer}>
         <button
