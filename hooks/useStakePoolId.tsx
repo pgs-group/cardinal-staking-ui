@@ -7,10 +7,10 @@ export const useStakePoolId = () => {
   let stakePoolId: any = ''
 
   const {
-    query: { stakePoolId : queryStakePollId },
+    query: { stakePoolId : queryStakePoolId },
   } = useRouter()
 
-  stakePoolId = queryStakePollId || HONEYLAND_STAKE_POOL_ID
+  stakePoolId = queryStakePoolId || HONEYLAND_STAKE_POOL_ID
 
   const nameMapping = stakePoolMetadatas.find((p) => p.name === stakePoolId)
   const addressMapping = stakePoolMetadatas.find(
