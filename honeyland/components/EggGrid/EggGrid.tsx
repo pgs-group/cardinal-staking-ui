@@ -1,6 +1,7 @@
 import styles from './EggGrid.module.scss'
 import { notify } from 'common/Notification'
 import cn from 'classnames'
+import StopWatchIcon from "../StopWatchIcon";
 
 function EggGrid({
   mode,
@@ -19,6 +20,13 @@ function EggGrid({
     buttonStyle += ' ' + styles.button_red
     buttonTitle = 'RELEASE'
   }
+
+  const getStakedDaysAgo = (lastStakedAt: any) => {
+    return Math.floor(
+        (+new Date() - +new Date(lastStakedAt.toNumber() * 1000)) / 86400000
+    )
+  }
+
   const onToggleSelection = (e, tk) => {
     const amount = Number(e.target.value)
     if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
@@ -81,8 +89,9 @@ function EggGrid({
                 />
                 <div className={styles.detail}>
                   <span title={tk.metadata?.data.name} className={styles.title}>
-                    {tk.metadata?.data.name}
+                    {(tk.metadata?.data.name || '').replace(mode === 'staked' ? 'Genesis ' : '' , '')}
                   </span>
+                  { mode === 'staked' && (<><span className={styles.divider}></span><span className={styles.timeAgo}><StopWatchIcon/>{getStakedDaysAgo(tk.stakeEntry.parsed.lastStakedAt)} days</span></>) }
                 </div>
               </div>
               <input
