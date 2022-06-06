@@ -1,0 +1,82 @@
+.body {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+  overflow: auto;
+  border-radius: 4px;
+  outline: currentcolor none medium;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  color: black;
+}
+.bodyCustom {
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.36, 0.55, 0.19, 1);
+  transition-property: all, margin;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 21px;
+  border-bottom: solid 7px #ff4b0e;
+  animation-name: type-blue;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  background: white;
+  border-radius: 21px;
+  outline: none;
+  padding: 0.7rem;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 5;
+  width: 450px;
+  max-width: 90%;
+}
+.overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: #202020b2;
+}
+.overlayCustom {
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.36, 0.55, 0.19, 1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition-duration: 0.4s;
+  transition-timing-function: ease;
+  z-index: 1;
+}
+.header {
+  text-align: right;
+}
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  box-sizing: initial;
+  display: inline-flex;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #ff4b0e;
+  font-size: 16px;
+  border: 3px solid white;
+  box-shadow: 0px 2px 4px 0px #00000040;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.1s ease;
+  svg {
+    fill: white;
+  }
+  &:hover {
+    background-color: white;
+    svg {
+      fill: #ff4b0e !important;
+    }
+  }
+}

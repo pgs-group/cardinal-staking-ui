@@ -13,6 +13,8 @@ import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+// #honeyland: import leaderboard provider
+import { LeaderboardProvider } from 'honeyland/providers/LeaderboardProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -31,10 +33,13 @@ const App = ({
         <WalletIdentityProvider>
           <WalletModalProvider>
             <QueryClientProvider client={queryClient}>
-              <>
-                <Component {...pageProps} />
-                {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
-              </>
+              { /* #honeyland: use leaderboard provider */ }
+              <LeaderboardProvider>
+                <>
+                  <Component {...pageProps} />
+                  {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
+                </>
+              </LeaderboardProvider>
             </QueryClientProvider>
           </WalletModalProvider>
         </WalletIdentityProvider>
