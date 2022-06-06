@@ -1,3 +1,5 @@
+import StopWatchIcon from 'honeyland/components/StopWatchIcon'
+import { getStakedDaysAgo } from 'honeyland/utils'
 import {
   createStakeEntryAndStakeMint,
   stake,
@@ -419,177 +421,24 @@ function Home() {
             </div>
           )
         )}
-        {(maxStaked || rewardDistributorData) && !stakePoolMetadata?.notFound && (
-          <div
-            className="mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md bg-white bg-opacity-5 px-10 py-6 text-gray-200 md:flex-row md:justify-between"
-            style={{
-              border: stakePoolMetadata?.colors?.accent
-                ? `2px solid ${stakePoolMetadata?.colors?.accent}`
-                : '',
-            }}
-          >
-            {stakePoolEntries.data ? (
-              <>
-                <div className="inline-block text-lg">
-                  Total Staked: {stakePoolEntries.data?.length}
-                </div>
-                {maxStaked > 0 && (
-                  <div className="inline-block text-lg">
-                    {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
-                    Percent Staked:{' '}
-                    {stakePoolEntries.data?.length &&
-                      Math.floor(
-                        ((stakePoolEntries.data?.length * 100) / maxStaked) *
-                          10000
-                      ) / 10000}
-                    %
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="relative flex h-8 flex-grow items-center justify-center">
-                <span className="text-gray-500">Loading pool info...</span>
-                <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
-              </div>
-            )}
-            {rewardDistributorData.data && rewardMintInfo.data ? (
-              <>
-                <div className="inline-block text-lg">
-                  <span>Rewards Rate</span>:{' '}
-                  <span>
-                    {(
-                      (Number(
-                        getMintDecimalAmountFromNatural(
-                          rewardMintInfo.data.mintInfo,
-                          new BN(rewardDistributorData.data.parsed.rewardAmount)
-                        )
-                      ) /
-                        rewardDistributorData.data.parsed.rewardDurationSeconds.toNumber()) *
-                      86400 *
-                      (rewardDistributorData.data.parsed.defaultMultiplier.toNumber() /
-                        10 **
-                          rewardDistributorData.data.parsed.multiplierDecimals)
-                    ).toPrecision(4)}{' '}
-                    <a
-                      className="text-white underline"
-                      target="_blank"
-                      href={pubKeyUrl(
-                        rewardDistributorData.data.parsed.rewardMint,
-                        environment.label
-                      )}
-                    >
-                      {rewardMintInfo.data.tokenListData?.name}
-                    </a>{' '}
-                    / Day
-                  </span>
-                </div>
-                <div className="flex min-w-[200px] flex-col text-lg">
-                  {!rewardMintInfo.isFetched || !rewards.data ? (
-                    <div className="relative flex h-10 w-full items-center justify-center">
-                      <span className="text-gray-500"></span>
-                      <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
-                    </div>
-                  ) : (
-                    rewards.data && (
-                      <>
-                        <div>
-                          Earnings:{' '}
-                          {formatMintNaturalAmountAsDecimal(
-                            rewardMintInfo.data.mintInfo,
-                            rewards.data?.claimableRewards,
-                            6
-                          )}{' '}
-                          {rewardMintInfo.data.tokenListData?.name ?? '???'}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          <a
-                            target={'_blank'}
-                            href={pubKeyUrl(
-                              rewardDistributorData.data.pubkey,
-                              environment.label
-                            )}
-                          >
-                            {shortPubKey(rewardDistributorData.data.pubkey)}
-                          </a>{' '}
-                          {rewardDistributorData.data.parsed.kind ===
-                          RewardDistributorKind.Mint
-                            ? formatMintNaturalAmountAsDecimal(
-                                rewardMintInfo.data.mintInfo,
-                                rewardMintInfo.data.mintInfo.supply,
-                                6
-                              )
-                            : rewardDistributorTokenAccountData.data
-                            ? formatMintNaturalAmountAsDecimal(
-                                rewardMintInfo.data.mintInfo,
-                                rewardDistributorTokenAccountData.data?.amount,
-                                6
-                              )
-                            : '??'}{' '}
-                          Left
-                        </div>
-                      </>
-                    )
-                  )}
-                </div>
-              </>
-            ) : (
-              <div className="relative flex flex-grow items-center justify-center">
-                {!(
-                  rewardDistributorData.isFetched && rewardMintInfo.isFetched
-                ) && (
-                  <>
-                    <span className="text-gray-500">Loading rewards...</span>
-                    <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+        {/* #honeyland remove reward section */}
         <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div
-            className={`flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200`}
+            className={`flex-col rounded-md p-3 text-gray-200`}
             style={{
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
                 : '',
             }}
           >
-            <div className="mt-2 flex w-full flex-row justify-between">
-              <div className="flex flex-row">
-                <p className="mb-3 mr-3 inline-block text-lg">
-                  Select Your Tokens
-                </p>
-                <div className="inline-block">
-                  {allowedTokenDatas.isRefetching &&
-                    allowedTokenDatas.isFetched && (
-                      <LoadingSpinner height="25px" />
-                    )}
-                </div>
-              </div>
+            {/* #honeyland remove pool header */}
 
-              <div className="flex flex-row">
-                <button
-                  onClick={() => setShowAllowedTokens(!showAllowedTokens)}
-                  className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
-                >
-                  {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
-                </button>
-                <button
-                  onClick={() => {
-                    setShowFungibleTokens(!showFungibleTokens)
-                  }}
-                  className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
-                >
-                  {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
-                </button>
-              </div>
-            </div>
             {showAllowedTokens && (
               <AllowedTokens stakePool={stakePool}></AllowedTokens>
             )}
-            <div className="my-3 flex-auto overflow-auto">
-              <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
+            <div className="honey-pool my-3 flex-auto overflow-auto">
+              <div className="relative my-auto mb-4 h-[60vh] overflow-x-hidden overflow-y-hidden rounded-md bg-white bg-opacity-5 p-5">
+                <h4 className="honey-pool__heading">SELECT EGGS TO INCUBATE</h4>
                 {!allowedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -603,7 +452,7 @@ function Home() {
                 ) : (
                   <div
                     className={
-                      'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                      'honey-pool__grid grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
                     {(
@@ -612,10 +461,14 @@ function Home() {
                       []
                     ).map((tk) => (
                       <div key={tk.tokenAccount?.pubkey.toString()}>
-                        <div className="relative w-44 md:w-auto 2xl:w-48">
+                        <div
+                          className={`honey-card ${
+                            isUnstakedTokenSelected(tk) ? 'selected' : ''
+                          } relative w-44 md:w-auto 2xl:w-48`}
+                        >
                           <label
                             htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
-                            className="relative"
+                            className="honey-card__inner relative"
                           >
                             <div className="relative">
                               <div>
@@ -736,6 +589,12 @@ function Home() {
                                 }}
                               />
                             </div>
+                            <h4
+                              className="honey-card__title"
+                              title={tk.metadata?.data.name}
+                            >
+                              {tk.metadata?.data.name}
+                            </h4>
                           </label>
                         </div>
                       </div>
@@ -743,61 +602,6 @@ function Home() {
                   </div>
                 )}
               </div>
-            </div>
-
-            <div className="mt-2 flex items-center justify-between">
-              {!stakePoolMetadata?.receiptType && !showFungibleTokens ? (
-                <MouseoverTooltip
-                  title={
-                    receiptType === ReceiptType.Original
-                      ? 'Lock the original token(s) in your wallet when you stake'
-                      : 'Receive a dynamically generated NFT receipt representing your stake'
-                  }
-                >
-                  <div className="flex cursor-pointer flex-row gap-2">
-                    <Switch
-                      checked={receiptType === ReceiptType.Original}
-                      onChange={() =>
-                        setReceiptType(
-                          receiptType === ReceiptType.Original
-                            ? ReceiptType.Receipt
-                            : ReceiptType.Original
-                        )
-                      }
-                      style={{
-                        background:
-                          stakePoolMetadata?.colors?.secondary ||
-                          defaultSecondaryColor,
-                        color: stakePoolMetadata?.colors?.fontColor,
-                      }}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full`}
-                    >
-                      <span className="sr-only">Receipt Type</span>
-                      <span
-                        className={`${
-                          receiptType === ReceiptType.Original
-                            ? 'translate-x-6'
-                            : 'translate-x-1'
-                        } inline-block h-4 w-4 transform rounded-full bg-white`}
-                      />
-                    </Switch>
-                    <div className="flex items-center gap-1">
-                      <span
-                        style={{
-                          color: stakePoolMetadata?.colors?.fontColor,
-                        }}
-                      >
-                        {receiptType === ReceiptType.Original
-                          ? 'Original'
-                          : 'Receipt'}
-                      </span>
-                      <FaInfoCircle />
-                    </div>
-                  </div>
-                </MouseoverTooltip>
-              ) : (
-                <div></div>
-              )}
               <button
                 onClick={() => {
                   if (unstakedSelected.length === 0) {
@@ -814,64 +618,31 @@ function Home() {
                     defaultSecondaryColor,
                   color: stakePoolMetadata?.colors?.fontColor,
                 }}
-                className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+                className="honey-pool__button my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
               >
                 <span className="mr-1 inline-block">
                   {loadingStake && <LoadingSpinner height="25px" />}
                 </span>
-                <span className="my-auto">Stake Tokens</span>
+                <span className="my-auto">INCUBATE</span>
               </button>
             </div>
+            {/* #honeyland remove pool footer */}
           </div>
           <div
-            className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200"
+            className="rounded-md bg-opacity-5 p-3 text-gray-200"
             style={{
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
                 : '',
             }}
           >
-            <div className="mb-5 flex flex-row justify-between">
-              <div className="mt-2 flex flex-row">
-                <p className="mr-3 text-lg">
-                  View Staked Tokens{' '}
-                  {stakedTokenDatas.isFetched &&
-                    stakedTokenDatas.data &&
-                    `(${stakedTokenDatas.data.length})`}
-                </p>
-                <div className="inline-block">
-                  {stakedTokenDatas.isRefetching &&
-                    stakedTokenDatas.isFetched && (
-                      <LoadingSpinner height="25px" />
-                    )}
-                </div>
-              </div>
-              <div className="flex flex-col justify-evenly">
-                {stakePool?.parsed.cooldownSeconds &&
-                stakePool?.parsed.cooldownSeconds !== 0 ? (
-                  <div className="flex flex-col">
-                    <p className="mr-3 text-sm">
-                      Cooldown Period: {stakePool?.parsed.cooldownSeconds} secs
-                    </p>
-                  </div>
-                ) : (
-                  ''
-                )}
-                {stakePool?.parsed.minStakeSeconds &&
-                stakePool?.parsed.minStakeSeconds !== 0 ? (
-                  <div className="flex flex-col">
-                    <p className="mr-3 text-sm">
-                      Minimum Stake Seconds: {stakePool?.parsed.minStakeSeconds}{' '}
-                      secs
-                    </p>
-                  </div>
-                ) : (
-                  ''
-                )}
-              </div>
-            </div>
-            <div className="my-3 flex-auto overflow-auto">
-              <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
+            {/* #honeyland remove pool header */}
+
+            <div className="honey-pool honey-pool--release my-3 flex-auto overflow-auto">
+              <div className="relative my-auto mb-4 h-[60vh] overflow-x-hidden overflow-y-hidden rounded-md bg-white bg-opacity-5 p-5">
+                <h4 className="honey-pool__heading">
+                  YOUR INCUBATED EGGS &nbsp; &nbsp; &nbsp; Total Points : 127{' '}
+                </h4>
                 {!stakedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -883,17 +654,21 @@ function Home() {
                 ) : (
                   <div
                     className={
-                      'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                      'honey-pool__grid grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
                     {!stakePoolMetadata?.notFound &&
                       stakedTokenDatas.data &&
                       stakedTokenDatas.data.map((tk) => (
                         <div key={tk?.stakeEntry?.pubkey.toBase58()}>
-                          <div className="relative w-44 md:w-auto 2xl:w-48">
+                          <div
+                            className={`honey-card ${
+                              isStakedTokenSelected(tk) ? 'selected' : ''
+                            } relative w-44 md:w-auto 2xl:w-48`}
+                          >
                             <label
                               htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
-                              className="relative"
+                              className="honey-card__inner relative"
                             >
                               <div className="relative">
                                 <div>
@@ -1109,6 +884,26 @@ function Home() {
                               ) : (
                                 ''
                               )}
+                              <h4 className="honey-card__detail">
+                                <span title={tk.metadata?.data.name}>
+                                  {tk.metadata?.data.name}
+                                </span>
+                                <span
+                                  className={`${
+                                    isStakedTokenSelected(tk) ? 'selected' : ''
+                                  }`}
+                                ></span>
+                                <span>
+                                  <StopWatchIcon />
+                                  <span>
+                                    27
+                                    {getStakedDaysAgo(
+                                      tk.stakeEntry.parsed.lastStakedAt
+                                    )}{' '}
+                                    days
+                                  </span>
+                                </span>
+                              </h4>
                             </label>
                           </div>
                         </div>
@@ -1116,65 +911,31 @@ function Home() {
                   </div>
                 )}
               </div>
-            </div>
-            <div className="mt-2 flex flex-row-reverse">
-              <MouseoverTooltip
-                title={'Unstake will automatically claim reward for you.'}
+              <button
+                onClick={() => {
+                  if (stakedSelected.length === 0) {
+                    notify({
+                      message: `No tokens selected`,
+                      type: 'error',
+                    })
+                  }
+                  handleUnstake()
+                }}
+                style={{
+                  background:
+                    stakePoolMetadata?.colors?.secondary ||
+                    defaultSecondaryColor,
+                  color: stakePoolMetadata?.colors?.fontColor,
+                }}
+                className="honey-pool__button my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
               >
-                <button
-                  onClick={() => {
-                    if (stakedSelected.length === 0) {
-                      notify({
-                        message: `No tokens selected`,
-                        type: 'error',
-                      })
-                    }
-                    handleUnstake()
-                  }}
-                  style={{
-                    background:
-                      stakePoolMetadata?.colors?.secondary ||
-                      defaultSecondaryColor,
-                    color: stakePoolMetadata?.colors?.fontColor,
-                  }}
-                  className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
-                >
-                  <span className="mr-1 inline-block">
-                    {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
-                  </span>
-                  <span className="my-auto">Unstake Tokens</span>
-                </button>
-              </MouseoverTooltip>
-              {rewardDistributorData.data &&
-              rewards.data?.claimableRewards.gt(new BN(0)) ? (
-                <button
-                  onClick={() => {
-                    if (stakedSelected.length === 0) {
-                      notify({
-                        message: `No tokens selected`,
-                        type: 'error',
-                      })
-                    }
-                    handleClaimRewards()
-                  }}
-                  disabled={!rewards.data?.claimableRewards.gt(new BN(0))}
-                  style={{
-                    background:
-                      stakePoolMetadata?.colors?.secondary ||
-                      defaultSecondaryColor,
-                    color: stakePoolMetadata?.colors?.fontColor,
-                  }}
-                  className="my-auto mr-5 flex rounded-md px-4 py-2 hover:scale-[1.03]"
-                >
-                  <span className="mr-1 inline-block">
-                    {loadingClaimRewards && <LoadingSpinner height="20px" />}
-                  </span>
-                  <span className="my-auto">Claim Rewards</span>
-                </button>
-              ) : (
-                ''
-              )}
+                <span className="mr-1 inline-block">
+                  {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
+                </span>
+                <span className="my-auto">Release</span>
+              </button>
             </div>
+            {/* #honeyland remove pool footer */}
           </div>
         </div>
       </div>
