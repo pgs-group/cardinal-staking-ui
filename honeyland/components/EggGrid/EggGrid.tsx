@@ -11,6 +11,7 @@ function EggGrid({
   isSelectedEgg,
   handleClick,
   loading,
+  loadingButton,
 }) {
   let cardTitle = 'SELECT EGGS TO INCUBATE'
   let buttonStyle = styles.button
@@ -136,7 +137,9 @@ function EggGrid({
             handleClick()
           }}
         >
-          <span className="mr-1 inline-block"></span>
+          <span className="mr-1 inline-block">
+            {loadingButton ? <LoadingSpinner height="25px" /> : ''}
+          </span>
           <span className="my-auto">{buttonTitle}</span>
         </button>
       </div>
