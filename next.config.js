@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  basePath: '',
+  images: {
+    domains: ['www.arweave.net'],
+  },
   env: {
     MAINNET_PRIMARY: process.env.MAINNET_PRIMARY,
     BASE_CLUSTER: process.env.BASE_CLUSTER,
