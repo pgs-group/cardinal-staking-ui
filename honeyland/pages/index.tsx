@@ -419,7 +419,11 @@ function Home() {
                   setSelectedEggs={setUnstakedSelected}
                   isSelectedEgg={isUnstakedTokenSelected}
                   handleClick={handleStake}
-                  loading={!allowedTokenDatas.isFetched && wallet.connected}
+                  loading={
+                    !allowedTokenDatas.isFetched &&
+                    typeof allowedTokenDatas.data === 'undefined' &&
+                    wallet.connected
+                  }
                   loadingButton={loadingStake}
                 />
               </div>
@@ -431,7 +435,11 @@ function Home() {
                   setSelectedEggs={setStakedSelected}
                   isSelectedEgg={isStakedTokenSelected}
                   handleClick={handleUnstake}
-                  loading={!stakedTokenDatas.isFetched && wallet.connected}
+                  loading={
+                    !stakedTokenDatas.isFetched &&
+                    typeof stakedTokenDatas.data === 'undefined' &&
+                    wallet.connected
+                  }
                   loadingButton={loadingUnstake}
                 />
               </div>
