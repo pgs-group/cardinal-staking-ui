@@ -1,24 +1,39 @@
 import { colors } from './constant'
 import { FiUser } from 'react-icons/fi'
 import { shortPubKey } from 'common/utils'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useLeaderboard } from '../../providers/LeaderboardProvider'
 import BasicModal from '../../components/BasicModal'
+
+const LIMIT = 20
+
 export default function Leaderboard() {
+  const leaderBox = useRef()
   const { leaderboard, loading, topScore } = useLeaderboard()
   const [showModal, setShowModal] = useState(false)
+  const [after, setAfter] = useState(LIMIT)
   const wallet = useWallet()
-
   const show = () => {
     setShowModal(true)
   }
-
   const close = () => {
     setShowModal(false)
     window.scrollTo(0, 0)
   }
 
+  const onScroll = () => {
+    if (leaderBox.current) {
+      const { scrollTop, scrollHeight, clientHeight } = leaderBox.current
+      if (scrollTop + clientHeight === scrollHeight) {
+        if (after >= leaderboard.length) return
+        setAfter((val) => {
+          if (val + LIMIT > leaderboard.length) return leaderboard.length
+          return val + LIMIT
+        })
+      }
+    }
+  }
   return (
     <>
       <button onClick={() => show()}>LEADERBOARD</button>
@@ -32,7 +47,11 @@ export default function Leaderboard() {
         <>
           <div className="Leaderboard">
             <h3 className="Leaderboard-title">LEADERBOARD</h3>
-            <div className="leaders custom-scrollbar">
+            <div
+              ref={leaderBox}
+              className="leaders custom-scrollbar"
+              onScroll={onScroll}
+            >
               {loading && <h1 className="leaders-loading">LOADING...</h1>}
               {!loading && leaderboard && leaderboard.length === 0 && (
                 <h1 className="leaders-loading" style={{ fontSize: '15px' }}>
@@ -40,14 +59,8 @@ export default function Leaderboard() {
                 </h1>
               )}
               {leaderboard &&
-                leaderboard.map((item: any, index: number) => (
-                  <div
-                    key={index}
-                    style={{
-                      animationDelay: index * 0.1 + 's',
-                    }}
-                    className="leader"
-                  >
+                leaderboard.slice(0, after).map((item: any, index: number) => (
+                  <div key={index} className="leader">
                     {wallet?.publicKey?.toString() === item.wallet && (
                       <FiUser size={24} className="current-user-leader-icon" />
                     )}
@@ -90,10 +103,7 @@ export default function Leaderboard() {
                         </div>
                       </div>
                     </div>
-                    <div
-                      style={{ animationDelay: 0.4 + index * 0.2 + 's' }}
-                      className="leader-bar"
-                    >
+                    <div className="leader-bar">
                       <div
                         style={{
                           backgroundColor: colors[index],
