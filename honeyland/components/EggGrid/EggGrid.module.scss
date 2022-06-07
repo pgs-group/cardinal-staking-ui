@@ -20,18 +20,22 @@
 }
 .heading {
   color: #ff4b0e;
-  text-align: center;
+  text-align: left;
   font-weight: medium;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   letter-spacing: 1px;
-  width: 100%;
   @include on-lg {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   @include on-sm {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 }
+
+.totalPoints {
+  text-align: left;
+}
+
 .grid {
   background-color: rgba(252, 212, 59, 0.5);
   border-radius: 25px;
@@ -228,4 +232,11 @@
   background: white;
   border-radius: 15px;
   border: 2px solid #ff4b0e73;
+  font-size: 1.1rem;
+  @include on-lg {
+    font-size: 0.9rem;
+  }
+  @include on-sm {
+    font-size: 0.9rem;
+  }
 }

@@ -103,27 +103,27 @@ function EggGrid({
         handleConfirm={handleReleaseConfirm}
         onClose={() => setShowReleaseConfirm(false)}
       />
-      <div className="flex justify-around pt-1 pb-3">
+      <div className="flex items-center justify-between	 pt-1 pb-3">
         <h3 className={styles.heading}>{cardTitle}</h3>
-        {mode === 'staked' ? (
-          <h3 className={styles.heading}>
+        {mode === 'staked' && (
+          <h3 className={cn(styles.heading, styles.totalPoints)}>
             Total Points:{' '}
             {currentWalletTotalPoint ? currentWalletTotalPoint : '...'}
           </h3>
-        ) : (
-          <button
-            type="button"
-            onClick={toggleAllSelect}
-            className={styles.selectAllButton}
-            style={{ opacity: eggs?.length ? '1' : '.5' }}
-            disabled={!eggs?.length}
-          >
-            {' '}
-            {selectedEggs?.length === eggs?.length && eggs?.length
-              ? 'Deselect All'
-              : 'Select All'}
-          </button>
         )}
+
+        <button
+          type="button"
+          onClick={toggleAllSelect}
+          className={styles.selectAllButton}
+          style={{ opacity: eggs?.length ? '1' : '.5' }}
+          disabled={!eggs?.length}
+        >
+          {' '}
+          {selectedEggs?.length === eggs?.length && eggs?.length
+            ? 'Deselect All'
+            : 'Select All'}
+        </button>
       </div>
       <div className={`${styles.grid} custom-scrollbar`}>
         {loading ? (
