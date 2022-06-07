@@ -86,7 +86,10 @@ function EggGrid({
       <div className="flex justify-around">
         <h3 className={styles.heading}>{cardTitle}</h3>
         {mode === 'staked' && (
-          <h3 className={styles.heading}>Total Points: ...</h3>
+          <h3 className={styles.heading}>
+            Total Points:{' '}
+            {currentWalletTotalPoint ? currentWalletTotalPoint : '...'}
+          </h3>
         )}
       </div>
       <div className={`${styles.grid} custom-scrollbar`}>
