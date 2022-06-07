@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  basePath: '',
+  basePath: process.env.NODE_ENV === 'production' ? '/honey' : '',
   images: {
     domains: ['www.arweave.net'],
   },
