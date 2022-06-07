@@ -36,13 +36,39 @@ function EggGrid({
   }
 
   const onToggleSelection = (e, tk) => {
-    const amount = Number(e.target.value)
-    if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
-      if (e.target.value.length > 0 && !amount) {
-        notify({
-          message: 'Please enter a valid amount',
-          type: 'error',
-        })
+    if (mode === 'staked') {
+      if (isSelectedEgg(tk)) {
+        setSelectedEggs(
+          selectedEggs.filter(
+            (data) =>
+              data.stakeEntry?.pubkey.toString() !==
+              tk.stakeEntry?.pubkey.toString()
+          )
+        )
+      } else {
+        setSelectedEggs([...selectedEggs, tk])
+      }
+    } else {
+      const amount = Number(e.target.value)
+      if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
+        if (e.target.value.length > 0 && !amount) {
+          notify({
+            message: 'Please enter a valid amount',
+            type: 'error',
+          })
+          setSelectedEggs(
+            selectedEggs.filter(
+              (data) =>
+                data.tokenAccount?.account.data.parsed.info.mint.toString() !==
+                tk.tokenAccount?.account.data.parsed.info.mint.toString()
+            )
+          )
+          return
+        }
+        tk.amountToStake = amount
+      }
+
+      if (isSelectedEgg(tk)) {
         setSelectedEggs(
           selectedEggs.filter(
             (data) =>
@@ -50,24 +76,12 @@ function EggGrid({
               tk.tokenAccount?.account.data.parsed.info.mint.toString()
           )
         )
-        return
+      } else {
+        if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
+          tk.amountToStake = amount
+        }
+        setSelectedEggs([...selectedEggs, tk])
       }
-      tk.amountToStake = amount
-    }
-
-    if (isSelectedEgg(tk)) {
-      setSelectedEggs(
-        selectedEggs.filter(
-          (data) =>
-            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-            tk.tokenAccount?.account.data.parsed.info.mint.toString()
-        )
-      )
-    } else {
-      if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
-        tk.amountToStake = amount
-      }
-      setSelectedEggs([...selectedEggs, tk])
     }
   }
   const handleReleaseConfirm = () => {
