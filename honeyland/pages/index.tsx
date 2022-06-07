@@ -2,24 +2,24 @@ import {
   createStakeEntryAndStakeMint,
   stake,
   unstake,
-  claimRewards,
+  // claimRewards,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Signer, Transaction } from '@solana/web3.js'
 // #honeyland: import header from honeyland
 import { Header } from 'honeyland/common/Header'
-import Head from 'next/head'
+// import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState, useEffect } from 'react'
 import { Wallet } from '@metaplex/js'
 import { notify } from 'common/Notification'
-import { pubKeyUrl, secondstoDuration } from 'common/utils'
+// import { pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
-  formatAmountAsDecimal,
-  formatMintNaturalAmountAsDecimal,
-  getMintDecimalAmountFromNatural,
-  getMintDecimalAmountFromNaturalV2,
+  // formatAmountAsDecimal,
+  // formatMintNaturalAmountAsDecimal,
+  // getMintDecimalAmountFromNatural,
+  // getMintDecimalAmountFromNaturalV2,
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
@@ -27,30 +27,30 @@ import {
   StakeEntryTokenData,
   useStakedTokenDatas,
 } from 'hooks/useStakedTokenDatas'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewards } from 'hooks/useRewards'
-import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { AllowedTokens } from 'components/AllowedTokens'
+// import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+// import { useRewards } from 'hooks/useRewards'
+// import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+// import { AllowedTokens } from 'components/AllowedTokens'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
+// import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
 import {
   AllowedTokenData,
   useAllowedTokenDatas,
 } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { defaultSecondaryColor } from 'api/mapping'
-import { Footer } from 'common/Footer'
-import { DisplayAddress, shortPubKey } from '@cardinal/namespaces-components'
+// import { defaultSecondaryColor } from 'api/mapping'
+// import { Footer } from 'common/Footer'
+// import { DisplayAddress, shortPubKey } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
-import { useRewardEntries } from 'hooks/useRewardEntries'
-import { Switch } from '@headlessui/react'
-import { FaInfoCircle } from 'react-icons/fa'
-import { MouseoverTooltip } from 'common/Tooltip'
-import { useUTCNow } from 'providers/UTCNowProvider'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+// import { useRewardEntries } from 'hooks/useRewardEntries'
+// import { Switch } from '@headlessui/react'
+// import { FaInfoCircle } from 'react-icons/fa'
+// import { MouseoverTooltip } from 'common/Tooltip'
+// import { useUTCNow } from 'providers/UTCNowProvider'
+// import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { executeAllTransactions } from 'api/utils'
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+// import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { useRouter } from 'next/router'
 import EggGrid from '../components/EggGrid/EggGrid'
 import { LoadingSpinner } from 'common/LoadingSpinner'
@@ -59,15 +59,15 @@ function Home() {
   const router = useRouter()
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
-  const walletModal = useWalletModal()
+  // const walletModal = useWalletModal()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
-  const rewardDistributorData = useRewardDistributorData()
-  const rewardMintInfo = useRewardMintInfo()
+  // const rewardDistributorData = useRewardDistributorData()
+  // const rewardMintInfo = useRewardMintInfo()
   const stakePoolEntries = useStakePoolEntries()
-  const maxStaked = useStakePoolMaxStaked()
-  const rewardEntries = useRewardEntries()
-  const rewards = useRewards()
+  // const maxStaked = useStakePoolMaxStaked()
+  // const rewardEntries = useRewardEntries()
+  // const rewards = useRewards()
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []
@@ -80,73 +80,20 @@ function Home() {
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
-  const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
+  // const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [screenLoading, setScreenLoading] = useState(true)
-  const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
+  // const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  const { UTCNow } = useUTCNow()
+  // const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
+  // const { UTCNow } = useUTCNow()
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
     return
   }
-
-  async function handleClaimRewards() {
-    if (stakedSelected.length > 4) {
-      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
-      return
-    }
-    setLoadingClaimRewards(true)
-    if (!wallet) {
-      throw new Error('Wallet not connected')
-    }
-    if (!stakePool) {
-      notify({ message: `No stake pool detected`, type: 'error' })
-      return
-    }
-
-    const txs: (Transaction | null)[] = await Promise.all(
-      stakedSelected.map(async (token) => {
-        try {
-          if (!token || !token.stakeEntry) {
-            throw new Error('No stake entry for token')
-          }
-          return claimRewards(connection, wallet as Wallet, {
-            stakePoolId: stakePool.pubkey,
-            stakeEntryId: token.stakeEntry.pubkey,
-          })
-        } catch (e) {
-          notify({
-            message: `${e}`,
-            description: `Failed to claim rewards for token ${token?.stakeEntry?.pubkey.toString()}`,
-            type: 'error',
-          })
-          return null
-        }
-      })
-    )
-
-    try {
-      await executeAllTransactions(
-        connection,
-        wallet as Wallet,
-        txs.filter((tx): tx is Transaction => tx !== null),
-        {
-          notificationConfig: {
-            message: 'Successfully claimed rewards',
-            description: 'These rewards are now available in your wallet',
-          },
-        }
-      )
-    } catch (e) {}
-
-    rewardDistributorData.remove()
-    rewardDistributorTokenAccountData.remove()
-    setLoadingClaimRewards(false)
-  }
+  // #honeyland: remove handleClaimRewards function
 
   async function handleUnstake() {
     if (!wallet.connected) {
