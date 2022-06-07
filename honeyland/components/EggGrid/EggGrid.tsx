@@ -72,6 +72,7 @@ function EggGrid({
   }
   const handleReleaseConfirm = () => {
     setShowReleaseConfirm(false)
+    handleClick()
   }
   const handleReleaseClick = () => {
     setShowReleaseConfirm(true)
