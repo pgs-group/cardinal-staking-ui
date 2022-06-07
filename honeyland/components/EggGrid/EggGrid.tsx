@@ -89,7 +89,7 @@ function EggGrid({
           <h3 className={styles.heading}>Total Points: ...</h3>
         )}
       </div>
-      <div className={styles.grid}>
+      <div className={`${styles.grid} custom-scrollbar`}>
         {loading ? (
           <div className="align-center flex h-full w-full justify-center">
             <LoadingSpinner height="100px" />
