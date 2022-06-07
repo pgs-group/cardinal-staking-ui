@@ -11,9 +11,8 @@ import { PublicKey, Signer, Transaction } from '@solana/web3.js'
 import { Header } from 'honeyland/common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Wallet } from '@metaplex/js'
-import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
@@ -54,6 +53,7 @@ import { executeAllTransactions } from 'api/utils'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { useRouter } from 'next/router'
 import EggGrid from '../components/EggGrid/EggGrid'
+import { LoadingSpinner } from 'common/LoadingSpinner'
 
 function Home() {
   const router = useRouter()
@@ -82,6 +82,7 @@ function Home() {
   )
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
+  const [screenLoading, setScreenLoading] = useState(true)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
@@ -394,38 +395,50 @@ function Home() {
         stk.stakeEntry?.parsed.originalMint.toString() ===
         tk.stakeEntry?.parsed.originalMint.toString()
     )
-
+  useEffect(() => {
+    setTimeout(() => {
+      setScreenLoading(false)
+    }, 1000)
+  }, [])
   return (
     <>
-      <Header />
-      <div className="container mx-auto">
-        <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
-          <div>
-            <EggGrid
-              mode="unstaked"
-              eggs={allowedTokenDatas.data}
-              selectedEggs={unstakedSelected}
-              setSelectedEggs={setUnstakedSelected}
-              isSelectedEgg={isUnstakedTokenSelected}
-              handleClick={handleStake}
-              loading={!allowedTokenDatas.isFetched}
-              loadingButton={loadingStake}
-            />
-          </div>
-          <div>
-            <EggGrid
-              mode="staked"
-              eggs={stakedTokenDatas.data}
-              selectedEggs={stakedSelected}
-              setSelectedEggs={setStakedSelected}
-              isSelectedEgg={isStakedTokenSelected}
-              handleClick={handleUnstake}
-              loading={!stakedTokenDatas.isFetched}
-              loadingButton={loadingUnstake}
-            />
-          </div>
+      {screenLoading ? (
+        <div className="screen-loading">
+          <LoadingSpinner height="100px" />
         </div>
-      </div>
+      ) : (
+        <>
+          <Header />
+          <div className="container mx-auto">
+            <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
+              <div>
+                <EggGrid
+                  mode="unstaked"
+                  eggs={allowedTokenDatas.data}
+                  selectedEggs={unstakedSelected}
+                  setSelectedEggs={setUnstakedSelected}
+                  isSelectedEgg={isUnstakedTokenSelected}
+                  handleClick={handleStake}
+                  loading={!allowedTokenDatas.isFetched}
+                  loadingButton={loadingStake}
+                />
+              </div>
+              <div>
+                <EggGrid
+                  mode="staked"
+                  eggs={stakedTokenDatas.data}
+                  selectedEggs={stakedSelected}
+                  setSelectedEggs={setStakedSelected}
+                  isSelectedEgg={isStakedTokenSelected}
+                  handleClick={handleUnstake}
+                  loading={!stakedTokenDatas.isFetched}
+                  loadingButton={loadingUnstake}
+                />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   )
 }
