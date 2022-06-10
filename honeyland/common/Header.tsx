@@ -8,7 +8,10 @@ import { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useEnvironmentCtx } from '../../providers/EnvironmentProvider'
 import { styled } from '@mui/system'
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+import {
+  WalletMultiButton,
+  WalletModalButton,
+} from '@solana/wallet-adapter-react-ui'
 export const StyledWalletButton = styled(WalletMultiButton)`
   color: rgb(55, 65, 81, 1);
   &:hover {
@@ -107,7 +110,7 @@ const Header = () => {
                   DISCONNECT WALLET
                 </button>
               ) : (
-                <WalletMultiButton />
+                <WalletModalButton />
               )}
             </div>
           </div>
