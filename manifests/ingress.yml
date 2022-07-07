@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: "honey-72aa"
+    labels:
+        app: "honey-72aa"
+    annotations:
+        kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+    rules:
+        - host: frontend-honey-72aa.b6ec30dfc72046e8b5bf.eastus.aksapp.io
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: "honey-72aa"
+                servicePort: 80
