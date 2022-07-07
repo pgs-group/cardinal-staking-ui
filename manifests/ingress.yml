@@ -1,17 +1,19 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-    name: "honey-72aa"
-    labels:
-        app: "honey-72aa"
-    annotations:
-        kubernetes.io/ingress.class: addon-http-application-routing
+  name: "honey-staking"
+  labels:
+    app: "honey-staking"
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
 spec:
-    rules:
-        - host: frontend-honey-72aa.b6ec30dfc72046e8b5bf.eastus.aksapp.io
-          http:
-            paths:
-            - path: /
-              backend:
-                serviceName: "honey-72aa"
-                servicePort: 80
+  rules:
+    - host: incubate.honey.land
+      http:
+        paths:
+        - path: /
+          backend:
+            service:
+              name: "honey-staking"
+              port: 80
+          pathType: Prefix

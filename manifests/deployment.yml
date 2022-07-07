@@ -1,19 +1,19 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: "honey-72aa"
+  name: "honey-staking"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "honey-72aa"
+      app: "honey-staking"
   template:
     metadata:
       labels:
-        app: "honey-72aa"
+        app: "honey-staking"
     spec:
       containers:
-        - name: "honey-72aa"
-          image: "honeyland.azurecr.io/honey"
+        - name: "honey-staking"
+          image: "honeyland.azurecr.io/honey-staking"
           ports:
           - containerPort: 80
