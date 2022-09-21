@@ -1,11 +1,4 @@
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+/* #Honeyland: load honeyland incubating page instead cardinal */
 
-import Homepage from '../components/Homepage'
-import StakePoolHome from './[stakePoolId]'
-
-function Home() {
-  const { stakePoolMetadata } = useStakePoolMetadataCtx()
-  return <div>{stakePoolMetadata ? <StakePoolHome /> : <Homepage />}</div>
-}
-
-export default Home
+import HoneylandIndexPage from "./../honeyland/pages/index"
+export default HoneylandIndexPage

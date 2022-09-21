@@ -1,0 +1,28 @@
+@import './mixins.scss';
+@import './../components/Leaderboard/Leaderboard';
+@import 'layout.scss';
+@import 'wallet-modal.scss';
+
+html {
+  height: initial !important;
+}
+body {
+  font-family: 'Lilita One', sans-serif !important;
+  * {
+    font-family: 'Lilita One', sans-serif !important;
+  }
+  background-repeat: no-repeat;
+  background-image: url('../../public/honeyland/background.jpg');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  min-height: 100vh;
+  height: initial !important;
+}
+
+.Leaderboard {
+  font-family: 'Roboto', sans-serif !important;
+  * {
+    font-family: 'Roboto', sans-serif !important;
+  }
+}

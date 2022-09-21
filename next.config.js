@@ -9,6 +9,21 @@ const nextConfig = {
     GEO_LOCATION_API_KEY: process.env.GEO_LOCATION_API_KEY,
     BASE_CLUSTER: process.env.BASE_CLUSTER,
   },
+  rewrites: () => {
+    return [
+      {
+        source: '/leaderboard/leaderboard.json',
+        destination: 'https://incubate.honey.land/leaderboard/leaderboard.json',
+      },
+    ]
+  },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
 }
 
 module.exports =

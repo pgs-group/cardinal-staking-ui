@@ -1,0 +1,44 @@
+$pc: 1024px; // PC screen size.
+$tablet: 770px; // Tablet screen size.
+$phone: 320px; // Phone screen size.
+
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1170px;
+
+@mixin on-xl-max {
+  @media only screen and (max-width: $xl) {
+    @content;
+  }
+}
+
+@mixin on-sm {
+  @media only screen and (max-width: $md) {
+    @content;
+  }
+}
+
+@mixin on-md {
+  @media only screen and (min-width: $md) and (max-width: $lg) {
+    @content;
+  }
+}
+
+@mixin on-lg {
+  @media only screen and (min-width: $lg) and (max-width: $xl) {
+    @content;
+  }
+}
+
+@mixin on-xl {
+  @media only screen and (min-width: $xl) {
+    @content;
+  }
+}
+
+@mixin dark {
+  .dark-mode & {
+    @content;
+  }
+}

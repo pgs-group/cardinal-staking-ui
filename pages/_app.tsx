@@ -1,4 +1,8 @@
 import './styles.css'
+
+// #honeyland: import styles
+import './../honeyland/styles/index.scss'
+
 import '@cardinal/namespaces-components/dist/esm/styles.css'
 import 'tailwindcss/tailwind.css'
 
@@ -17,6 +21,9 @@ import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+
+// #honeyland: import leaderboard provider
+import { LeaderboardProvider } from 'honeyland/providers/LeaderboardProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -44,11 +51,14 @@ const App = ({
           <WalletIdentityProvider>
             <WalletModalProvider>
               <QueryClientProvider client={queryClient}>
+                { /* #honeyland: use leaderboard provider */ }
+                <LeaderboardProvider>
                 <>
                   <ToastContainer />
                   <Component {...pageProps} />
                   <ReactQueryDevtools initialIsOpen={false} />
                 </>
+                </LeaderboardProvider>
               </QueryClientProvider>
             </WalletModalProvider>
           </WalletIdentityProvider>
