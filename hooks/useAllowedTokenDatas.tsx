@@ -1,21 +1,27 @@
-import { useStakePoolId } from './useStakePoolId'
-import { useStakePoolData } from './useStakePoolData'
-import { useStakeAuthorizationsForPool } from './useStakeAuthorizationsForPool'
-import { AccountData, getBatchedMultipleAccounts } from '@cardinal/common'
-import {
+import type { AccountData } from '@cardinal/common'
+import { getBatchedMultipleAccounts } from '@cardinal/common'
+import type {
   StakeAuthorizationData,
   StakeEntryData,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import * as spl from '@solana/spl-token'
-import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { getStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import * as spl from '@solana/spl-token'
+import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+
+import { useStakeAuthorizationsForPool } from './useStakeAuthorizationsForPool'
+import { useStakePoolData } from './useStakePoolData'
+import { useStakePoolId } from './useStakePoolId'
+import type { TokenListData } from './useTokenList'
+import { useTokenList } from './useTokenList'
 import { useWalletId } from './useWalletId'
-import { TokenListData, useTokenList } from './useTokenList'
+
+export const TOKEN_DATAS_KEY = 'tokenDatas'
 
 export type AllowedTokenData = BaseTokenData & {
   metadata?: any
@@ -95,19 +101,30 @@ export const allowedTokensForPool = (
 export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const stakePoolId = useStakePoolId()
   const walletId = useWalletId()
-  const { secondaryConnection } = useEnvironmentCtx()
+  const { connection } = useEnvironmentCtx()
   const { data: tokenList } = useTokenList()
   const { data: stakePool } = useStakePoolData()
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
   return useQuery<AllowedTokenData[] | undefined>(
-    ['allowedTokenDatas', stakePoolId, showFungibleTokens, tokenList?.length],
+    [
+      TOKEN_DATAS_KEY,
+      'allowedTokenDatas',
+      stakePoolId?.toString(),
+      stakePool?.pubkey.toString(),
+      walletId?.toString(),
+      showFungibleTokens,
+      tokenList?.length,
+      stakeAuthorizations?.map((s) => s.pubkey.toString()).join(),
+    ],
     async () => {
       if (!stakePoolId || !stakePool || !walletId) return
 
-      const allTokenAccounts =
-        await secondaryConnection.getParsedTokenAccountsByOwner(walletId!, {
+      const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
+        walletId!,
+        {
           programId: spl.TOKEN_PROGRAM_ID,
-        })
+        }
+      )
 
       const tokenAccounts = allTokenAccounts.value
         .filter(
@@ -115,7 +132,6 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
             tokenAccount.account.data.parsed.info.tokenAmount.uiAmount > 0
         )
         .sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()))
-
       const metaplexIds = await Promise.all(
         tokenAccounts.map(
           async (tokenAccount) =>
@@ -127,7 +143,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         )
       )
       const metaplexAccountInfos = await getBatchedMultipleAccounts(
-        secondaryConnection,
+        connection,
         metaplexIds
       )
       const metaplexData = metaplexAccountInfos.reduce(
@@ -164,14 +180,22 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         baseTokenDatas,
         stakePool,
         stakeAuthorizations
-      ).filter((tokenData) => showFungibleTokens === !!tokenData.tokenListData)
+      ).filter(
+        (tokenData) =>
+          showFungibleTokens ===
+          (!!tokenData.tokenListData ||
+            tokenData.metaplexData?.data.tokenStandard ===
+              metaplex.TokenStandard.Fungible ||
+            tokenData.metaplexData?.data.tokenStandard ===
+              metaplex.TokenStandard.FungibleAsset)
+      )
 
       const stakeEntryIds = await Promise.all(
         allowedTokens.map(
           async (allowedToken) =>
             (
               await findStakeEntryIdFromMint(
-                secondaryConnection,
+                connection,
                 walletId!,
                 stakePoolId,
                 new PublicKey(
@@ -183,7 +207,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       )
       const stakeEntries =
         stakeEntryIds.length > 0
-          ? await getStakeEntries(secondaryConnection, stakeEntryIds)
+          ? await getStakeEntries(connection, stakeEntryIds)
           : []
 
       const metadata = await Promise.all(

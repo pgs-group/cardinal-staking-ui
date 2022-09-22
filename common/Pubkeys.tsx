@@ -1,4 +1,5 @@
-import { PublicKey } from '@solana/web3.js'
+import type { PublicKey } from '@solana/web3.js'
+
 import { pubKeyUrl, shortPubKey } from './utils'
 
 export function ShortPubKeyUrl({
@@ -12,7 +13,7 @@ export function ShortPubKeyUrl({
 }) {
   return (
     <a
-      className={`text-xs text-gray-500 ${className}`}
+      className={`text-xs ${className}`}
       target="_blank"
       rel="noreferrer"
       href={pubKeyUrl(pubkey, cluster)}

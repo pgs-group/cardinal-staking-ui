@@ -1,23 +1,5 @@
 import { PublicKey } from '@solana/web3.js'
 
-export function getExpirationString(expiration: number, UTCSecondsNow: number) {
-  let day = (expiration - UTCSecondsNow) / 60 / 60 / 24
-  let hour = ((expiration - UTCSecondsNow) / 60 / 60) % 24
-  let minute = ((expiration - UTCSecondsNow) / 60) % 60
-  let second = (expiration - UTCSecondsNow) % 60
-  const floorOrCeil = (n: number) =>
-    expiration - UTCSecondsNow > 0 ? Math.floor(n) : Math.ceil(n)
-
-  day = day < 0 ? 0 : day
-  hour = hour < 0 ? 0 : hour
-  minute = minute < 0 ? 0 : minute
-  second = second < 0 ? 0 : second
-
-  return `${floorOrCeil(day)}d ${floorOrCeil(hour)}h ${floorOrCeil(
-    minute
-  )}m ${floorOrCeil(second)}s`
-}
-
 export function shortPubKey(pubkey: PublicKey | string | null | undefined) {
   if (!pubkey) return ''
   return `${pubkey?.toString().substring(0, 4)}..${pubkey
@@ -31,6 +13,16 @@ export function pubKeyUrl(
 ) {
   if (!pubkey) return 'https://explorer.solana.com'
   return `https://explorer.solana.com/address/${pubkey.toString()}${
+    cluster === 'devnet' ? '?cluster=devnet' : ''
+  }`
+}
+
+export function metadataUrl(
+  pubkey: PublicKey | null | undefined,
+  cluster: string
+) {
+  if (!pubkey) return 'https://www.magiceden.io/item-details/'
+  return `https://www.magiceden.io/item-details/${pubkey.toString()}${
     cluster === 'devnet' ? '?cluster=devnet' : ''
   }`
 }
@@ -64,7 +56,7 @@ export function secondstoDuration(durationSeconds: number) {
   const days = Math.floor((durationSeconds % 604800) / 86400)
   const hours = Math.floor((durationSeconds % 86400) / 3600)
   const minutes = Math.floor((durationSeconds % 3600) / 60)
-  const seconds = durationSeconds % 60
+  const seconds = Math.ceil(durationSeconds % 60)
   let duration = ''
   const optionalVals = [`${years}Y`, `${months}M`, `${weeks}w`, `${days}d`]
   const vals = [`${hours}h`, `${minutes}m`, `${seconds}s`]
@@ -79,20 +71,9 @@ export function secondstoDuration(durationSeconds: number) {
   return duration
 }
 
-export const withSleep = async (fn: Function, sleep = 2000) => {
+export const withSleep = async (fn: () => any, sleep = 2000) => {
   await new Promise((r) => setTimeout(r, sleep))
   await fn()
-}
-
-/**
- *
- * @param {string} name
- * @returns {string|null}
- */
-export function getQueryParam(url: string, name: string) {
-  if (!url || !name) return null
-  const q = url.match(new RegExp('[?&]' + name + '=([^&#]*)'))
-  return q && q[1]
 }
 
 export const firstParam = (param: string | string[] | undefined): string => {
@@ -134,4 +115,29 @@ export function getLink(path: string, withParams = true) {
         : window.location.search ?? ''
       : ''
   }`
+}
+
+export const hexColor = (colorString: string): string => {
+  if (colorString.includes('#')) return colorString
+  const [r, g, b] = colorString
+    .replace('rgb(', '')
+    .replace('rgba(', '')
+    .replace(')', '')
+    .replace(' ', '')
+    .split(',')
+  return (
+    '#' +
+    [r, g, b]
+      .map((x) => {
+        const hex = parseInt(x || '').toString(16)
+        return hex.length === 1 ? '0' + hex : hex
+      })
+      .join('')
+  )
+}
+
+export const contrastColorMode = (bgColor: string): [string, boolean] => {
+  return parseInt(hexColor(bgColor).replace('#', ''), 16) < 0xffffff / 2
+    ? ['#ffffff', true]
+    : ['#000000', false]
 }

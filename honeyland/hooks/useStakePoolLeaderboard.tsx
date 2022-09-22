@@ -36,7 +36,7 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
   const { data: stakePool }: any = useStakePoolData()
 
   useEffect(() => {
-    console.log('stakepool watched')
+    console.log('stakepool watched',stakePool)
     if (stakePool) fetchLeaderboard()
   }, [stakePool])
 
@@ -48,9 +48,9 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
           currentWalletTotalPoint = item.score
         }
       })
-      setStatus({...status , currentWalletTotalPoint })
+      setStatus({ ...status, currentWalletTotalPoint })
     }
-  }, [currentWallet , status.leaderboard , stakePool])
+  }, [currentWallet, status.leaderboard, stakePool])
 
   const parseStakedTokens = (stakedTokens: any) => {
     const stakeEntryDatas: AccountData<StakeEntryData>[] = []
@@ -96,36 +96,16 @@ export function useStakePoolLeaderboard(url?: string, options?: any) {
     const today: number = +new Date()
 
     setStatus({ loading: true })
-    const stakedTokens = await getStakedTokens()
-    stakedTokens.forEach((stakedToken) => {
-      const wallet: string = new PublicKey(
-        stakedToken.parsed.lastStaker
-      ).toBase58()
-      const lastStakedAt: number = +new Date(
-        stakedToken.parsed.lastStakedAt.toNumber() * 1000
-      )
-      const score: number = Math.floor(
-        (today - lastStakedAt) / SCORE_PER_MILLISECOND
-      )
-
-      if (wallet === '11111111111111111111111111111111') return
-
-      if (!data[wallet])
-        data[wallet] = {
-          nftCount: 0,
-          score: 0,
-          wallet,
-        }
-
-      // @ts-ignore
-      data[wallet].nftCount++
-      // @ts-ignore
-      data[wallet].score += score
-    })
-
-    leaderboard = Object.values(data)
-      .sort((a, b) => b.score - a.score)
-      .map((item, index) => ({ ...item, rank: index + 1 }))
+    try {
+      leaderboard = await fetch('/leaderboard/leaderboard.json', {
+        mode: 'cors',
+         headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }).then((res) => res.json())
+    } catch (error) {
+      console.log(error)
+    }
 
     const topScore = leaderboard.length ? leaderboard[0]?.score : 100
     setStatus({

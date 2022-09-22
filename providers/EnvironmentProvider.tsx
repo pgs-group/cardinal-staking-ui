@@ -1,6 +1,9 @@
-import { Cluster, Connection } from '@solana/web3.js'
+import type { Cluster } from '@solana/web3.js'
+import { Connection } from '@solana/web3.js'
+import type { StakePoolMetadata } from 'api/mapping'
+import { stakePoolMetadatas } from 'api/mapping'
 import { firstParam } from 'common/utils'
-import { NextPageContext } from 'next'
+import type { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import React, { useContext, useMemo, useState } from 'react'
 
@@ -20,8 +23,10 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
-    secondary: 'https://ssc-dao.genesysgo.net',
+    primary:
+      process.env.MAINNET_PRIMARY || 'https://solana-api.projectserum.com',
+    secondary:
+      process.env.MAINNET_SECONDARY || 'https://solana-api.projectserum.com',
   },
   {
     label: 'testnet',
@@ -40,14 +45,29 @@ export const getInitialProps = async ({
   ctx,
 }: {
   ctx: NextPageContext
-}): Promise<{ cluster: string }> => {
-  const cluster = (ctx.req?.headers.host || ctx.query.host)?.includes('dev')
+}): Promise<{
+  cluster: string
+  poolMapping: StakePoolMetadata | undefined
+}> => {
+  const host = ctx.req?.headers.host || ctx.query.host
+  const cluster = host?.includes('dev')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
     ? 'testnet'
     : ctx.query.cluster || process.env.BASE_CLUSTER
+
+  const projectParams =
+    ctx.query.pool || ctx.req?.headers.host || ctx.query.host
+
+  const poolMapping = projectParams
+    ? stakePoolMetadatas.find(
+        (config) => config.hostname && projectParams.includes(config.hostname)
+      )
+    : undefined
+
   return {
     cluster: firstParam(cluster),
+    poolMapping: poolMapping,
   }
 }
 

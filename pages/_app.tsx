@@ -3,17 +3,21 @@ import './styles.css'
 // #honeyland: import styles
 import './../honeyland/styles/index.scss'
 
-import 'antd/dist/antd.dark.css'
 import '@cardinal/namespaces-components/dist/esm/styles.css'
-import type { AppProps } from 'next/app'
+import 'tailwindcss/tailwind.css'
+
+import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { WalletProvider } from '@solana/wallet-adapter-react'
-import { getWalletAdapters } from '@solana/wallet-adapter-wallets'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
+import { getWalletAdapters } from '@solana/wallet-adapter-wallets'
+import type { StakePoolMetadata } from 'api/mapping'
+import { ToastContainer } from 'common/Notification'
+import type { AppProps } from 'next/app'
 import {
   EnvironmentProvider,
   getInitialProps,
 } from 'providers/EnvironmentProvider'
-import { WalletIdentityProvider } from '@cardinal/namespaces-components'
+import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -23,33 +27,44 @@ import { LeaderboardProvider } from 'honeyland/providers/LeaderboardProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
-export const queryClient = new QueryClient()
-
-export const DEBUG = false
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 const App = ({
   Component,
   pageProps,
   cluster,
-}: AppProps & { cluster: string }) => (
+  poolMapping,
+}: AppProps & {
+  cluster: string
+  poolMapping: StakePoolMetadata | undefined
+}) => (
   <EnvironmentProvider defaultCluster={cluster}>
-    <UTCNowProvider>
-      <WalletProvider autoConnect wallets={getWalletAdapters()}>
-        <WalletIdentityProvider>
-          <WalletModalProvider>
-            <QueryClientProvider client={queryClient}>
-              { /* #honeyland: use leaderboard provider */ }
-              <LeaderboardProvider>
+    <StakePoolMetadataProvider poolMapping={poolMapping}>
+      <UTCNowProvider>
+        <WalletProvider autoConnect wallets={getWalletAdapters()}>
+          <WalletIdentityProvider>
+            <WalletModalProvider>
+              <QueryClientProvider client={queryClient}>
+                { /* #honeyland: use leaderboard provider */ }
+                <LeaderboardProvider>
                 <>
+                  <ToastContainer />
                   <Component {...pageProps} />
-                  {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
+                  <ReactQueryDevtools initialIsOpen={false} />
                 </>
-              </LeaderboardProvider>
-            </QueryClientProvider>
-          </WalletModalProvider>
-        </WalletIdentityProvider>
-      </WalletProvider>
-    </UTCNowProvider>
+                </LeaderboardProvider>
+              </QueryClientProvider>
+            </WalletModalProvider>
+          </WalletIdentityProvider>
+        </WalletProvider>
+      </UTCNowProvider>
+    </StakePoolMetadataProvider>
   </EnvironmentProvider>
 )
 

@@ -1,36 +1,34 @@
-import {
-  AccountData,
-  withFindOrInitAssociatedTokenAccount,
-} from '@cardinal/common'
-import {
-  RewardDistributorData,
-  RewardDistributorKind,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { Wallet } from '@metaplex/js'
+/* eslint-disable @typescript-eslint/ban-types */
+import type { AccountData } from '@cardinal/common'
+import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
+import { executeTransaction } from '@cardinal/staking'
+import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
+import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { AsyncButton } from 'common/Button'
+import { handleError } from 'common/errors'
+import { FormFieldTitleInput } from 'common/FormFieldInput'
+import { FormInput } from 'common/FormInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
+import { tryFormatInput, tryParseInput } from 'common/units'
+import { tryPublicKey } from 'common/utils'
+import { asWallet } from 'common/Wallets'
+import { useFormik } from 'formik'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { TailSpin } from 'react-loader-spinner'
-import * as splToken from '@solana/spl-token'
 import { useMemo, useState } from 'react'
 import Select from 'react-select'
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 import * as Yup from 'yup'
-import { tryPublicKey } from 'common/utils'
-import { useFormik } from 'formik'
-import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { FormInput } from 'common/FormInput'
-import { executeTransaction, handleError } from '@cardinal/staking'
-import { tryFormatAmountAsInput, tryParseInputAsAmount } from 'common/units'
 
-const publicKeyValidationTest = (value: string | undefined): boolean => {
+export const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
 }
 
-const bnValidationTest = (value: string | undefined): boolean => {
+export const bnValidationTest = (value: string | undefined): boolean => {
   if (value === undefined) return false
   try {
     new BN(value)
@@ -63,8 +61,12 @@ const creationFormSchema = Yup.object({
     )
     .required(),
   requiresAuthorization: Yup.boolean(),
+  resetOnStake: Yup.boolean(),
   cooldownPeriodSeconds: Yup.number().optional().min(0),
   minStakeSeconds: Yup.number().optional().min(0),
+  endDate: Yup.string()
+    .optional()
+    .test('is-valid-bn', 'Invalid endDate', bnValidationTest),
   rewardDistributorKind: Yup.number().optional().min(0).max(2),
   rewardMintAddress: Yup.string().test(
     'is-public-key',
@@ -80,6 +82,9 @@ const creationFormSchema = Yup.object({
   rewardMintSupply: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward mint supply', bnValidationTest),
+  maxRewardSecondsReceived: Yup.string()
+    .optional()
+    .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
   multiplierDecimals: Yup.string().optional(),
   defaultMultiplier: Yup.string()
     .optional()
@@ -113,8 +118,14 @@ export function StakePoolForm({
       pk.toString()
     ),
     requiresAuthorization: stakePoolData?.parsed.requiresAuthorization ?? false,
+    resetOnStake: stakePoolData?.parsed.resetOnStake ?? false,
     cooldownPeriodSeconds: stakePoolData?.parsed.cooldownSeconds ?? 0,
     minStakeSeconds: stakePoolData?.parsed.minStakeSeconds ?? 0,
+    endDate: stakePoolData?.parsed.endDate
+      ? new Date(stakePoolData?.parsed.endDate.toNumber() * 1000)
+          .toISOString()
+          .split('T')[0]
+      : undefined,
     rewardDistributorKind: rewardDistributorData?.parsed.kind,
     rewardMintAddress: rewardDistributorData?.parsed.rewardMint
       ? rewardDistributorData?.parsed.rewardMint.toString()
@@ -127,6 +138,10 @@ export function StakePoolForm({
       : undefined,
     rewardMintSupply: rewardDistributorData?.parsed.maxSupply
       ? rewardDistributorData?.parsed.maxSupply.toString()
+      : undefined,
+    maxRewardSecondsReceived: rewardDistributorData?.parsed
+      .maxRewardSecondsReceived
+      ? rewardDistributorData?.parsed.maxRewardSecondsReceived.toString()
       : undefined,
     multiplierDecimals: rewardDistributorData?.parsed.multiplierDecimals
       ? rewardDistributorData?.parsed.multiplierDecimals.toString()
@@ -167,7 +182,7 @@ export function StakePoolForm({
           splToken.TOKEN_PROGRAM_ID,
           Keypair.generate() // unused
         )
-        let mintInfo = await checkMint.getMintInfo()
+        const mintInfo = await checkMint.getMintInfo()
         setMintInfo(mintInfo)
         if (
           type === 'update' &&
@@ -191,7 +206,7 @@ export function StakePoolForm({
           if (transaction.instructions.length > 0) {
             await executeTransaction(
               connection,
-              wallet as Wallet,
+              asWallet(wallet),
               transaction,
               {}
             )
@@ -459,6 +474,52 @@ export function StakePoolForm({
           />
         </div>
       </div>
+      <div className="-mx-3 flex flex-wrap">
+        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+          <FormFieldTitleInput
+            title={'Pool End Date'}
+            description={
+              'End date for pool when staking is disabled but claiming rewards and unstaking is still enabled'
+            }
+          />
+          <input
+            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+            type="date"
+            placeholder={'None'}
+            name="endDate"
+            value={values.endDate}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className="-mx-3 flex flex-wrap">
+        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+          <label
+            className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+            htmlFor="require-authorization"
+          >
+            Reset on stake
+          </label>
+          <p className="mb-2 text-sm italic text-gray-300">
+            If selected, everytime a user stakes the stake timer will reset
+            rather than accumulate.
+          </p>
+          <input
+            className="mb-3 cursor-pointer"
+            id="reset-on-unstake"
+            type="checkbox"
+            name="resetOnStake"
+            checked={values.resetOnStake}
+            onChange={handleChange}
+          />{' '}
+          <span
+            className="my-auto cursor-pointer text-sm"
+            onClick={() => setFieldValue('resetOnStake', !values.resetOnStake)}
+          >
+            Reset on stake
+          </span>
+        </div>
+      </div>
       <div>
         <div className="-mx-3 mt-5 flex flex-wrap rounded-md bg-white bg-opacity-5 pb-2">
           <div className="mb-6 mt-4 w-full px-3 md:mb-0">
@@ -564,29 +625,25 @@ export function StakePoolForm({
                           ? 'border-red-500'
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-                      disabled={
-                        submitDisabled ||
-                        (type === 'update' &&
-                          rewardDistributorData !== undefined)
-                      }
                       type="text"
                       placeholder={'10'}
-                      value={tryFormatAmountAsInput(
+                      value={tryFormatInput(
                         values.rewardAmount,
                         mintInfo.decimals,
                         values.rewardAmount ?? ''
                       )}
                       onChange={(e) => {
-                        const amount = Number(e.target.value)
-                        if (!amount && e.target.value.length != 0) {
+                        const value = Number(e.target.value)
+                        if (Number.isNaN(value)) {
                           notify({
                             message: `Invalid reward amount`,
                             type: 'error',
                           })
+                          return
                         }
                         setFieldValue(
                           'rewardAmount',
-                          tryParseInputAsAmount(
+                          tryParseInput(
                             e.target.value,
                             mintInfo.decimals,
                             values.rewardAmount ?? ''
@@ -609,11 +666,6 @@ export function StakePoolForm({
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
-                      disabled={
-                        submitDisabled ||
-                        (type === 'update' &&
-                          rewardDistributorData !== undefined)
-                      }
                       placeholder={'60'}
                       value={values.rewardDurationSeconds}
                       onChange={(e) => {
@@ -669,22 +721,23 @@ export function StakePoolForm({
                         }
                         type="text"
                         placeholder={'1000000'}
-                        value={tryFormatAmountAsInput(
+                        value={tryFormatInput(
                           values.rewardMintSupply,
                           mintInfo.decimals,
                           values.rewardMintSupply ?? ''
                         )}
                         onChange={(e) => {
-                          const supply = Number(e.target.value)
-                          if (!supply && e.target.value.length != 0) {
+                          const value = Number(e.target.value)
+                          if (Number.isNaN(value)) {
                             notify({
                               message: `Invalid reward mint supply`,
                               type: 'error',
                             })
+                            return
                           }
                           setFieldValue(
                             'rewardMintSupply',
-                            tryParseInputAsAmount(
+                            tryParseInput(
                               e.target.value,
                               mintInfo.decimals,
                               values.rewardMintSupply ?? ''
@@ -712,6 +765,31 @@ export function StakePoolForm({
                       </div>
                     </div>
                   </div>
+                  <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
+                    <FormFieldTitleInput
+                      title={'Maximum reward seconds'}
+                      description={
+                        'The maximum seconds a reward entry can receive rewards for'
+                      }
+                    />
+
+                    <FormInput
+                      error={
+                        values.maxRewardSecondsReceived !== '' &&
+                        Boolean(errors.maxRewardSecondsReceived)
+                      }
+                      className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
+                      type="text"
+                      placeholder={'None'}
+                      value={values.maxRewardSecondsReceived}
+                      onChange={(e) => {
+                        setFieldValue(
+                          'maxRewardSecondsReceived',
+                          e.target.value
+                        )
+                      }}
+                    />
+                  </div>
                   <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Multiplier Decimals'}
@@ -723,15 +801,12 @@ export function StakePoolForm({
                       className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'0'}
-                      disabled={
-                        type === 'update' && rewardDistributorData !== undefined
-                      }
                       value={values.multiplierDecimals}
                       onChange={(e) => {
                         const supply = Number(
                           e.target.value.replaceAll(',', '')
                         )
-                        if (!supply && e.target.value.length != 0) {
+                        if (!supply && e.target.value.length !== 0) {
                           notify({
                             message: `Invalid multiplier decimals`,
                             type: 'error',
@@ -755,15 +830,12 @@ export function StakePoolForm({
                       className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'1'}
-                      disabled={
-                        type === 'update' && rewardDistributorData !== undefined
-                      }
                       value={values.defaultMultiplier}
                       onChange={(e) => {
                         const supply = Number(
                           e.target.value.replaceAll(',', '')
                         )
-                        if (!supply && e.target.value.length != 0) {
+                        if (!supply && e.target.value.length !== 0) {
                           notify({
                             message: `Invalid default multiplier`,
                             type: 'error',
@@ -784,11 +856,11 @@ export function StakePoolForm({
           )}
         </div>
       </div>
-      <button
+
+      <AsyncButton
         disabled={Boolean(
           values.rewardDistributorKind && submitDisabled && type !== 'update'
         )}
-        type="button"
         onClick={async () => {
           try {
             setLoading(true)
@@ -797,22 +869,11 @@ export function StakePoolForm({
             setLoading(false)
           }
         }}
+        inlineLoader
+        className="mt-4 w-max"
       >
-        <div
-          className={`mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 ${
-            submitDisabled && values.rewardDistributorKind && type !== 'update'
-              ? 'opacity-50'
-              : ''
-          }`}
-        >
-          {loading && (
-            <div className="mr-2 inline-block">
-              <TailSpin color="#fff" height={15} width={15} />
-            </div>
-          )}
-          {type.charAt(0).toUpperCase() + type.slice(1)} Pool
-        </div>
-      </button>
+        {type.charAt(0).toUpperCase() + type.slice(1)} Pool
+      </AsyncButton>
     </form>
   )
 }

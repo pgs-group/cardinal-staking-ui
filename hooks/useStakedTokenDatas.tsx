@@ -1,14 +1,17 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useStakePoolId } from './useStakePoolId'
-import { useWalletIds } from './useWalletIds'
-import { useQuery } from 'react-query'
-import { Connection, PublicKey } from '@solana/web3.js'
-import { AccountData } from '@cardinal/stake-pool'
-import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { TokenListData, useTokenList } from './useTokenList'
-import { getStakeEntriesForUser } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { getBatchedMultipleAccounts } from '@cardinal/common'
+import type { AccountData } from '@cardinal/stake-pool'
+import type { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { getStakeEntriesForUser } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import type { Connection, PublicKey } from '@solana/web3.js'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useQuery } from 'react-query'
+
+import * as useAllowedTokenDatas from './useAllowedTokenDatas'
+import { useStakePoolId } from './useStakePoolId'
+import type { TokenListData } from './useTokenList'
+import { useTokenList } from './useTokenList'
+import { useWalletIds } from './useWalletIds'
 
 export type StakeEntryTokenData = {
   tokenListData?: TokenListData
@@ -101,6 +104,7 @@ export const useStakedTokenDatas = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<StakeEntryTokenData[] | undefined>(
     [
+      useAllowedTokenDatas.TOKEN_DATAS_KEY,
       'stakedTokenDatas',
       stakePoolId?.toString(),
       walletIds.join(','),
@@ -128,7 +132,7 @@ export const useStakedTokenDatas = () => {
             ...tokenData,
             tokenListData: tokenListData,
           })
-        } else if (tokenData.metadata) {
+        } else {
           acc.push({
             ...tokenData,
             tokenListData: undefined,

@@ -1,4 +1,5 @@
 import { withCreateMint } from '@cardinal/common'
+import { executeTransaction } from '@cardinal/staking'
 import {
   CreateMasterEditionV3,
   CreateMetadataV2,
@@ -13,22 +14,19 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
-import { asWallet } from './Wallets'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { AsyncButton } from './Button'
-
-import { StakePoolMetadata } from 'api/mapping'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { executeTransaction } from '@cardinal/staking'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+
+import { AsyncButton } from './Button'
+import { asWallet } from './Wallets'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 
 export async function airdropNFT(
   connection: Connection,
   wallet: Wallet,
-  airdropMetadatas: AirdropMetadata[],
-  stakePool?: StakePoolMetadata
+  airdropMetadatas: AirdropMetadata[]
 ): Promise<string> {
   const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
@@ -114,17 +112,14 @@ export const Airdrop = () => {
 
   return (
     <AsyncButton
-      bgColor="rgb(29, 155, 240)"
-      variant="primary"
       disabled={!wallet.connected}
-      handleClick={async () => {
+      onClick={async () => {
         if (!wallet.connected) return
         try {
           await airdropNFT(
             connection,
             asWallet(wallet),
-            stakePoolMetadata?.airdrops || airdrops || [],
-            stakePoolMetadata
+            stakePoolMetadata?.airdrops || airdrops || []
           )
           notify({ message: 'Aidrop successfull', type: 'success' })
           await allowedTokenDatas.remove()
@@ -145,10 +140,8 @@ export const AirdropSol = () => {
 
   return (
     <AsyncButton
-      bgColor="rgb(29, 155, 240)"
-      variant="primary"
       disabled={!wallet.connected}
-      handleClick={async () => {
+      onClick={async () => {
         if (!wallet.connected) return
         try {
           await connection.requestAirdrop(wallet.publicKey!, LAMPORTS_PER_SOL)
@@ -164,7 +157,7 @@ export const AirdropSol = () => {
   )
 }
 
-let airdrops: { name: string; symbol: string; uri: string }[] = [
+const airdrops: { name: string; symbol: string; uri: string }[] = [
   {
     name: 'Origin Jambo',
     symbol: 'JAMB',

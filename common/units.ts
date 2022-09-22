@@ -1,4 +1,4 @@
-import { BN } from '@project-serum/anchor'
+import type { BN } from '@project-serum/anchor'
 import type { MintInfo } from '@solana/spl-token'
 import { BigNumber } from 'bignumber.js'
 
@@ -91,37 +91,42 @@ export function formatAmountAsDecimal(
   ).toString()
 }
 
-export function tryFormatAmountAsInput(
+export function tryFormatInput(
   stringAmount: string | undefined,
-  decimals: number,
+  decimals: number | undefined,
   defaultValue: string
 ): string {
   if (!stringAmount) return defaultValue
+  const trailingZeros = stringAmount.match(/\.(0+)?$/)
   try {
-    return new BigNumber(stringAmount.replace(',', ''))
-      .shiftedBy(-decimals)
-      .toFormat({
-        groupSeparator: '',
-        decimalSeparator: '.',
-      })
-      .concat(stringAmount.endsWith('.') ? '.' : '')
+    if (new BigNumber(stringAmount.replace(',', '')).isFinite()) {
+      return new BigNumber(stringAmount.replace(',', ''))
+        .shiftedBy(-(decimals || 0))
+        .toFormat({
+          groupSeparator: '',
+          decimalSeparator: '.',
+        })
+        .concat(trailingZeros && trailingZeros[0] ? trailingZeros[0] : '')
+    }
+    return defaultValue
   } catch (e) {
     return defaultValue
   }
 }
 
-export function tryParseInputAsAmount(
+export function tryParseInput(
   stringDecimal: string | undefined,
-  decimals: number,
+  decimals: number | undefined,
   defaultValue: string
 ): string {
   if (!stringDecimal) return '0'
+  const trailingZeros = stringDecimal.match(/\.(0+)?$/)
   try {
     if (new BigNumber(stringDecimal.replace(',', '')).isFinite()) {
       return new BigNumber(stringDecimal.replace(',', ''))
-        .shiftedBy(decimals)
+        .shiftedBy(decimals || 0)
         .toFixed(0, BigNumber.ROUND_FLOOR)
-        .concat(stringDecimal.endsWith('.') ? '.' : '')
+        .concat(trailingZeros && trailingZeros[0] ? trailingZeros[0] : '')
     }
     return defaultValue
   } catch (e) {
