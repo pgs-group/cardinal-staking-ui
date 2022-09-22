@@ -1,24 +1,15 @@
-import styled from '@emotion/styled'
-import { CgSpinner } from 'react-icons/cg'
-import tw from 'twin.macro'
-
-// export const LoadingSpinner = styled(CgSpinner)`
-//   ${tw`animate-spin`}
-
-//   display: inline;
-//   height: 1em;
-//   width: 1em;
-// `
-
-export const LoadingSpinner = ({
-  fill = '#FFF',
-  height = '40px',
-}: {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   fill?: string
   height?: string
-}) => {
+}
+
+export const LoadingSpinner: React.FC<Props> = ({
+  fill = '#FFF',
+  height = '40px',
+  ...props
+}: Props) => {
   return (
-    <div style={{ height, width: height, margin: 'auto' }}>
+    <div style={{ height }} {...props}>
       <svg
         version="1.1"
         id="loader-1"

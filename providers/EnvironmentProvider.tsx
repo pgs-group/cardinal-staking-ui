@@ -1,39 +1,40 @@
+import type { Cluster } from '@solana/web3.js'
 import { Connection } from '@solana/web3.js'
+import type { StakePoolMetadata } from 'api/mapping'
+import { stakePoolMetadatas } from 'api/mapping'
 import { firstParam } from 'common/utils'
-import { NextPageContext } from 'next'
+import type { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import React, { useContext, useMemo, useState } from 'react'
 
 export interface Environment {
-  label: string
-  value: string
-  override?: string
+  label: Cluster
+  primary: string
+  secondary?: string
 }
 
 export interface EnvironmentContextValues {
   environment: Environment
   setEnvironment: (newEnvironment: Environment) => void
   connection: Connection
+  secondaryConnection: Connection
 }
 
 export const ENVIRONMENTS: Environment[] = [
   {
-    label: 'mainnet',
-    value:
-      'https://solana-api.syndica.io/access-token/bkBr4li7aGVa3euVG0q4iSI6uuMiEo2jYQD35r8ytGZrksM7pdJi2a57pmlYRqCw',
-    override: 'https://ssc-dao.genesysgo.net',
+    label: 'mainnet-beta',
+    primary:
+      process.env.MAINNET_PRIMARY || 'https://solana-api.projectserum.com',
+    secondary:
+      process.env.MAINNET_SECONDARY || 'https://solana-api.projectserum.com',
   },
   {
     label: 'testnet',
-    value: 'https://api.testnet.solana.com',
+    primary: 'https://api.testnet.solana.com',
   },
   {
     label: 'devnet',
-    value: 'https://api.devnet.solana.com',
-  },
-  {
-    label: 'localnet',
-    value: 'http://127.0.0.1:8899',
+    primary: 'https://api.devnet.solana.com',
   },
 ]
 
@@ -44,14 +45,29 @@ export const getInitialProps = async ({
   ctx,
 }: {
   ctx: NextPageContext
-}): Promise<{ cluster: string }> => {
-  const cluster = (ctx.query.project || ctx.query.host)?.includes('dev')
+}): Promise<{
+  cluster: string
+  poolMapping: StakePoolMetadata | undefined
+}> => {
+  const host = ctx.req?.headers.host || ctx.query.host
+  const cluster = host?.includes('dev')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
     ? 'testnet'
     : ctx.query.cluster || process.env.BASE_CLUSTER
+
+  const projectParams =
+    ctx.query.pool || ctx.req?.headers.host || ctx.query.host
+
+  const poolMapping = projectParams
+    ? stakePoolMetadatas.find(
+        (config) => config.hostname && projectParams.includes(config.hostname)
+      )
+    : undefined
+
   return {
     cluster: firstParam(cluster),
+    poolMapping: poolMapping,
   }
 }
 
@@ -65,7 +81,7 @@ export function EnvironmentProvider({
   const { query } = useRouter()
   const cluster = (query.project || query.host)?.includes('dev')
     ? 'devnet'
-    : (query.project || query.host)?.includes('test')
+    : query.host?.includes('test')
     ? 'testnet'
     : query.cluster || defaultCluster || process.env.BASE_CLUSTER
   const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
@@ -79,7 +95,15 @@ export function EnvironmentProvider({
   }, [cluster])
 
   const connection = useMemo(
-    () => new Connection(environment.value, { commitment: 'recent' }),
+    () => new Connection(environment.primary, { commitment: 'recent' }),
+    [environment]
+  )
+
+  const secondaryConnection = useMemo(
+    () =>
+      new Connection(environment.secondary ?? environment.primary, {
+        commitment: 'recent',
+      }),
     [environment]
   )
 
@@ -89,6 +113,7 @@ export function EnvironmentProvider({
         environment,
         setEnvironment,
         connection,
+        secondaryConnection,
       }}
     >
       {children}

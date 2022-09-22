@@ -1,17 +1,19 @@
-import { useDataHook } from './useDataHook'
-import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
-import { PublicKey } from '@solana/web3.js'
+import type { PublicKey } from '@solana/web3.js'
+import type { StakePoolMetadata } from 'api/mapping'
+import { stakePoolMetadatas } from 'api/mapping'
+import { useQuery } from 'react-query'
 
-export const useStakePoolsMetadatas = (mintIds: PublicKey[] | undefined) => {
-  return useDataHook<{ [mintId: string]: StakePoolMetadata }>(
+export const useStakePoolsMetadatas = (
+  stakePoolIds: PublicKey[] | undefined
+) => {
+  return useQuery<{ [mintId: string]: StakePoolMetadata }>(
+    ['useStakePoolsMetadatas', stakePoolIds?.toString()],
     async () =>
-      (mintIds || []).reduce((acc, mintId) => {
+      (stakePoolIds || []).reduce((acc, mintId) => {
         const stakePoolMetadata = stakePoolMetadatas.find(
-          (md) => md.pubkey.toString() === mintId.toString()
+          (md) => md.stakePoolAddress.toString() === mintId.toString()
         )
         return { ...acc, [mintId.toString()]: stakePoolMetadata }
-      }, {}),
-    [mintIds?.toString()],
-    { name: 'useStakePoolsMetadatas' }
+      }, {})
   )
 }

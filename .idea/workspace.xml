@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="56972f79-c412-411a-b4be-eb34e684e533" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/cardinal-staking-ui.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/api/constants.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/common/Header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/BasicButton/index.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/BasicButton/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/BasicCheckbox/index.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/BasicCheckbox/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/BasicModal/BasicModal.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/BasicModal/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/EggGrid/EggGrid.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/EggGrid/EggGrid.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/Leaderboard/Leaderboard.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/Leaderboard/Leaderboard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/Leaderboard/constant.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/ReleaseConfirmModal/index.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/ReleaseConfirmModal/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/components/StopWatchIcon/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/hooks/useStakePoolLeaderboard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/images/background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/images/bee-01.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/images/bee-02.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/images/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/images/stopwatch.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/pages/index.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/pages/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/providers/LeaderboardProvider.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/styles/index.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/styles/layout.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/styles/mixins.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/honeyland/styles/wallet-modal.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/android-chrome-192x192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/android-chrome-512x512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/android-chrome-96x96.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/apple-touch-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/bee-01.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/bee-02.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/browserconfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/favicon-16x16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/favicon-32x32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/favicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/mstile-150x150.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/no-image-placeholder.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/safari-pinned-tab.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/honeyland/site.webmanifest" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/useStakePoolId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/useStakePoolId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2CTCcQJH6wRh5Onjm8etBB2ewjl" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../bodobit-ui" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="ts.external.directory.path" value="C:\Users\PC\WebstormProjects\lb-react\cardinal-staking-ui\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="56972f79-c412-411a-b4be-eb34e684e533" name="Changes" comment="" />
+      <created>1658817280874</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1658817280874</updated>
+      <workItem from="1658817283044" duration="622000" />
+      <workItem from="1660624553033" duration="16000" />
+      <workItem from="1663669952497" duration="652000" />
+      <workItem from="1663772637398" duration="25000" />
+      <workItem from="1663772683784" duration="445000" />
+      <workItem from="1663773167068" duration="234000" />
+      <workItem from="1663773405205" duration="3557000" />
+      <workItem from="1663777358942" duration="3093000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

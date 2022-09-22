@@ -1,4 +1,5 @@
 import { withCreateMint } from '@cardinal/common'
+import { executeTransaction } from '@cardinal/staking'
 import {
   CreateMasterEditionV3,
   CreateMetadataV2,
@@ -13,26 +14,22 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
-import { asWallet } from './Wallets'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useUserTokenData } from 'providers/TokenDataProvider'
-import { AsyncButton } from './Button'
-
-import { executeTransaction } from '@cardinal/staking'
-import { StakePoolMetadata } from 'api/mapping'
+import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+
+import { AsyncButton } from './Button'
+import { asWallet } from './Wallets'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 
 export async function airdropNFT(
   connection: Connection,
   wallet: Wallet,
-  airdropMetadatas: AirdropMetadata[],
-  stakePool?: StakePoolMetadata
+  airdropMetadatas: AirdropMetadata[]
 ): Promise<string> {
   const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
-  const creators = stakePool?.filters?.find((f) => f.type === 'creators')
   const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
 
@@ -57,24 +54,13 @@ export async function airdropNFT(
         symbol: metadata.symbol,
         uri: metadata.uri,
         sellerFeeBasisPoints: 10,
-        creators: creators
-          ? (creators.value as string[])
-              .map(
-                (c) =>
-                  new Creator({
-                    address: c,
-                    verified: false,
-                    share: 1 / creators.value.length,
-                  })
-              )
-              .concat(
-                new Creator({
-                  address: wallet.publicKey.toString(),
-                  verified: false,
-                  share: 0,
-                })
-              )
-          : null,
+        creators: [
+          new Creator({
+            address: wallet.publicKey.toString(),
+            verified: false,
+            share: 100,
+          }),
+        ],
         collection: null,
         uses: null,
       }),
@@ -121,25 +107,22 @@ export async function airdropNFT(
 export const Airdrop = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
-  const { refreshTokenAccounts } = useUserTokenData()
+  const allowedTokenDatas = useAllowedTokenDatas(true)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
     <AsyncButton
-      bgColor="rgb(29, 155, 240)"
-      variant="primary"
       disabled={!wallet.connected}
-      handleClick={async () => {
+      onClick={async () => {
         if (!wallet.connected) return
         try {
           await airdropNFT(
             connection,
             asWallet(wallet),
-            stakePoolMetadata?.airdrops || airdrops || [],
-            stakePoolMetadata
+            stakePoolMetadata?.airdrops || airdrops || []
           )
           notify({ message: 'Aidrop successfull', type: 'success' })
-          await refreshTokenAccounts()
+          await allowedTokenDatas.remove()
         } catch (e) {
           notify({ message: `Airdrop failed: ${e}`, type: 'error' })
         }
@@ -153,19 +136,17 @@ export const Airdrop = () => {
 export const AirdropSol = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
-  const { refreshTokenAccounts } = useUserTokenData()
+  const allowedTokenDatas = useAllowedTokenDatas(true)
 
   return (
     <AsyncButton
-      bgColor="rgb(29, 155, 240)"
-      variant="primary"
       disabled={!wallet.connected}
-      handleClick={async () => {
+      onClick={async () => {
         if (!wallet.connected) return
         try {
           await connection.requestAirdrop(wallet.publicKey!, LAMPORTS_PER_SOL)
           notify({ message: 'Airdropped 1 sol successfully' })
-          await refreshTokenAccounts()
+          await allowedTokenDatas.remove()
         } catch (e) {
           notify({ message: `Airdrop failed: ${e}`, type: 'error' })
         }
@@ -176,7 +157,7 @@ export const AirdropSol = () => {
   )
 }
 
-let airdrops: { name: string; symbol: string; uri: string }[] = [
+const airdrops: { name: string; symbol: string; uri: string }[] = [
   {
     name: 'Origin Jambo',
     symbol: 'JAMB',

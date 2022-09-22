@@ -1,26 +1,54 @@
-import { useDataHook } from './useDataHook'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useRewardDistributorData } from './useRewardDistributorData'
+import { Metadata, MetadataData } from '@metaplex-foundation/mpl-token-metadata'
 import * as splToken from '@solana/spl-token'
 import { Keypair } from '@solana/web3.js'
-import { TokenListData, useTokenList } from 'providers/TokenListProvider'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useQuery } from 'react-query'
+
+import { useRewardDistributorData } from './useRewardDistributorData'
+import type { TokenListData } from './useTokenList'
+import { useTokenList } from './useTokenList'
 
 export const useRewardMintInfo = () => {
-  const { connection } = useEnvironmentCtx()
-  const { tokenList } = useTokenList()
+  const { secondaryConnection } = useEnvironmentCtx()
+  const { data: tokenList } = useTokenList()
   const { data: rewardDistibutorData } = useRewardDistributorData()
-  return useDataHook<
-    | { mintInfo: splToken.MintInfo; tokenListData: TokenListData | undefined }
+  return useQuery<
+    | {
+        mintInfo: splToken.MintInfo
+        tokenListData: TokenListData | undefined
+        metaplexMintData: MetadataData | undefined
+      }
     | undefined
   >(
+    [
+      'useRewardMintInfo',
+      rewardDistibutorData?.pubkey?.toString(),
+      tokenList?.length,
+    ],
     async () => {
       if (!rewardDistibutorData) return
-      const tokenListData = tokenList.find(
+
+      // tokenListData
+      const tokenListData = tokenList?.find(
         (tk) =>
           tk.address === rewardDistibutorData?.parsed.rewardMint.toString()
       )
+
+      // Metaplex metadata
+      const metadataId = await Metadata.getPDA(
+        rewardDistibutorData.parsed.rewardMint
+      )
+      const accountInfo = await secondaryConnection.getAccountInfo(metadataId)
+      let metaplexMintData: MetadataData | undefined
+      try {
+        metaplexMintData = MetadataData.deserialize(
+          accountInfo?.data as Buffer
+        ) as MetadataData
+      } catch (e) {}
+
+      // Mint info
       const rewardMint = new splToken.Token(
-        connection,
+        secondaryConnection,
         rewardDistibutorData.parsed.rewardMint,
         splToken.TOKEN_PROGRAM_ID,
         Keypair.generate() // not used
@@ -29,9 +57,8 @@ export const useRewardMintInfo = () => {
       return {
         mintInfo,
         tokenListData,
+        metaplexMintData,
       }
-    },
-    [rewardDistibutorData?.pubkey?.toString(), tokenList],
-    { name: 'rewardDistributorTokenAccount' }
+    }
   )
 }

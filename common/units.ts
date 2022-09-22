@@ -78,3 +78,58 @@ export function getMintDecimalAmountFromNaturalV2(
 ) {
   return new BigNumber(naturalAmount.toString()).shiftedBy(-decimals)
 }
+
+export function formatAmountAsDecimal(
+  decimals: number,
+  naturalAmount: BN,
+  decimalPlaces?: number
+) {
+  return new Number(
+    new BigNumber(naturalAmount.toString())
+      .shiftedBy(-decimals)
+      .toFixed(decimalPlaces ?? 0)
+  ).toString()
+}
+
+export function tryFormatInput(
+  stringAmount: string | undefined,
+  decimals: number | undefined,
+  defaultValue: string
+): string {
+  if (!stringAmount) return defaultValue
+  const trailingZeros = stringAmount.match(/\.(0+)?$/)
+  try {
+    if (new BigNumber(stringAmount.replace(',', '')).isFinite()) {
+      return new BigNumber(stringAmount.replace(',', ''))
+        .shiftedBy(-(decimals || 0))
+        .toFormat({
+          groupSeparator: '',
+          decimalSeparator: '.',
+        })
+        .concat(trailingZeros && trailingZeros[0] ? trailingZeros[0] : '')
+    }
+    return defaultValue
+  } catch (e) {
+    return defaultValue
+  }
+}
+
+export function tryParseInput(
+  stringDecimal: string | undefined,
+  decimals: number | undefined,
+  defaultValue: string
+): string {
+  if (!stringDecimal) return '0'
+  const trailingZeros = stringDecimal.match(/\.(0+)?$/)
+  try {
+    if (new BigNumber(stringDecimal.replace(',', '')).isFinite()) {
+      return new BigNumber(stringDecimal.replace(',', ''))
+        .shiftedBy(decimals || 0)
+        .toFixed(0, BigNumber.ROUND_FLOOR)
+        .concat(trailingZeros && trailingZeros[0] ? trailingZeros[0] : '')
+    }
+    return defaultValue
+  } catch (e) {
+    return defaultValue
+  }
+}

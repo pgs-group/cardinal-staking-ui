@@ -1,11 +1,14 @@
-import { useDataHook } from './useDataHook'
-import { useRewardDistributorData } from './useRewardDistributorData'
-import { useStakedTokenDatas } from './useStakedTokenDatas'
-import { BN } from '@project-serum/anchor'
-import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
-import { useUTCNow } from 'providers/UTCNowProvider'
-import { useRewardEntries } from './useRewardEntries'
 import { getRewardMap } from '@cardinal/staking'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { BN } from '@project-serum/anchor'
+import { useUTCNow } from 'providers/UTCNowProvider'
+import { useQuery } from 'react-query'
+
+import { useRewardDistributorData } from './useRewardDistributorData'
+import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
+import { useRewardEntries } from './useRewardEntries'
+import { useRewardMintInfo } from './useRewardMintInfo'
+import { useStakedTokenDatas } from './useStakedTokenDatas'
 
 export const useRewards = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()
@@ -13,24 +16,37 @@ export const useRewards = () => {
     useRewardDistributorTokenAccount()
   const { data: stakedTokenDatas } = useStakedTokenDatas()
   const { data: rewardEntries } = useRewardEntries()
+  const { data: rewardMintInfo } = useRewardMintInfo()
   const { UTCNow } = useUTCNow()
 
-  return useDataHook<{
-    rewardMap: {
-      [stakeEntryId: string]: { claimableRewards: BN; nextRewardsIn: BN }
-    }
-    claimableRewards: BN
-  }>(
-    async () => {
+  return useQuery<
+    | {
+        rewardMap: {
+          [stakeEntryId: string]: { claimableRewards: BN; nextRewardsIn: BN }
+        }
+        claimableRewards: BN
+      }
+    | undefined
+  >(
+    [
+      'useRewards',
+      rewardDistributorData?.pubkey?.toString(),
+      rewardEntries,
+      stakedTokenDatas,
+      UTCNow,
+    ],
+    () => {
       if (
         !(
           stakedTokenDatas &&
           rewardEntries &&
-          rewardDistributorTokenAccount &&
-          rewardDistributorData
+          rewardDistributorData &&
+          rewardMintInfo &&
+          (rewardDistributorData?.parsed.kind === RewardDistributorKind.Mint ||
+            !!rewardDistributorTokenAccount)
         )
       ) {
-        return
+        return { rewardMap: {}, claimableRewards: new BN(0) }
       }
 
       const stakeEntries = stakedTokenDatas
@@ -41,15 +57,20 @@ export const useRewards = () => {
         stakeEntries,
         rewardEntries,
         rewardDistributorData,
-        rewardDistributorTokenAccount.amount
+        rewardDistributorData.parsed.kind === RewardDistributorKind.Mint
+          ? rewardMintInfo?.mintInfo.supply
+          : rewardDistributorTokenAccount!.amount,
+        UTCNow
       )
     },
-    [
-      rewardDistributorData?.pubkey?.toString(),
-      rewardEntries,
-      stakedTokenDatas,
-      UTCNow,
-    ],
-    { name: 'rewardMap' }
+    {
+      keepPreviousData: true,
+      enabled:
+        !!stakedTokenDatas &&
+        !!rewardEntries &&
+        !!rewardDistributorData &&
+        (rewardDistributorData?.parsed.kind === RewardDistributorKind.Mint ||
+          !!rewardDistributorTokenAccount),
+    }
   )
 }

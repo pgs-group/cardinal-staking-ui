@@ -1,16 +1,22 @@
-import { AccountData } from '@cardinal/common'
-import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type { AccountData } from '@cardinal/common'
+import type { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { useDataHook } from './useDataHook'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useStakePoolData } from './useStakePoolData'
+import { useQuery } from 'react-query'
+
+import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
+import { useStakePoolId } from './useStakePoolId'
 
 export const useStakePoolEntries = () => {
-  const { connection } = useEnvironmentCtx()
-  const stakePool = useStakePoolData()
-  return useDataHook<AccountData<StakeEntryData>[] | undefined>(async () => {
-    if (stakePool?.data?.pubkey) {
-      return getActiveStakeEntriesForPool(connection, stakePool.data.pubkey)
-    }
-  }, [stakePool?.data?.pubkey.toString()])
+  const { secondaryConnection } = useEnvironmentCtx()
+  const stakePoolId = useStakePoolId()
+  return useQuery<AccountData<StakeEntryData>[] | undefined>(
+    [TOKEN_DATAS_KEY, 'useStakePoolEntries', stakePoolId?.toString()],
+    async () => {
+      if (stakePoolId) {
+        return getActiveStakeEntriesForPool(secondaryConnection, stakePoolId)
+      }
+    },
+    { enabled: !!stakePoolId }
+  )
 }

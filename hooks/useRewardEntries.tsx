@@ -1,23 +1,30 @@
-import { useDataHook } from './useDataHook'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { AccountData } from '@cardinal/common'
-import { useRewardDistributorData } from './useRewardDistributorData'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import { useStakedTokenDatas } from './useStakedTokenDatas'
-import { RewardEntryData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import type { AccountData } from '@cardinal/common'
+import type { RewardEntryData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardEntries } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useQuery } from 'react-query'
+
+import { useRewardDistributorData } from './useRewardDistributorData'
+import { useStakedTokenDatas } from './useStakedTokenDatas'
 
 export const useRewardEntries = () => {
   const { data: rewardDistibutorData } = useRewardDistributorData()
   const { data: stakedTokenDatas } = useStakedTokenDatas()
-  const { connection } = useEnvironmentCtx()
-  return useDataHook<AccountData<RewardEntryData>[]>(
+  const { secondaryConnection } = useEnvironmentCtx()
+  return useQuery<AccountData<RewardEntryData>[] | undefined>(
+    [
+      REWARD_QUERY_KEY,
+      'useRewardEntries',
+      rewardDistibutorData?.pubkey?.toString(),
+      stakedTokenDatas,
+    ],
     async () => {
       const rewardDistibutorId = rewardDistibutorData?.pubkey
       if (!rewardDistibutorData || !stakedTokenDatas || !rewardDistibutorId) {
-        return
+        return []
       }
-
       const stakeEntryIds = stakedTokenDatas
         .filter((tk) => tk && tk.stakeEntry)
         .map((tk) => tk.stakeEntry!)
@@ -32,11 +39,9 @@ export const useRewardEntries = () => {
         )
       )
 
-      return (await getRewardEntries(connection, rewardEntryIds)).filter(
-        (rewardEntry) => rewardEntry.parsed
-      )
-    },
-    [rewardDistibutorData?.pubkey?.toString(), stakedTokenDatas],
-    { name: 'rewardEntries' }
+      return (
+        await getRewardEntries(secondaryConnection, rewardEntryIds)
+      ).filter((rewardEntry) => rewardEntry.parsed)
+    }
   )
 }

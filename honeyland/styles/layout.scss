@@ -1,0 +1,324 @@
+@import './mixins.scss';
+
+:root {
+  --v-header-height: 180px;
+  --v-header-logo-width: 215px;
+  --v-header-content-margin-x: 15px;
+  --v-header-title-font-size: 37px;
+  --v-header-button-height: 55px;
+  --v-header-button-padding: 0 40px;
+  --v-header-button-font-size: 22px;
+  --v-header-statistics-box-count-height: 10px;
+}
+
+@include on-lg {
+  :root {
+    --v-header-height: 140px;
+    --v-header-logo-width: 168px;
+    --v-header-content-margin-x: 0px;
+    --v-header-title-font-size: 34px;
+    --v-header-button-height: 45px;
+    --v-header-button-padding: 0 20px;
+    --v-header-button-font-size: 19px;
+  }
+}
+
+@include on-md {
+  :root {
+    --v-header-height: 120px;
+    --v-header-logo-width: 145px;
+    --v-header-content-margin-x: 0px;
+    --v-header-title-font-size: 21px;
+    --v-header-button-height: 45px;
+    --v-header-button-padding: 0 10px;
+    --v-header-button-font-size: 15px;
+  }
+}
+
+@include on-sm {
+  :root {
+    --v-header-height: 120px;
+    --v-header-logo-width: 145px;
+    --v-header-content-margin-x: 0px;
+    --v-header-title-font-size: 21px;
+    --v-header-button-height: 45px;
+    --v-header-button-padding: 0 10px;
+    --v-header-button-font-size: 15px;
+  }
+}
+
+.v-header {
+  display: flex;
+  padding-top: 30px;
+  position: relative;
+  @include on-sm {
+    flex-direction: column;
+    align-items: center;
+  }
+  &-logo {
+    width: var(--v-header-logo-width);
+    height: var(--v-header-height);
+    display: flex;
+  }
+  &-content {
+    margin: var(--v-header-content-margin-x) 0;
+    height: calc(
+      var(--v-header-height) - var(--v-header-content-margin-x) -
+        var(--v-header-content-margin-x)
+    );
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    @include on-sm {
+      height: auto;
+    }
+  }
+
+  &-menu {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include on-sm {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+      margin-bottom: 15px;
+    }
+    height: calc(var(--v-header-height) / 2 - var(--v-header-content-margin-x));
+    &-title {
+      padding-left: 20px;
+      height: calc(var(--v-header-height) / 2);
+      line-height: calc(var(--v-header-height) / 2);
+      color: #3d0a00;
+      font-weight: bold;
+      font-size: var(--v-header-title-font-size);
+    }
+    &-buttons {
+      display: flex;
+      > button {
+        font-weight: 100;
+        text-transform: uppercase;
+        font-size: var(--v-header-button-font-size);
+        text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
+
+        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 109px !important;
+        color: white;
+        height: var(--v-header-button-height);
+        // padding: var(--v-header-button-padding);
+        padding: 0 1.4rem;
+        line-height: var(--v-header-button-height);
+        display: inline-block;
+
+        background: radial-gradient(
+              106.52% 100% at 86.81% 100%,
+              rgba(0, 0, 0, 0.1) 0%,
+              rgba(0, 0, 0, 0) 86.18%
+            )
+            /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+          radial-gradient(
+              55.45% 54.3% at 25.93% 25.27%,
+              rgba(255, 255, 255, 0.679) 0%,
+              rgba(255, 255, 255, 0) 69.79%,
+              rgba(255, 255, 255, 0) 100%
+            )
+            /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+          #ff4b0e;
+        transition: background 0.15s ease-in;
+        &:hover {
+          color: white;
+          background: radial-gradient(
+              106.52% 100% at 86.81% 100%,
+              rgba(0, 0, 0, 0.1) 0%,
+              rgba(0, 0, 0, 0) 86.18%
+            ),
+            radial-gradient(
+              55.45% 54.3% at 25.93% 25.27%,
+              rgba(255, 255, 255, 0.679) 0%,
+              rgba(255, 255, 255, 0) 69.79%,
+              rgba(255, 255, 255, 0) 100%
+            ),
+            #b73407;
+        }
+      }
+      > button:nth-child(1) {
+        background: radial-gradient(
+              106.52% 100% at 86.81% 100%,
+              rgba(0, 0, 0, 0.1) 0%,
+              rgba(0, 0, 0, 0) 86.18%
+            )
+            /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+          radial-gradient(
+              55.45% 54.3% at 25.93% 25.27%,
+              rgba(255, 255, 255, 0.679) 0%,
+              rgba(255, 255, 255, 0) 69.79%,
+              rgba(255, 255, 255, 0) 100%
+            )
+            /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+          #00da9a;
+        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 109px;
+        margin-right: 15px;
+        &:hover {
+          background: radial-gradient(
+              106.52% 100% at 86.81% 100%,
+              rgba(0, 0, 0, 0.1) 0%,
+              rgba(0, 0, 0, 0) 86.18%
+            ),
+            radial-gradient(
+              55.45% 54.3% at 25.93% 25.27%,
+              rgba(255, 255, 255, 0.679) 0%,
+              rgba(255, 255, 255, 0) 69.79%,
+              rgba(255, 255, 255, 0) 100%
+            ),
+            #04b07e !important;
+        }
+      }
+
+      .walletButton {
+        background: transparent;
+        padding: 0;
+        text-shadow: 1px 2px 2px rgb(0 0 0 / 50%);
+        height: var(--v-header-button-height);
+        font-size: var(--v-header-button-font-size);
+        text-transform: uppercase;
+        font-weight: initial;
+        .wallet-adapter-button-start-icon {
+          display: none;
+        }
+        &:disabled {
+          color: white;
+          background: transparent !important;
+        }
+        &:hover {
+          background: transparent !important;
+        }
+      }
+    }
+  }
+  &-statistics {
+    width: 100%;
+    height: calc(var(--v-header-height) / 2 - var(--v-header-content-margin-x));
+    padding: 0 var(--v-header-height) 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include on-sm {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+      padding: 0;
+      margin-bottom: 10px;
+    }
+    &-box {
+      text-align: center;
+      @include on-sm {
+        width: 100%;
+        padding: 10px;
+      }
+      &__count {
+        line-height: 45px;
+        color: #43a705;
+        font-size: 45px;
+        text-shadow: 0px 2px 3px #183f00;
+        @include on-md {
+          font-size: 25px;
+          line-height: 25px;
+          height: 25px;
+        }
+        @include on-sm {
+          font-size: 25px;
+          line-height: 25px;
+          height: 25px;
+        }
+      }
+      &__title {
+        color: #3d0a00;
+        font-size: 18px;
+        line-height: 30px;
+        @include on-md {
+          font-size: 16px;
+          line-height: 16px;
+          height: 35px;
+        }
+      }
+    }
+  }
+  &-top-bee {
+    position: absolute;
+    right: 15px;
+    bottom: -75px;
+    width: 150px;
+    z-index: -1;
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+    animation-name: bee-top-animation;
+    animation-timing-function: wave;
+    @include on-lg {
+      bottom: -75px;
+      width: 130px;
+    }
+    @include on-md {
+      width: 110px;
+      bottom: -65px;
+    }
+    @include on-sm {
+      display: none;
+    }
+  }
+  &-bottom-bee {
+    position: absolute;
+    top: calc(100vh - 260px);
+    left: -85px;
+    width: 180px;
+    z-index: 1;
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+    animation-name: bee-bottom-animation;
+    animation-timing-function: wave;
+    @include on-sm {
+      display: none;
+    }
+  }
+}
+
+.screen-loading {
+  width: 100%;
+  height: 100vh;
+  background: #00000082;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes bee-top-animation {
+  0% {
+    opacity: 0;
+    right: -300px;
+    bottom: 55px;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    right: 15px;
+    bottom: -75px;
+  }
+}
+
+@keyframes bee-bottom-animation {
+  0% {
+    opacity: 0;
+    left: -500px;
+    top: calc(100vh - 600px);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    left: -85px;
+    top: calc(100vh - 260px);
+  }
+}
