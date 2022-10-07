@@ -40,7 +40,7 @@ export const StakePoolInfo = () => {
 
   return (
     <div
-      className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6 md:flex-row md:justify-between ${
+      className={`flex flex-wrap items-center gap-4 rounded-md px-10 py-6 md:flex-row md:justify-between ${
         stakePoolMetadata?.colors?.fontColor
           ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
           : 'text-gray-200'
@@ -64,7 +64,7 @@ export const StakePoolInfo = () => {
               ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
               : ''}
           </div>
-          {maxStaked > 0 && (
+          {!!maxStaked && (
             <div className="inline-block text-lg">
               {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
               Percent Staked:{' '}
@@ -77,7 +77,7 @@ export const StakePoolInfo = () => {
           )}
         </>
       ) : (
-        <div className="relative flex h-8 flex-grow items-center justify-center">
+        <div className="relative flex h-8 max-w-[50%] flex-grow items-center justify-center">
           <span
             className={`${
               stakePoolMetadata?.colors?.fontColor
@@ -176,8 +176,12 @@ export const StakePoolInfo = () => {
           </div>
         </>
       ) : (
-        <div className="relative flex flex-grow items-center justify-center">
-          {!(rewardDistributorData.isFetched && rewardMintInfo.isFetched) && (
+        <div className="relative flex max-w-[50%] flex-grow items-center justify-center">
+          {!(
+            rewardDistributorData.isFetched &&
+            rewardMintInfo.isFetched &&
+            rewardsRate.isFetched
+          ) && (
             <>
               <span
                 className={`${

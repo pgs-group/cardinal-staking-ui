@@ -113,6 +113,7 @@ export const Airdrop = () => {
   return (
     <AsyncButton
       disabled={!wallet.connected}
+      className="rounded-md px-3 py-1"
       onClick={async () => {
         if (!wallet.connected) return
         try {
@@ -128,7 +129,7 @@ export const Airdrop = () => {
         }
       }}
     >
-      Airdrop
+      <div className="text-xs">Airdrop</div>
     </AsyncButton>
   )
 }

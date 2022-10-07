@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 
+import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
 import { asWallet } from './Wallets'
 
@@ -35,7 +36,10 @@ export const HeaderSlim = () => {
             <LogoTitled className="inline-block h-6" />
           </div>
           {environment.label !== 'mainnet-beta' && (
-            <div className="text-primary">{environment.label}</div>
+            <>
+              <div className="text-primary">{environment.label}</div>
+              <Airdrop />
+            </>
           )}
         </div>
         <div className="flex-5 flex items-center justify-end gap-6">

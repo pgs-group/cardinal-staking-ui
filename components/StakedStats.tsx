@@ -2,6 +2,7 @@ import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
 import { useMintInfo } from 'hooks/useMintInfo'
+import { FaCheck } from 'react-icons/fa'
 
 import {
   formatAmountAsDecimal,
@@ -24,7 +25,6 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
       ? tokenData.stakeEntry?.parsed.originalMint
       : undefined
   )
-  console.log(mintInfo)
   const rewardDistributorData = useRewardDistributorData()
   const { data: stakePool } = useStakePoolData()
   const rewardEntries = useRewardEntries()
@@ -114,7 +114,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                 new BN(60)
               ) && (
                 <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                  <span>Next rewards:</span>
+                  <span>Next Rewards:</span>
                   <span>
                     {secondstoDuration(
                       rewards.data.rewardMap[
@@ -126,46 +126,46 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
               )}
           </>
         )}
-      {tokenData.stakeEntry?.parsed.cooldownStartSeconds &&
-      stakePool?.parsed.cooldownSeconds ? (
-        <div className="flex w-full flex-row justify-between text-xs font-semibold">
-          <span>Cooldown:</span>
-          <span className="text-right">
-            {tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-              stakePool.parsed.cooldownSeconds -
-              UTCNow >
-            0
-              ? secondstoDuration(
+      {!!tokenData.stakeEntry?.parsed.cooldownStartSeconds &&
+        !!stakePool?.parsed.cooldownSeconds && (
+          <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
+            <span>Cooldown:</span>
+            <span className="text-right">
+              {tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                stakePool.parsed.cooldownSeconds -
+                UTCNow >
+              0 ? (
+                getExpirationString(
                   tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                    stakePool.parsed.cooldownSeconds -
-                    UTCNow
+                    stakePool.parsed.cooldownSeconds,
+                  UTCNow
                 )
-              : 'Finished!'}
-          </span>
-        </div>
-      ) : (
-        ''
-      )}
-      {stakePool?.parsed.minStakeSeconds &&
-      tokenData.stakeEntry?.parsed.lastStakedAt ? (
-        <div className="flex w-full flex-row justify-between text-xs font-semibold">
-          <span>Min Time:</span>
-          <span className="text-right">
-            {tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
-              stakePool.parsed.minStakeSeconds -
-              UTCNow >
-            0
-              ? getExpirationString(
+              ) : (
+                <FaCheck />
+              )}
+            </span>
+          </div>
+        )}
+      {!!stakePool?.parsed.minStakeSeconds &&
+        !!tokenData.stakeEntry?.parsed.lastStakedAt && (
+          <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
+            <span>Min Time:</span>
+            <span className="text-right">
+              {tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                stakePool.parsed.minStakeSeconds -
+                UTCNow >
+              0 ? (
+                getExpirationString(
                   tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
                     stakePool.parsed.minStakeSeconds,
                   UTCNow
                 )
-              : 'Satisfied'}
-          </span>
-        </div>
-      ) : (
-        ''
-      )}
+              ) : (
+                <FaCheck />
+              )}
+            </span>
+          </div>
+        )}
     </div>
   )
 }

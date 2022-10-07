@@ -7,7 +7,6 @@ import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import type { Dispatch, SetStateAction } from 'react'
 import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { BsBookmarkCheck } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
@@ -23,15 +22,12 @@ export const QuickActions = ({
   unstakedTokenData,
   stakedTokenData,
   receiptType,
-  showFungibleTokens,
   selectUnstakedToken,
   selectStakedToken,
 }: {
   unstakedTokenData?: AllowedTokenData
   stakedTokenData?: StakeEntryTokenData
-  receiptType: ReceiptType
-  showFungibleTokens: boolean
-  setSingleTokenAction: Dispatch<SetStateAction<string>>
+  receiptType?: ReceiptType
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
 }) => {
@@ -66,7 +62,6 @@ export const QuickActions = ({
                   ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                   : 'white',
               }}
-              className="justify-between"
               href={pubKeyUrl(
                 unstakedTokenData?.tokenAccount
                   ? unstakedTokenData.tokenAccount.account.data.parsed.info.mint
@@ -76,8 +71,8 @@ export const QuickActions = ({
               target="_blank"
               rel="noreferrer"
             >
-              View
               <FiExternalLink />
+              View
             </a>
           </PopoverItem>
           {ctx.environment.label !== 'devnet' && (
@@ -91,7 +86,6 @@ export const QuickActions = ({
                     ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                     : 'white',
                 }}
-                className="justify-between"
                 href={metadataUrl(
                   unstakedTokenData?.tokenAccount
                     ? unstakedTokenData.tokenAccount.account.data.parsed.info
@@ -102,29 +96,32 @@ export const QuickActions = ({
                 target="_blank"
                 rel="noreferrer"
               >
-                Metadata
                 <AiOutlineDatabase />
+                Metadata
               </a>
             </PopoverItem>
           )}
-          {!showFungibleTokens && (
+          {!(
+            unstakedTokenData?.tokenAccount?.account.data.parsed.info
+              .tokenAmount.amount > 1
+          ) && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   if (unstakedTokenData) selectUnstakedToken(unstakedTokenData)
                   else if (stakedTokenData) selectStakedToken(stakedTokenData)
                 }}
               >
-                Select
                 <BsBookmarkCheck />
+                Select
               </div>
             </PopoverItem>
           )}
           {unstakedTokenData?.tokenAccount && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   handleStake.mutate({
                     tokenDatas: [unstakedTokenData],
@@ -132,34 +129,34 @@ export const QuickActions = ({
                   })
                 }}
               >
-                Stake
                 <AiFillLock />
+                Stake
               </div>
             </PopoverItem>
           )}
           {stakedTokenData?.stakeEntry && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   handleClaimRewards.mutate({ tokenDatas: [stakedTokenData] })
                 }}
               >
-                Claim Rewards
                 <RiMoneyDollarCircleFill />
+                Claim Rewards
               </div>
             </PopoverItem>
           )}
           {stakedTokenData?.stakeEntry && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   handleUnstake.mutate({ tokenDatas: [stakedTokenData] })
                 }}
               >
-                Unstake
                 <AiFillUnlock />
+                Unstake
               </div>
             </PopoverItem>
           )}
@@ -176,9 +173,8 @@ export const QuickActions = ({
           ),
         }}
         key={
-          unstakedTokenData?.tokenAccount
-            ? unstakedTokenData.tokenAccount?.account.data.parsed.info.mint.toString()
-            : unstakedTokenData?.stakeEntry?.parsed.originalMint.toString()
+          unstakedTokenData?.tokenAccount?.account.data.parsed.info.mint.toString() ??
+          stakedTokenData?.stakeEntry?.parsed.originalMint.toString()
         }
       >
         {handleClaimRewards.isLoading ||

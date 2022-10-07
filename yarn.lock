@@ -374,6 +374,16 @@
     "ts-mocha" "^8.0.0"
     "typescript" "^4.5.5"
 
+"@cardinal/staking@^1.10.2":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.10.2.tgz#c5370fdcf689b95e5309caa849d711335dabe32f"
+  integrity sha512-R36sZfcvbUGFkIN32MyXyNpZTlvUoup5jmPGAg+ngTsWa3VbXHkUJJjMsQlih47ftYKs9eCkgCHogXbcRmf4bQ==
+  dependencies:
+    "@cardinal/common" "^2.0.11"
+    "@cardinal/token-manager" "^1.5.13"
+    "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
+    node-fetch "2"
+
 "@cardinal/staking@^1.5.18":
   version "1.5.18"
   resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.5.18.tgz#cc6cbc34bfa001f7bd0b17dec92e4660471a372a"
@@ -382,16 +392,6 @@
     "@cardinal/common" "^1.0.10"
     "@cardinal/token-manager" "^1.2.0"
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
-
-"@cardinal/staking@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.8.0.tgz#85a14532d18a0b2a12034ad59fadcba97cc928ab"
-  integrity sha512-Css2KHpU9XAM13yvyTswjMfsVKua/lKig8QDqt5qskNr0bUML3lNmfqPBYoXqo3c3nNMsou0xBtUmZUSBgA3ZA==
-  dependencies:
-    "@cardinal/common" "^2.0.11"
-    "@cardinal/token-manager" "^1.5.13"
-    "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
-    node-fetch "2"
 
 "@cardinal/stats@^1.0.3":
   version "1.0.3"
