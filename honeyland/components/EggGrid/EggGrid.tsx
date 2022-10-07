@@ -6,6 +6,8 @@ import cn from 'classnames'
 import StopWatchIcon from '../StopWatchIcon'
 import { useLeaderboard } from '../../providers/LeaderboardProvider'
 import ReleaseConfirmModal from '../ReleaseConfirmModal'
+import { useMintMetadata } from 'hooks/useMintMetadata'
+import EggItem from './EggItem'
 
 function EggGrid({
   mode,
@@ -132,80 +134,15 @@ function EggGrid({
           </div>
         ) : (
           <>
-            {(eggs || []).map((tk) => (
-              <div
-                className={styles.gridItem}
-                key={tk.tokenAccount?.pubkey.toString()}
-              >
-                <label>
-                  <div
-                    className={cn(styles.card, {
-                      [styles.selected]: isSelectedEgg(tk),
-                    })}
-                  >
-                    {loadingButton && isSelectedEgg(tk) && (
-                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle">
-                        <div className="my-auto flex">
-                          <div>
-                            <LoadingSpinner height="25px" />
-                          </div>
-                          <div className="ml-2">
-                            {mode === 'staked' ? 'Releasing' : 'Incubating'}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    <img
-                      src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
-                      className={styles.image}
-                    />
-                    <div className={styles.detail}>
-                      <span
-                        title={tk.metadata?.data.name}
-                        className={styles.title}
-                      >
-                        {(tk.metadata?.data.name || '').replace(
-                          mode === 'staked' ? 'Genesis ' : '',
-                          ''
-                        )}
-                      </span>
-                      {mode === 'staked' && (
-                        <>
-                          <span className={styles.divider}></span>
-                          <span className={styles.timeAgo}>
-                            <StopWatchIcon />
-                            {getStakedDaysAgo(
-                              tk.stakeEntry.parsed.lastStakedAt
-                            )}{' '}
-                            days
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <input
-                    disabled={/* loadingStake || loadingUnstake */ false}
-                    placeholder={
-                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                        .amount > 1
-                        ? '1'
-                        : ''
-                    }
-                    className="hidden"
-                    autoComplete="off"
-                    type={
-                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                        .amount > 1
-                        ? 'text'
-                        : 'checkbox'
-                    }
-                    id={tk?.tokenAccount?.pubkey.toBase58()}
-                    name={tk?.tokenAccount?.pubkey.toBase58()}
-                    checked={isSelectedEgg(tk)}
-                    onChange={(e) => onToggleSelection(e, tk)}
-                  />
-                </label>
-              </div>
+            {(eggs || []).map((tk, i) => (
+              <EggItem
+                key={i}
+                tk={tk}
+                onToggleSelection={onToggleSelection}
+                isSelectedEgg={isSelectedEgg}
+                loadingButton={loadingButton}
+                mode={mode}
+              />
             ))}
           </>
         )}

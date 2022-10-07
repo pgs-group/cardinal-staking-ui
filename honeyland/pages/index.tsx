@@ -55,6 +55,9 @@ import { useRouter } from 'next/router'
 import EggGrid from '../components/EggGrid/EggGrid'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 
+import { UnstakedTokens } from 'components/UnstakedTokens'
+import { StakedTokens } from 'components/StakedTokens'
+
 function Home() {
   const router = useRouter()
   const { connection, environment } = useEnvironmentCtx()
@@ -356,6 +359,7 @@ function Home() {
       ) : (
         <>
           <Header />
+
           <div className="container mx-auto">
             <div className="my-2 mx-5 grid gap-10 lg:grid-cols-2">
               <div>
